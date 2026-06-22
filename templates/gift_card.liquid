@@ -1,0 +1,7 @@
+<div style="max-width:560px;margin:0 auto;padding:60px 32px;text-align:center;">
+  <div class="nat-eyebrow">Carte cadeau</div>
+  <h1 class="nat-serif" style="font-size:46px;margin:14px 0 0;">{{ shop.name }}</h1>
+  <div style="font-size:40px;font-weight:700;color:var(--green-deep);margin:24px 0;">{{ gift_card.balance | money }}</div>
+  {{ gift_card.qr_identifier }}
+  <p style="font-size:14px;color:var(--brown);margin-top:20px;">Code : <strong>{{ gift_card.code | format_code }}</strong></p>
+</div>

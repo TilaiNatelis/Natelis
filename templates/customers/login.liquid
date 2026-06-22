@@ -1,0 +1,10 @@
+<div class="nat-wrap" style="max-width:480px;padding:60px 32px;">
+  <h1 class="nat-serif" style="font-size:42px;margin:0 0 24px;">Connexion</h1>
+  {%- form 'customer_login' -%}
+    {{ form.errors | default_errors }}
+    <input type="email" name="customer[email]" placeholder="E-mail" required style="width:100%;padding:13px 16px;margin-bottom:12px;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+    <input type="password" name="customer[password]" placeholder="Mot de passe" style="width:100%;padding:13px 16px;margin-bottom:16px;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+    <button type="submit" class="nat-btn" style="width:100%;">Se connecter</button>
+  {%- endform -%}
+  <p style="margin-top:18px;font-size:13.5px;"><a href="{{ routes.account_register_url }}">Créer un compte</a></p>
+</div>

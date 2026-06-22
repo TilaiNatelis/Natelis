@@ -1,0 +1,24 @@
+<div class="nat-wrap" style="padding-top:48px;padding-bottom:72px;">
+  <h1 class="nat-serif" style="font-size:42px;margin:0 0 24px;">Recherche</h1>
+  <form action="{{ routes.search_url }}" method="get" role="search" style="margin-bottom:32px;">
+    <input type="search" name="q" value="{{ search.terms | escape }}" placeholder="Rechercher un complément, un objectif…"
+      style="width:100%;max-width:480px;padding:14px 18px;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);font-size:14px;">
+  </form>
+  {%- if search.performed -%}
+    <p style="font-size:13.5px;color:var(--brown);margin-bottom:24px;">{{ search.results_count }} résultat(s) pour « {{ search.terms }} »</p>
+    <div class="nat-grid-4" style="gap:28px 24px;">
+      {%- for item in search.results -%}
+        {%- if item.object_type == 'product' -%}
+          {%- render 'product-card', product: item -%}
+        {%- else -%}
+          <a class="nat-post" href="{{ item.url }}">
+            <div class="nat-post__title" style="font-size:20px;">{{ item.title }}</div>
+            <div class="nat-post__excerpt">{{ item.content | strip_html | truncatewords: 16 }}</div>
+          </a>
+        {%- endif -%}
+      {%- else -%}
+        <p>Aucun résultat.</p>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>

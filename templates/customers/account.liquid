@@ -1,0 +1,17 @@
+<div class="nat-wrap" style="padding:60px 32px;">
+  <h1 class="nat-serif" style="font-size:42px;margin:0 0 8px;">Bonjour {{ customer.first_name }}</h1>
+  <p style="font-size:13.5px;margin-bottom:28px;"><a href="{{ routes.account_logout_url }}">Se déconnecter</a></p>
+  <h2 class="nat-serif" style="font-size:26px;margin:0 0 16px;">Vos commandes</h2>
+  {%- paginate customer.orders by 12 -%}
+    {%- for order in customer.orders -%}
+      <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);">
+        <a href="{{ order.customer_url }}">Commande {{ order.name }}</a>
+        <span>{{ order.created_at | date: '%d/%m/%Y' }} · {{ order.total_net_amount | money }}</span>
+      </div>
+    {%- else -%}
+      <p>Aucune commande pour le moment.</p>
+    {%- endfor -%}
+    {{ paginate | default_pagination }}
+  {%- endpaginate -%}
+  <p style="margin-top:24px;"><a href="{{ routes.account_addresses_url }}">Gérer mes adresses</a></p>
+</div>

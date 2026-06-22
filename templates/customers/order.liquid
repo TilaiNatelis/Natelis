@@ -1,0 +1,13 @@
+<div class="nat-wrap" style="padding:60px 32px;">
+  <h1 class="nat-serif" style="font-size:38px;margin:0 0 8px;">Commande {{ order.name }}</h1>
+  <p style="color:var(--brown);margin-bottom:24px;">Passée le {{ order.created_at | date: '%d %B %Y' }}</p>
+  <table style="width:100%;border-collapse:collapse;font-size:14px;">
+    {%- for line in order.line_items -%}
+      <tr style="border-bottom:1px solid var(--border);">
+        <td style="padding:12px 0;">{{ line.title }} × {{ line.quantity }}</td>
+        <td style="padding:12px 0;text-align:right;">{{ line.final_line_price | money }}</td>
+      </tr>
+    {%- endfor -%}
+  </table>
+  <p style="text-align:right;margin-top:16px;font-weight:700;">Total : {{ order.total_net_amount | money }}</p>
+</div>

@@ -1,0 +1,15 @@
+<div class="nat-wrap" style="padding-top:48px;padding-bottom:72px;">
+  <h1 class="nat-serif" style="font-size:46px;margin:0 0 28px;">Nos collections</h1>
+  <div class="nat-grid-3">
+    {%- for collection in collections -%}
+      <a class="nat-univers" href="{{ collection.url }}">
+        <div class="nat-univers__img" style="background-image:url('{{ collection.image | image_url: width: 800 }}');{% if collection.image == blank %}background:var(--beige-gold);{% endif %}"></div>
+        <div class="nat-univers__veil"></div>
+        <div class="nat-univers__body">
+          <div class="nat-univers__title">{{ collection.title }}</div>
+          <div class="nat-univers__more">Découvrir →</div>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>

@@ -1,0 +1,9 @@
+<div class="nat-wrap" style="padding:60px 32px;">
+  <h1 class="nat-serif" style="font-size:42px;margin:0 0 24px;">Mes adresses</h1>
+  <p style="margin-bottom:24px;"><a href="{{ routes.account_url }}">← Mon compte</a></p>
+  {%- for address in customer.addresses -%}
+    <div style="padding:16px 0;border-bottom:1px solid var(--border);">{{ address | format_address }}</div>
+  {%- else -%}
+    <p>Aucune adresse enregistrée.</p>
+  {%- endfor -%}
+</div>

@@ -1,0 +1,10 @@
+<div class="nat-wrap" style="max-width:480px;padding:60px 32px;">
+  <h1 class="nat-serif" style="font-size:42px;margin:0 0 24px;">Activer mon compte</h1>
+  {%- form 'activate_customer_password' -%}
+    {{ form.errors | default_errors }}
+    <input type="password" name="customer[password]" placeholder="Mot de passe" style="width:100%;padding:13px 16px;margin-bottom:12px;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+    <input type="password" name="customer[password_confirmation]" placeholder="Confirmer" style="width:100%;padding:13px 16px;margin-bottom:16px;border:1px solid var(--border);border-radius:6px;font-family:var(--sans);">
+    <button type="submit" class="nat-btn" style="width:100%;">Activer</button>
+    <button type="submit" name="decline" class="nat-btn nat-btn--outline" style="width:100%;margin-top:10px;">Refuser l'invitation</button>
+  {%- endform -%}
+</div>
