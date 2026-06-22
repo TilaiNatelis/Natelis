@@ -63,6 +63,8 @@
       url: {{ product.url | json }},
       price: {{ product.price | money | json }},
       img: {{ product.featured_image | image_url: width: 500 | json }},
+      sub: {{ product.metafields.custom.subtitle | default: '' | json }},
+      dosage: {{ product.metafields.custom.dosage_text | default: '' | json }},
       objs: {{ product.tags | json }}
     }{%- unless forloop.last -%},{%- endunless -%}
     {%- endfor -%}
@@ -128,11 +130,19 @@
       var p = PRODUCTS.filter(function(x){return x.vid===vid;})[0]; if(!p) return;
       var card = document.createElement('div'); card.className='nat-card';
       card.innerHTML = '<a href="'+p.url+'" class="nat-card__media">'+(p.img?'<img src="'+p.img+'" alt="">':'<span class="nat-card__ph">'+p.title+'</span>')+'</a>'+
+        (p.objs && p.objs.length ? '<div class="nat-card__obj">'+p.objs.join(' · ')+'</div>' : '')+
         '<a href="'+p.url+'" class="nat-card__name">'+p.title+'</a>'+
-        '<div class="nat-card__row"><span class="nat-card__price">'+p.price+'</span></div>';
+        (p.dosage ? '<div class="nat-card__sub">Posologie : '+p.dosage+'</div>' : (p.sub ? '<div class="nat-card__sub">'+p.sub+'</div>' : ''))+
+        '<div class="nat-card__row"><span class="nat-card__price">'+p.price+'</span>'+
+        '<button class="nat-card__add" data-action="addOne" data-vid="'+p.vid+'">Ajouter</button></div>';
       grid.appendChild(card);
     });
     show('result');
+  }
+
+  function addToCart(items, go){
+    return fetch('/cart/add.js', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({items:items})})
+      .then(function(){ if(go){ window.location.href='/cart'; } else { var c=root.querySelector('[data-el="cartcount-flash"]'); } });
   }
 
   root.addEventListener('click', function(e){
@@ -140,10 +150,12 @@
     var act = a.getAttribute('data-action');
     if(act==='start'){ step=1; answers={}; renderQuestion(); }
     if(act==='restart'){ step=0; answers={}; show('intro'); }
+    if(act==='addOne'){
+      var vid = parseInt(a.getAttribute('data-vid'),10);
+      addToCart([{id:vid, quantity:1}], false).then(function(){ a.textContent='Ajouté ✓'; setTimeout(function(){ a.textContent='Ajouter'; }, 1600); });
+    }
     if(act==='addRoutine'){
-      var items = recVids.map(function(vid){ return {id:vid, quantity:1}; });
-      fetch('/cart/add.js', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({items:items})})
-        .then(function(){ window.location.href='/cart'; });
+      addToCart(recVids.map(function(vid){ return {id:vid, quantity:1}; }), true);
     }
   });
 })();

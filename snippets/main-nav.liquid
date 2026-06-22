@@ -1,6 +1,7 @@
 {%- comment -%}
-  Navigation principale. Branche le menu "main-menu" de Shopify.
-  Les entrées dont le titre contient "Automne" ou "Diagnostic" reçoivent un style spécifique.
+  Navigation principale + méga-menu.
+  Les entrées du menu "main-menu" ayant des sous-liens affichent un panneau au survol.
+  Styles spéciaux pour "Automne" et "Diagnostic".
 {%- endcomment -%}
 <nav class="nat-nav">
   <div class="nat-nav__list">
@@ -13,9 +14,23 @@
       {%- else -%}
         {%- assign cls = 'nat-nav__item' -%}
       {%- endif -%}
-      <a class="{{ cls }}{% if link.active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }}</a>
+
+      {%- if link.links.size > 0 -%}
+        <div class="nat-nav__parent">
+          <a class="{{ cls }}{% if link.active or link.child_active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }} ▾</a>
+          <div class="nat-mega">
+            <div class="nat-mega__grid">
+              {%- for child in link.links -%}
+                <a class="nat-mega__link" href="{{ child.url }}">{{ child.title }}</a>
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+      {%- else -%}
+        <a class="{{ cls }}{% if link.active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }}</a>
+      {%- endif -%}
+
     {%- else -%}
-      {%- comment -%} Repli si le menu n'est pas encore configuré {%- endcomment -%}
       <a class="nat-nav__item nat-nav__item--automne" href="{{ routes.root_url }}pages/selection-automne">Sélection d'automne</a>
       <a class="nat-nav__item" href="{{ routes.all_products_collection_url }}">Nouveautés</a>
       <a class="nat-nav__item" href="{{ routes.all_products_collection_url }}">Produits</a>

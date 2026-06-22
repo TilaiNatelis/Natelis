@@ -1,7 +1,75 @@
 <div class="nat-wrap" style="padding:60px 32px;">
-  <h1 class="nat-serif" style="font-size:42px;margin:0 0 8px;">Bonjour {{ customer.first_name }}</h1>
-  <p style="font-size:13.5px;margin-bottom:28px;"><a href="{{ routes.account_logout_url }}">Se déconnecter</a></p>
-  <h2 class="nat-serif" style="font-size:26px;margin:0 0 16px;">Vos commandes</h2>
+  <h1 class="nat-serif" style="font-size:42px;margin:0 0 8px;">Bonjour {{ customer.first_name | default: 'cher client' }}</h1>
+  <p style="font-size:13.5px;margin-bottom:36px;"><a href="{{ routes.account_logout_url }}">Se déconnecter</a></p>
+
+  {%- comment -%} ===================== SUIVI DE CURE ===================== {%- endcomment -%}
+  <div class="nat-eyebrow">Votre rituel</div>
+  <h2 class="nat-serif" style="font-size:30px;margin:8px 0 6px;">Suivi de vos cures</h2>
+  <p style="font-size:13.5px;color:var(--brown);margin:0 0 22px;">Estimation basée sur la posologie conseillée et vos dernières commandes.</p>
+
+  {%- assign now_s = 'now' | date: '%s' -%}
+  {%- assign seen = '' -%}
+  {%- assign cure_count = 0 -%}
+  {%- for order in customer.orders -%}
+    {%- for line in order.line_items -%}
+      {%- assign prod = line.product -%}
+      {%- if prod == blank -%}{%- continue -%}{%- endif -%}
+      {%- assign units = prod.metafields.custom.units.value | plus: 0 -%}
+      {%- assign dose = prod.metafields.custom.dose_per_day.value | plus: 0 -%}
+      {%- if units == 0 or dose == 0 -%}{%- continue -%}{%- endif -%}
+      {%- assign marker = '|' | append: prod.id | append: '|' -%}
+      {%- if seen contains marker -%}{%- continue -%}{%- endif -%}
+      {%- assign seen = seen | append: marker -%}
+
+      {%- assign total_units = units | times: line.quantity -%}
+      {%- assign total_days = total_units | divided_by: dose -%}
+      {%- assign order_s = order.created_at | date: '%s' -%}
+      {%- assign elapsed_days = now_s | minus: order_s | divided_by: 86400 -%}
+      {%- assign remaining = total_days | minus: elapsed_days -%}
+      {%- assign pct = elapsed_days | times: 100 | divided_by: total_days -%}
+      {%- if pct > 100 -%}{%- assign pct = 100 -%}{%- endif -%}
+      {%- if pct < 0 -%}{%- assign pct = 0 -%}{%- endif -%}
+      {%- assign end_ts = total_days | times: 86400 | plus: order_s -%}
+
+      {%- if remaining <= 0 -%}{%- assign cls = 'nat-cure nat-cure--over' -%}
+      {%- elsif remaining <= 7 -%}{%- assign cls = 'nat-cure nat-cure--low' -%}
+      {%- else -%}{%- assign cls = 'nat-cure' -%}{%- endif -%}
+      {%- assign cure_count = cure_count | plus: 1 -%}
+
+      <div class="{{ cls }}">
+        <a href="{{ prod.url }}" class="nat-cure__media">
+          {%- if prod.featured_image -%}<img src="{{ prod.featured_image | image_url: width: 200 }}" alt="">{%- else -%}<span style="font-size:9px;color:#c5b596;text-align:center;padding:4px;">{{ prod.title }}</span>{%- endif -%}
+        </a>
+        <div style="flex:1;">
+          <a href="{{ prod.url }}" class="nat-cure__name">{{ prod.title }}</a>
+          <div class="nat-cure__meta">
+            Posologie : <strong>{{ prod.metafields.custom.dosage_text }}</strong><br>
+            Cure de {{ total_days }} jours · achetée le {{ order.created_at | date: '%d/%m/%Y' }}
+            {%- if remaining > 0 -%} · rachat conseillé vers le {{ end_ts | date: '%d/%m/%Y' }}{%- endif -%}
+          </div>
+          <div class="nat-cure__bar"><span style="width:{{ pct }}%;"></span></div>
+        </div>
+        <div style="flex:none;text-align:right;min-width:120px;">
+          {%- if remaining > 0 -%}
+            <div class="nat-cure__days" style="color:{% if remaining <= 7 %}var(--autumn){% else %}var(--olive){% endif %};">{{ remaining }}<small>jours restants</small></div>
+          {%- else -%}
+            <div class="nat-cure__days" style="color:var(--terra);">0<small>cure terminée</small></div>
+            <a href="{{ prod.url }}" class="nat-btn nat-btn--sm" style="margin-top:10px;">Racheter</a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  {%- endfor -%}
+
+  {%- if cure_count == 0 -%}
+    <div style="background:var(--soft);border:1px solid var(--border);border-radius:8px;padding:28px;text-align:center;">
+      <p style="font-size:15px;color:var(--brown);margin:0 0 16px;">Vous n'avez pas encore de cure en cours.</p>
+      <a class="nat-btn" href="{{ routes.root_url }}pages/diagnostic">Faire mon diagnostic</a>
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} ===================== COMMANDES ===================== {%- endcomment -%}
+  <h2 class="nat-serif" style="font-size:30px;margin:48px 0 16px;">Vos commandes</h2>
   {%- paginate customer.orders by 12 -%}
     {%- for order in customer.orders -%}
       <div style="display:flex;justify-content:space-between;padding:14px 0;border-bottom:1px solid var(--border);">

@@ -43,10 +43,10 @@
     </div>
     <div>
       <div class="nat-footer__col-title">Aide</div>
+      <a class="nat-footer__link" href="{{ routes.root_url }}pages/contact">Contact</a>
+      <a class="nat-footer__link" href="{{ routes.account_url | default: routes.account_login_url }}">Mon compte &amp; suivi de cure</a>
       <a class="nat-footer__link" href="{{ routes.search_url }}">Recherche</a>
-      <a class="nat-footer__link" href="{{ routes.account_url | default: routes.account_login_url }}">Mon compte</a>
       <a class="nat-footer__link" href="{{ routes.cart_url }}">Mon panier</a>
-      <a class="nat-footer__link" href="{{ routes.all_products_collection_url }}">Tous les produits</a>
     </div>
   {%- endif -%}
 </div>

@@ -1,0 +1,33 @@
+<div class="nat-wrap" style="max-width:760px;padding:60px 32px 80px;">
+  <div class="nat-eyebrow">Nous contacter</div>
+  <h1 class="nat-serif" style="font-size:48px;margin:12px 0 0;">{{ page.title }}</h1>
+  {%- if page.content != blank -%}
+    <div class="nat-rte" style="font-size:16px;line-height:1.7;color:var(--brown-dark);margin-top:16px;">{{ page.content }}</div>
+  {%- else -%}
+    <p style="font-size:16px;line-height:1.7;color:var(--brown);margin-top:16px;">Une question sur une cure, une commande ou un conseil ? Écrivez-nous, nous répondons sous 24–48 h ouvrées.</p>
+  {%- endif -%}
+
+  {%- form 'contact' -%}
+    {%- if form.posted_successfully? -%}
+      <p style="background:var(--pale);color:var(--green-text);padding:16px 18px;border-radius:8px;margin:24px 0;">Merci, votre message a bien été envoyé. ✦</p>
+    {%- endif -%}
+    {{ form.errors | default_errors }}
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:26px;">
+      <input type="text" name="contact[name]" placeholder="Votre nom" value="{{ form.name }}" required
+        style="padding:14px 16px;border:1px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;">
+      <input type="email" name="contact[email]" placeholder="Votre e-mail" value="{{ form.email }}" required
+        style="padding:14px 16px;border:1px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;">
+    </div>
+    <input type="text" name="contact[Sujet]" placeholder="Sujet"
+      style="width:100%;margin-top:14px;padding:14px 16px;border:1px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;">
+    <textarea name="contact[body]" placeholder="Votre message" rows="6" required
+      style="width:100%;margin-top:14px;padding:14px 16px;border:1px solid var(--border);border-radius:8px;font-family:var(--sans);font-size:14px;resize:vertical;">{{ form.body }}</textarea>
+    <button type="submit" class="nat-btn" style="margin-top:18px;">Envoyer le message</button>
+  {%- endform -%}
+
+  <div style="margin-top:40px;border-top:1px solid var(--border);padding-top:24px;font-size:14px;color:var(--brown);line-height:1.7;">
+    <strong style="color:var(--green-deep);">Natélis en Provence</strong><br>
+    E-mail : {{ shop.email }}<br>
+    Livraison offerte dès 49€ · Satisfait ou remboursé 30 jours
+  </div>
+</div>

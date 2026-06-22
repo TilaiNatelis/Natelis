@@ -1,3 +1,8 @@
+{%- assign col_ventes = section.settings.collection_ventes -%}
+{%- if col_ventes == blank or col_ventes.products.size == 0 -%}{%- assign col_ventes = collections['meilleures-ventes'] -%}{%- endif -%}
+{%- assign col_nouv = section.settings.collection_nouveautes -%}
+{%- if col_nouv == blank or col_nouv.products.size == 0 -%}{%- assign col_nouv = collections['nouveautes'] -%}{%- endif -%}
+
 <div class="nat-wrap" style="padding-top:64px;padding-bottom:12px;" id="NatSel-{{ section.id }}">
   <div class="nat-section-head">
     <h2 class="nat-h2">{{ section.settings.title }}</h2>
@@ -10,12 +15,12 @@
   </div>
 
   <div class="nat-grid-5" data-panel="ventes">
-    {%- for product in section.settings.collection_ventes.products limit: 5 -%}
+    {%- for product in col_ventes.products limit: 5 -%}
       {%- render 'product-card', product: product -%}
     {%- endfor -%}
   </div>
   <div class="nat-grid-5" data-panel="nouv" style="display:none;">
-    {%- for product in section.settings.collection_nouveautes.products limit: 5 -%}
+    {%- for product in col_nouv.products limit: 5 -%}
       {%- render 'product-card', product: product -%}
     {%- endfor -%}
   </div>
