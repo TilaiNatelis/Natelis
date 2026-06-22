@@ -1,4 +1,6 @@
 {%- assign col = section.settings.collection -%}
+{%- if col == blank or col.products.size == 0 -%}{%- assign col = collections['tous-nos-complements'] -%}{%- endif -%}
+{%- if col == blank or col.products.size == 0 -%}{%- assign col = collections.all -%}{%- endif -%}
 <div class="nat-diag">
   <div class="nat-diag__inner" id="NatDiag-{{ section.id }}">
 

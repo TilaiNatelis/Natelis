@@ -1,27 +1,58 @@
+{%- comment -%} Colonnes par défaut si aucun bloc/menu n'est configuré {%- endcomment -%}
+{%- assign has_configured_blocks = false -%}
+{%- for block in section.blocks -%}
+  {%- if block.settings.menu != blank -%}{%- assign has_configured_blocks = true -%}{%- endif -%}
+{%- endfor -%}
+
 <div class="nat-footer">
   <div>
     {%- if section.settings.logo != blank -%}
       <img src="{{ section.settings.logo | image_url: height: 76 }}" alt="{{ shop.name }}" height="38" style="display:block;">
     {%- else -%}
-      <span class="nat-serif" style="font-size:22px;">{{ shop.name }}</span>
+      <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" height="38" style="display:block;">
     {%- endif -%}
     <p class="nat-footer__desc">{{ section.settings.description }}</p>
   </div>
 
-  {%- for block in section.blocks -%}
-    <div {{ block.shopify_attributes }}>
-      <div class="nat-footer__col-title">{{ block.settings.title }}</div>
-      {%- if block.settings.menu != blank -%}
-        {%- for link in linklists[block.settings.menu].links -%}
-          <a class="nat-footer__link" href="{{ link.url }}">{{ link.title }}</a>
-        {%- endfor -%}
-      {%- endif -%}
+  {%- if has_configured_blocks -%}
+    {%- for block in section.blocks -%}
+      <div {{ block.shopify_attributes }}>
+        <div class="nat-footer__col-title">{{ block.settings.title }}</div>
+        {%- if block.settings.menu != blank -%}
+          {%- for link in linklists[block.settings.menu].links -%}
+            <a class="nat-footer__link" href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+        {%- endif -%}
+      </div>
+    {%- endfor -%}
+  {%- else -%}
+    <div>
+      <div class="nat-footer__col-title">Produits</div>
+      <a class="nat-footer__link" href="{{ routes.root_url }}collections/immunite">Immunité</a>
+      <a class="nat-footer__link" href="{{ routes.root_url }}collections/sommeil">Sommeil</a>
+      <a class="nat-footer__link" href="{{ routes.root_url }}collections/stress">Stress</a>
+      <a class="nat-footer__link" href="{{ routes.root_url }}collections/beaute">Beauté</a>
+      <a class="nat-footer__link" href="{{ routes.root_url }}collections/energie">Énergie</a>
     </div>
-  {%- endfor -%}
+    <div>
+      <div class="nat-footer__col-title">La marque</div>
+      <a class="nat-footer__link" href="{{ routes.root_url }}pages/conseils">Nos conseils</a>
+      <a class="nat-footer__link" href="{{ routes.root_url }}pages/diagnostic">Diagnostic</a>
+      <a class="nat-footer__link" href="{{ blogs['carnet-de-la-vigne'].url | default: routes.root_url }}">Le blog</a>
+      <a class="nat-footer__link" href="{{ routes.root_url }}pages/selection-automne">Sélection d'automne</a>
+    </div>
+    <div>
+      <div class="nat-footer__col-title">Aide</div>
+      <a class="nat-footer__link" href="{{ routes.search_url }}">Recherche</a>
+      <a class="nat-footer__link" href="{{ routes.account_url | default: routes.account_login_url }}">Mon compte</a>
+      <a class="nat-footer__link" href="{{ routes.cart_url }}">Mon panier</a>
+      <a class="nat-footer__link" href="{{ routes.all_products_collection_url }}">Tous les produits</a>
+    </div>
+  {%- endif -%}
 </div>
 
 <div class="nat-footer__legal">
-  <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
+  <span>© {{ 'now' | date: '%Y' }} {{ shop.name }} en Provence</span>
   <span>Mentions légales · CGV · Confidentialité</span>
 </div>
 
@@ -42,9 +73,6 @@
         { "type": "link_list", "id": "menu", "label": "Menu" }
       ]
     }
-  ],
-  "presets": [
-    { "name": "Pied de page", "blocks": [ { "type": "column" }, { "type": "column" }, { "type": "column" } ] }
   ]
 }
 {% endschema %}
