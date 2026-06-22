@@ -1,9 +1,9 @@
 <div class="nat-header">
-  <a href="{{ routes.root_url }}">
+  <a href="{{ routes.root_url }}" class="nat-logo-link">
     {%- if section.settings.logo != blank -%}
-      <img class="nat-header__logo" src="{{ section.settings.logo | image_url: height: 96 }}" alt="{{ shop.name }}" height="48">
+      <img class="nat-header__logo" src="{{ section.settings.logo | image_url: height: 132 }}" alt="{{ shop.name }}" height="66">
     {%- else -%}
-      <img class="nat-header__logo" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" height="48">
+      <span class="nat-logo-text">Natélis</span>
     {%- endif -%}
   </a>
 

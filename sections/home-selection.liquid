@@ -1,7 +1,11 @@
 {%- assign col_ventes = section.settings.collection_ventes -%}
 {%- if col_ventes == blank or col_ventes.products.size == 0 -%}{%- assign col_ventes = collections['meilleures-ventes'] -%}{%- endif -%}
+{%- if col_ventes == blank or col_ventes.products.size == 0 -%}{%- assign col_ventes = collections['tous-nos-complements'] -%}{%- endif -%}
+{%- if col_ventes == blank or col_ventes.products.size == 0 -%}{%- assign col_ventes = collections.all -%}{%- endif -%}
 {%- assign col_nouv = section.settings.collection_nouveautes -%}
 {%- if col_nouv == blank or col_nouv.products.size == 0 -%}{%- assign col_nouv = collections['nouveautes'] -%}{%- endif -%}
+{%- if col_nouv == blank or col_nouv.products.size == 0 -%}{%- assign col_nouv = collections['tous-nos-complements'] -%}{%- endif -%}
+{%- if col_nouv == blank or col_nouv.products.size == 0 -%}{%- assign col_nouv = collections.all -%}{%- endif -%}
 
 <div class="nat-wrap" style="padding-top:64px;padding-bottom:12px;" id="NatSel-{{ section.id }}">
   <div class="nat-section-head">

@@ -7,9 +7,9 @@
 <div class="nat-footer">
   <div>
     {%- if section.settings.logo != blank -%}
-      <img src="{{ section.settings.logo | image_url: height: 76 }}" alt="{{ shop.name }}" height="38" style="display:block;">
+      <img src="{{ section.settings.logo | image_url: height: 88 }}" alt="{{ shop.name }}" height="44" style="display:block;">
     {%- else -%}
-      <img src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" height="38" style="display:block;">
+      <span class="nat-logo-text" style="font-size:34px;">Natélis</span>
     {%- endif -%}
     <p class="nat-footer__desc">{{ section.settings.description }}</p>
   </div>

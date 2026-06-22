@@ -1,28 +1,54 @@
 {%- comment -%}
-  Navigation principale + méga-menu.
-  Les entrées du menu "main-menu" ayant des sous-liens affichent un panneau au survol.
-  Styles spéciaux pour "Automne" et "Diagnostic".
+  Navigation principale + méga-menu interactif.
+  - Les entrées avec sous-liens ouvrent un panneau au survol.
+  - Bouton « Voir tout » toujours présent (lien vers l'entrée parente).
+  - Aperçus produits pour l'entrée « Produits ».
 {%- endcomment -%}
 <nav class="nat-nav">
   <div class="nat-nav__list">
     {%- for link in linklists.main-menu.links -%}
       {%- assign t = link.title | downcase -%}
-      {%- if t contains 'automne' -%}
-        {%- assign cls = 'nat-nav__item nat-nav__item--automne' -%}
-      {%- elsif t contains 'diagnostic' -%}
-        {%- assign cls = 'nat-nav__item nat-nav__item--diag' -%}
-      {%- else -%}
-        {%- assign cls = 'nat-nav__item' -%}
-      {%- endif -%}
+      {%- if t contains 'automne' -%}{%- assign cls = 'nat-nav__item nat-nav__item--automne' -%}
+      {%- elsif t contains 'diagnostic' -%}{%- assign cls = 'nat-nav__item nat-nav__item--diag' -%}
+      {%- else -%}{%- assign cls = 'nat-nav__item' -%}{%- endif -%}
 
       {%- if link.links.size > 0 -%}
+        {%- comment -%} collection d'aperçu selon l'entrée {%- endcomment -%}
+        {%- assign preview = blank -%}
+        {%- if t contains 'produit' -%}{%- assign preview = collections['meilleures-ventes'] -%}
+        {%- elsif t contains 'conseil' -%}{%- assign preview = collections['vitalite-immunite'] -%}{%- endif -%}
+        {%- if preview == blank or preview.products.size == 0 -%}{%- assign preview = collections['tous-nos-complements'] -%}{%- endif -%}
+
         <div class="nat-nav__parent">
           <a class="{{ cls }}{% if link.active or link.child_active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }} ▾</a>
           <div class="nat-mega">
-            <div class="nat-mega__grid">
-              {%- for child in link.links -%}
-                <a class="nat-mega__link" href="{{ child.url }}">{{ child.title }}</a>
-              {%- endfor -%}
+            <div class="nat-mega__inner">
+              <div class="nat-mega__links">
+                <div class="nat-mega__col-title">{{ link.title }}</div>
+                {%- for child in link.links -%}
+                  <a class="nat-mega__link" href="{{ child.url }}">{{ child.title }}</a>
+                {%- endfor -%}
+                <a class="nat-mega__all" href="{{ link.url }}">
+                  {%- if t contains 'conseil' -%}Tous nos conseils{%- else -%}Tous les produits{%- endif -%} →
+                </a>
+              </div>
+              {%- if preview != blank and preview.products.size > 0 -%}
+                <div class="nat-mega__preview">
+                  {%- for product in preview.products limit: 3 -%}
+                    <a class="nat-mega__pcard" href="{{ product.url }}">
+                      <div class="nat-mega__pmedia">
+                        {%- if product.featured_image -%}
+                          <img src="{{ product.featured_image | image_url: width: 240 }}" alt="{{ product.title | escape }}" loading="lazy">
+                        {%- else -%}
+                          <span class="nat-mega__pname">{{ product.title }}</span>
+                        {%- endif -%}
+                      </div>
+                      <div class="nat-mega__pname">{{ product.title }}</div>
+                      <div class="nat-mega__pprice">{{ product.price | money }}</div>
+                    </a>
+                  {%- endfor -%}
+                </div>
+              {%- endif -%}
             </div>
           </div>
         </div>

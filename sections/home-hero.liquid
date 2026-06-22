@@ -19,7 +19,7 @@
   {%- endif -%}
 
   <div class="nat-hero__cta">
-    <a class="nat-btn" href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}">{{ section.settings.cta_label }}</a>
+    <a class="nat-btn nat-btn--glass" href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}">{{ section.settings.cta_label }}</a>
   </div>
 
   {%- if slide_count > 1 -%}
