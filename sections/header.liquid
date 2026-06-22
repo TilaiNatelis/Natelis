@@ -3,7 +3,7 @@
     {%- if section.settings.logo != blank -%}
       <img class="nat-header__logo" src="{{ section.settings.logo | image_url: height: 96 }}" alt="{{ shop.name }}" height="48">
     {%- else -%}
-      <span class="nat-serif" style="font-size:26px;color:var(--green-deep);">{{ shop.name }}</span>
+      <img class="nat-header__logo" src="{{ 'logo.png' | asset_url }}" alt="{{ shop.name }}" height="48">
     {%- endif -%}
   </a>
 

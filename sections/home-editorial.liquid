@@ -1,5 +1,6 @@
 <div class="nat-split" style="margin-top:72px;">
-  <div class="nat-split__media" style="background-image:url('{{ section.settings.image | image_url: width: 1200 }}');{% if section.settings.image == blank %}background:var(--beige-gold);{% endif %}"></div>
+  {%- if section.settings.image != blank -%}{%- assign ed_img = section.settings.image | image_url: width: 1200 -%}{%- else -%}{%- assign ed_img = 'prov-lavande.jpg' | asset_url -%}{%- endif -%}
+  <div class="nat-split__media" style="background-image:url('{{ ed_img }}');"></div>
   <div class="nat-split__body">
     <div class="nat-eyebrow">{{ section.settings.eyebrow }}</div>
     <h2 class="nat-split__title">{{ section.settings.title }}</h2>

@@ -1,19 +1,30 @@
+{%- assign hero_defaults = 'hero-1.png,hero-2.png,hero-3.png' | split: ',' -%}
+{%- if section.blocks.size > 0 -%}{%- assign slide_count = section.blocks.size -%}{%- else -%}{%- assign slide_count = 3 -%}{%- endif -%}
+
 <div class="nat-hero" id="NatHero-{{ section.id }}">
-  {%- for block in section.blocks -%}
-    {%- if block.settings.image != blank -%}
-      <img class="nat-hero__slide{% if forloop.first %} is-active{% endif %}" src="{{ block.settings.image | image_url: width: 2000 }}" alt="{{ block.settings.image.alt | escape }}" {{ block.shopify_attributes }}>
-    {%- else -%}
-      <div class="nat-hero__slide{% if forloop.first %} is-active{% endif %}" style="background:var(--pale);"></div>
-    {%- endif -%}
-  {%- endfor -%}
+  {%- if section.blocks.size > 0 -%}
+    {%- for block in section.blocks -%}
+      {%- if block.settings.image != blank -%}
+        {%- assign src = block.settings.image | image_url: width: 2000 -%}
+      {%- else -%}
+        {%- assign def = hero_defaults[forloop.index0] | default: hero_defaults.first -%}
+        {%- assign src = def | asset_url -%}
+      {%- endif -%}
+      <img class="nat-hero__slide{% if forloop.first %} is-active{% endif %}" src="{{ src }}" alt="Natélis en Provence" {{ block.shopify_attributes }}>
+    {%- endfor -%}
+  {%- else -%}
+    {%- for def in hero_defaults -%}
+      <img class="nat-hero__slide{% if forloop.first %} is-active{% endif %}" src="{{ def | asset_url }}" alt="Natélis en Provence — complément alimentaire naturel">
+    {%- endfor -%}
+  {%- endif -%}
 
   <div class="nat-hero__cta">
     <a class="nat-btn" href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}">{{ section.settings.cta_label }}</a>
   </div>
 
-  {%- if section.blocks.size > 1 -%}
+  {%- if slide_count > 1 -%}
     <div class="nat-hero__dots">
-      {%- for block in section.blocks -%}
+      {%- for i in (1..slide_count) -%}
         <span class="nat-dot{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}"></span>
       {%- endfor -%}
     </div>

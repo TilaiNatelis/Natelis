@@ -1,9 +1,11 @@
 <div class="nat-wrap" style="padding-top:76px;padding-bottom:64px;">
   <h2 class="nat-h2" style="margin-bottom:28px;">{{ section.settings.title }}</h2>
+  {%- assign exp_defaults = 'prov-lavande.jpg,prov-calanque.jpg,prov-vignes.jpg,prov-calanque2.jpg' | split: ',' -%}
   <div class="nat-grid-4">
     {%- for block in section.blocks -%}
       <a href="{{ block.settings.link | default: '#' }}" style="display:block;" {{ block.shopify_attributes }}>
-        <div class="nat-exp__media" style="background-image:url('{{ block.settings.image | image_url: width: 600 }}');{% if block.settings.image == blank %}background:var(--pale);{% endif %}"></div>
+        {%- if block.settings.image != blank -%}{%- assign exp_img = block.settings.image | image_url: width: 600 -%}{%- else -%}{%- assign def = exp_defaults[forloop.index0] | default: exp_defaults.first -%}{%- assign exp_img = def | asset_url -%}{%- endif -%}
+        <div class="nat-exp__media" style="background-image:url('{{ exp_img }}');"></div>
         <div class="nat-exp__title">{{ block.settings.title }}</div>
         <div class="nat-exp__text">{{ block.settings.text }}</div>
         {%- if block.settings.cta != blank -%}
