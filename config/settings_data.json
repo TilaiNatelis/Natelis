@@ -1,1 +1,42 @@
-{ "current": { "sections": {} } }
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "current": {
+    "sections": {
+      "announcement-bar": {
+        "type": "announcement-bar",
+        "settings": {
+          "text_left": "Livraison offerte dès 49€",
+          "text_right": "Cure découverte —15% avec le code",
+          "code": "AUTOMNE"
+        }
+      },
+      "header": {
+        "type": "header",
+        "settings": {}
+      },
+      "newsletter": {
+        "type": "newsletter",
+        "settings": {
+          "title": "Recevez nos rituels de saison",
+          "subtitle": "Conseils, nouveautés et —15% sur votre première cure.",
+          "cta": "Je m'inscris"
+        }
+      },
+      "footer": {
+        "type": "footer",
+        "settings": {
+          "description": "Compléments alimentaires d'origine naturelle, formulés en Provence. Le retour à l'état originel de la plante."
+        }
+      }
+    },
+    "content_for_index": []
+  }
+}

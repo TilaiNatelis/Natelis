@@ -1,24 +1,88 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "home-hero",
-      "settings": { "cta_label": "Découvrir nos cures" },
       "blocks": {
-        "s1": { "type": "slide", "settings": {} },
-        "s2": { "type": "slide", "settings": {} },
-        "s3": { "type": "slide", "settings": {} }
+        "slide_GVRzrt": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_26.png"
+          }
+        },
+        "s1": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_30.png"
+          }
+        },
+        "s2": {
+          "type": "slide",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_40.png"
+          }
+        }
       },
-      "block_order": ["s1", "s2", "s3"]
+      "block_order": [
+        "slide_GVRzrt",
+        "s1",
+        "s2"
+      ],
+      "settings": {
+        "cta_label": "Découvrir nos cures",
+        "cta_url": ""
+      }
     },
     "univers": {
       "type": "home-univers",
-      "settings": { "title": "Explorez par univers" },
       "blocks": {
-        "u1": { "type": "univers", "settings": { "collection": "vitalite-immunite", "title": "Vitalité & immunité", "subtitle": "Énergie, défenses naturelles, anti-fatigue" } },
-        "u2": { "type": "univers", "settings": { "collection": "beaute-sommeil", "title": "Beauté & sommeil", "subtitle": "Peau, cheveux et nuits sereines" } },
-        "u3": { "type": "univers", "settings": { "collection": "sport-bien-etre", "title": "Sport & bien-être", "subtitle": "Articulations, récupération, équilibre" } }
+        "u1": {
+          "type": "univers",
+          "settings": {
+            "collection": "vitalite-immunite",
+            "image": "shopify://shop_images/ChatGPT_Image_22_juin_2026_21_33_00.png",
+            "title": "Vitalité & immunité",
+            "subtitle": "Énergie, défenses naturelles, anti-fatigue",
+            "link": ""
+          }
+        },
+        "u2": {
+          "type": "univers",
+          "settings": {
+            "collection": "beaute-sommeil",
+            "image": "shopify://shop_images/ChatGPT_Image_22_juin_2026_21_28_36.png",
+            "title": "Beauté & sommeil",
+            "subtitle": "Peau, cheveux et nuits sereines",
+            "link": ""
+          }
+        },
+        "u3": {
+          "type": "univers",
+          "settings": {
+            "collection": "sport-bien-etre",
+            "image": "shopify://shop_images/ChatGPT_Image_22_juin_2026_21_27_16.png",
+            "title": "Sport & bien-être",
+            "subtitle": "Articulations, récupération, équilibre",
+            "link": ""
+          }
+        }
       },
-      "block_order": ["u1", "u2", "u3"]
+      "block_order": [
+        "u1",
+        "u2",
+        "u3"
+      ],
+      "settings": {
+        "title": "Explorez par univers"
+      }
     },
     "selection": {
       "type": "home-selection",
@@ -34,19 +98,59 @@
         "eyebrow": "La science de la plante",
         "title": "Une nature à l'état brut, distillée avec soin",
         "text": "Né au cœur de la Provence, Natélis restaure le lien entre le corps et la terre. Des actifs purs, traçables et dosés avec exigence — rien de superflu.",
-        "cta_label": "Notre histoire"
+        "cta_label": "Notre histoire",
+        "cta_url": ""
       }
     },
     "experience": {
       "type": "home-experience",
-      "settings": { "title": "L'expérience Natélis" },
       "blocks": {
-        "e1": { "type": "card", "settings": { "title": "La science de la plante", "text": "Née en Provence, des formules naturelles et traçables.", "cta": "Découvrir", "link": "/collections/tous-nos-complements" } },
-        "e2": { "type": "card", "settings": { "title": "Diagnostic personnalisé", "text": "Votre routine de compléments sur-mesure en 2 minutes.", "cta": "Faire le test", "link": "/pages/diagnostic" } },
-        "e3": { "type": "card", "settings": { "title": "Nos terres de Provence", "text": "Des actifs cultivés au plus près de la garrigue.", "cta": "En savoir plus", "link": "/pages/conseils" } },
-        "e4": { "type": "card", "settings": { "title": "Offre de bienvenue", "text": "—15% et la livraison offerte dès 49€ d'achat.", "cta": "J'en profite", "link": "/collections/tous-nos-complements" } }
+        "e1": {
+          "type": "card",
+          "settings": {
+            "title": "La science de la plante",
+            "text": "Née en Provence, des formules naturelles et traçables.",
+            "cta": "Découvrir",
+            "link": "/collections/tous-nos-complements"
+          }
+        },
+        "e2": {
+          "type": "card",
+          "settings": {
+            "title": "Diagnostic personnalisé",
+            "text": "Votre routine de compléments sur-mesure en 2 minutes.",
+            "cta": "Faire le test",
+            "link": "/pages/diagnostic"
+          }
+        },
+        "e3": {
+          "type": "card",
+          "settings": {
+            "title": "Nos terres de Provence",
+            "text": "Des actifs cultivés au plus près de la garrigue.",
+            "cta": "En savoir plus",
+            "link": "/pages/conseils"
+          }
+        },
+        "e4": {
+          "type": "card",
+          "settings": {
+            "title": "Offre de bienvenue",
+            "text": "—15% et la livraison offerte dès 49€ d'achat.",
+            "cta": "J'en profite",
+            "link": "/collections/tous-nos-complements"
+          }
+        }
       },
-      "block_order": ["e1", "e2", "e3", "e4"]
+      "block_order": [
+        "e1",
+        "e2",
+        "e3",
+        "e4"
+      ],
+      "settings": {
+        "title": "L'expérience Natélis"
+      }
     },
     "journal": {
       "type": "home-journal",
@@ -57,5 +161,12 @@
       }
     }
   },
-  "order": ["hero", "univers", "selection", "editorial", "experience", "journal"]
+  "order": [
+    "hero",
+    "univers",
+    "selection",
+    "editorial",
+    "experience",
+    "journal"
+  ]
 }
