@@ -1,0 +1,37 @@
+<div class="nat-header">
+  <a href="{{ routes.root_url }}">
+    {%- if section.settings.logo != blank -%}
+      <img class="nat-header__logo" src="{{ section.settings.logo | image_url: height: 96 }}" alt="{{ shop.name }}" height="48">
+    {%- else -%}
+      <span class="nat-serif" style="font-size:26px;color:var(--green-deep);">{{ shop.name }}</span>
+    {%- endif -%}
+  </a>
+
+  <form action="{{ routes.search_url }}" method="get" role="search" class="nat-search">
+    <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="#9a8b6c" stroke-width="1.7"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+    <input type="search" name="q" placeholder="Rechercher un complément, un objectif…" style="border:none;background:transparent;outline:none;font-size:13.5px;color:#9a8b6c;width:100%;font-family:var(--sans);">
+  </form>
+
+  <div style="flex:1;"></div>
+
+  <div class="nat-header__icons">
+    <a href="{{ routes.account_url | default: routes.account_login_url }}" aria-label="Compte" style="display:flex;">
+      <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="#2e3a22" stroke-width="1.5"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c0-3.7 3.1-6.2 7-6.2s7 2.5 7 6.2"/></svg>
+    </a>
+    <a href="{{ routes.cart_url }}" aria-label="Panier" style="position:relative;display:flex;">
+      <svg viewBox="0 0 24 24" width="23" height="23" fill="none" stroke="#2e3a22" stroke-width="1.5"><path d="M6 8h12l-1 12.5H7L6 8Z"/><path d="M9 8V6.2a3 3 0 0 1 6 0V8"/></svg>
+      <span class="nat-cart-count">{{ cart.item_count }}</span>
+    </a>
+  </div>
+</div>
+
+{% render 'main-nav' %}
+
+{% schema %}
+{
+  "name": "En-tête",
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" }
+  ]
+}
+{% endschema %}

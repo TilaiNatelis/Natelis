@@ -1,0 +1,45 @@
+<div class="nat-wrap" style="padding-top:76px;padding-bottom:64px;">
+  <h2 class="nat-h2" style="margin-bottom:28px;">{{ section.settings.title }}</h2>
+  <div class="nat-grid-4">
+    {%- for block in section.blocks -%}
+      <a href="{{ block.settings.link | default: '#' }}" style="display:block;" {{ block.shopify_attributes }}>
+        <div class="nat-exp__media" style="background-image:url('{{ block.settings.image | image_url: width: 600 }}');{% if block.settings.image == blank %}background:var(--pale);{% endif %}"></div>
+        <div class="nat-exp__title">{{ block.settings.title }}</div>
+        <div class="nat-exp__text">{{ block.settings.text }}</div>
+        {%- if block.settings.cta != blank -%}
+          <span class="nat-btn nat-btn--outline nat-btn--sm" style="margin-top:14px;">{{ block.settings.cta }}</span>
+        {%- endif -%}
+      </a>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Expérience",
+  "max_blocks": 4,
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "L'expérience Natélis" }
+  ],
+  "blocks": [
+    {
+      "type": "card", "name": "Carte",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Titre" },
+        { "type": "textarea", "id": "text", "label": "Texte" },
+        { "type": "text", "id": "cta", "label": "Bouton" },
+        { "type": "url", "id": "link", "label": "Lien" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Expérience", "blocks": [
+      { "type": "card", "settings": { "title": "La science de la plante", "text": "Née en Provence, des formules naturelles et traçables.", "cta": "Découvrir" } },
+      { "type": "card", "settings": { "title": "Diagnostic personnalisé", "text": "Votre routine de compléments sur-mesure en 2 minutes.", "cta": "Faire le test" } },
+      { "type": "card", "settings": { "title": "Nos terres de Provence", "text": "Des actifs cultivés au plus près de la garrigue.", "cta": "En savoir plus" } },
+      { "type": "card", "settings": { "title": "Offre de bienvenue", "text": "—15% et la livraison offerte dès 49€ d'achat.", "cta": "J'en profite" } }
+    ] }
+  ]
+}
+{% endschema %}

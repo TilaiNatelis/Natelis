@@ -1,0 +1,115 @@
+<!-- héros -->
+<div style="background:var(--pale);">
+  <div style="max-width:920px;margin:0 auto;padding:74px 48px 66px;text-align:center;">
+    <div class="nat-eyebrow" style="letter-spacing:.28em;">Le guide Natélis</div>
+    <h1 class="nat-serif" style="font-size:58px;line-height:1.03;margin:18px 0 0;">Bien choisir sa cure, simplement</h1>
+    <p style="font-size:16.5px;line-height:1.7;color:var(--green-text);margin:18px auto 0;max-width:600px;">Pas besoin d'accumuler les compléments. Partez d'un objectif, choisissez les bons actifs, installez un rituel — on vous explique tout.</p>
+  </div>
+</div>
+
+<!-- 3 étapes -->
+<div class="nat-wrap" style="padding-top:74px;padding-bottom:4px;">
+  <div class="nat-grid-3" style="gap:36px;">
+    {%- assign steps_n = '01,02,03' | split: ',' -%}
+    {%- assign steps_t = 'Cibler votre besoin,Choisir les bons actifs,Installer le rituel' | split: ',' -%}
+    {%- assign steps_d = "Immunité, sommeil, stress, beauté… Partez d'un objectif clair plutôt que d'accumuler les compléments.|Privilégiez des formes assimilables et bien dosées. Un actif principal, un ou deux en soutien suffisent.|Une cure se vit sur 1 à 3 mois. Associez la prise à un moment fixe de la journée pour ne rien oublier." | split: '|' -%}
+    {%- for n in steps_n -%}
+      <div style="border-top:2px solid var(--green-deep);padding-top:22px;">
+        <div class="nat-serif" style="font-size:42px;color:var(--sage);line-height:1;">{{ n }}</div>
+        <div style="font-size:20px;font-weight:700;color:var(--green-deep);margin-top:14px;">{{ steps_t[forloop.index0] }}</div>
+        <p style="font-size:14px;line-height:1.65;color:var(--brown);margin:10px 0 0;">{{ steps_d[forloop.index0] }}</p>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+<!-- routine idéale -->
+<div class="nat-wrap" style="padding-top:60px;padding-bottom:60px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:4px;overflow:hidden;box-shadow:0 1px 16px rgba(12,17,14,.07);">
+    <div style="background-image:url('{{ section.settings.image | image_url: width: 1000 }}');{% if section.settings.image == blank %}background:var(--beige-gold);{% endif %}background-size:cover;background-position:center;min-height:460px;"></div>
+    <div style="background:#fff;padding:58px 56px;display:flex;flex-direction:column;justify-content:center;">
+      <div class="nat-eyebrow" style="letter-spacing:.22em;">La routine idéale</div>
+      <h2 class="nat-serif" style="font-size:38px;line-height:1.08;margin:14px 0 24px;">Composer une cure qui vous ressemble</h2>
+      <div style="display:flex;flex-direction:column;gap:15px;">
+        {%- assign checks = "Une cure ciblée sur 1 à 3 mois, plutôt qu'une prise ponctuelle|Le matin pour l'énergie, le soir pour la détente et le sommeil|Trois à quatre compléments complémentaires au maximum|Une pause d'une à deux semaines entre deux cures intensives" | split: '|' -%}
+        {%- for c in checks -%}
+          <div style="display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--olive);">✦</span><span style="font-size:14.5px;color:var(--green-text);line-height:1.5;">{{ c }}</span></div>
+        {%- endfor -%}
+      </div>
+      <a class="nat-btn" style="align-self:flex-start;margin-top:32px;" href="{{ section.settings.diag_url | default: '/pages/diagnostic' }}">Faire mon diagnostic →</a>
+    </div>
+  </div>
+</div>
+
+<!-- conseils par univers -->
+<div class="nat-wrap" style="padding-top:4px;padding-bottom:12px;">
+  <h2 class="nat-h2" style="font-size:34px;margin:0 0 8px;">Nos conseils par univers</h2>
+  <p style="font-size:14.5px;color:var(--brown);margin:0 0 28px;">Trois grandes familles d'objectifs pour vous orienter.</p>
+  <div class="nat-grid-3">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'univers' -%}
+        <a href="{{ block.settings.collection.url | default: '#' }}" style="background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;display:block;" {{ block.shopify_attributes }}>
+          <div style="aspect-ratio:16/10;background-image:url('{{ block.settings.image | image_url: width: 700 }}');{% if block.settings.image == blank %}background:var(--pale);{% endif %}background-size:cover;background-position:center;"></div>
+          <div style="padding:24px 26px 28px;">
+            <div class="nat-serif" style="font-size:26px;">{{ block.settings.title }}</div>
+            <p style="font-size:13.5px;line-height:1.6;color:var(--brown);margin:10px 0 0;">{{ block.settings.text }}</p>
+            <div style="font-size:12.5px;font-weight:700;color:var(--olive);margin-top:16px;">Voir les produits →</div>
+          </div>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+<!-- FAQ -->
+<div style="max-width:900px;margin:0 auto;padding:66px 48px 12px;">
+  <h2 class="nat-h2" style="font-size:34px;margin:0 0 24px;text-align:center;">Questions fréquentes</h2>
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'faq' -%}
+      <details style="border-top:1px solid var(--border);" {{ block.shopify_attributes }}>
+        <summary style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 4px;cursor:pointer;list-style:none;font-size:17px;font-weight:700;color:var(--green-deep);">{{ block.settings.q }}<span style="font-size:24px;color:var(--olive-light);">+</span></summary>
+        <p style="font-size:14.5px;line-height:1.7;color:var(--brown);margin:0;padding:0 4px 24px;max-width:700px;">{{ block.settings.a }}</p>
+      </details>
+    {%- endif -%}
+  {%- endfor -%}
+  <div style="border-top:1px solid var(--border);"></div>
+</div>
+
+{% schema %}
+{
+  "name": "Page Conseils",
+  "settings": [
+    { "type": "image_picker", "id": "image", "label": "Image routine" },
+    { "type": "url", "id": "diag_url", "label": "Lien diagnostic" }
+  ],
+  "blocks": [
+    {
+      "type": "univers", "name": "Carte univers",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Titre" },
+        { "type": "textarea", "id": "text", "label": "Texte" }
+      ]
+    },
+    {
+      "type": "faq", "name": "Question FAQ",
+      "settings": [
+        { "type": "text", "id": "q", "label": "Question" },
+        { "type": "textarea", "id": "a", "label": "Réponse" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Page Conseils", "blocks": [
+      { "type": "univers", "settings": { "title": "Vitalité & immunité", "text": "Vitamine C, D3 et Zinc — le socle pour traverser l'hiver en pleine forme." } },
+      { "type": "univers", "settings": { "title": "Beauté & sommeil", "text": "Collagène, magnésium et mélatonine pour l'éclat et des nuits sereines." } },
+      { "type": "univers", "settings": { "title": "Sport & bien-être", "text": "Oméga 3, curcuma et multivitamines pour la récupération et l'équilibre." } },
+      { "type": "faq", "settings": { "q": "Combien de temps dure une cure ?", "a": "La plupart de nos cures se prennent sur 1 à 3 mois. Les effets s'installent progressivement : comptez 2 à 4 semaines pour les premiers ressentis." } },
+      { "type": "faq", "settings": { "q": "Peut-on associer plusieurs compléments ?", "a": "Oui, à condition de rester cohérent. Un actif principal et un ou deux compléments de soutien suffisent. Notre diagnostic compose pour vous une routine équilibrée." } },
+      { "type": "faq", "settings": { "q": "Faut-il les prendre le matin ou le soir ?", "a": "Les actifs toniques (vitamine C, multivitamines, oméga 3) se prennent plutôt le matin. Magnésium, mélatonine et adaptogènes trouvent leur place le soir." } },
+      { "type": "faq", "settings": { "q": "Vos compléments conviennent-ils à tout le monde ?", "a": "Nos formules sont d'origine naturelle et sans additifs controversés. En cas de grossesse, de traitement médical ou de doute, demandez conseil à un professionnel de santé." } }
+    ] }
+  ]
+}
+{% endschema %}

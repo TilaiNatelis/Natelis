@@ -1,0 +1,63 @@
+<div style="max-width:1200px;margin:0 auto;padding:44px 48px 90px;">
+  <h1 class="nat-serif" style="font-size:46px;margin:0 0 30px;">Votre panier</h1>
+
+  {%- if cart.item_count == 0 -%}
+    <div style="text-align:center;padding:70px 0;border:1px solid var(--border);border-radius:6px;background:#fff;">
+      <div style="font-size:17px;color:var(--brown);">Votre panier est vide.</div>
+      <a class="nat-btn" style="margin-top:22px;" href="{{ routes.all_products_collection_url }}">Découvrir nos cures</a>
+    </div>
+  {%- else -%}
+    {%- form 'cart', cart -%}
+    <div style="display:grid;grid-template-columns:1fr 360px;gap:48px;align-items:start;">
+      <!-- lignes -->
+      <div>
+        {%- for item in cart.items -%}
+          <div style="display:flex;gap:20px;padding:22px 0;border-bottom:1px solid var(--border);">
+            <a href="{{ item.url }}" style="flex:none;width:104px;height:124px;border-radius:3px;overflow:hidden;background:repeating-linear-gradient(135deg,#fff 0 12px,var(--beige) 12px 24px);">
+              {%- if item.image -%}<img src="{{ item.image | image_url: width: 200 }}" alt="" style="width:100%;height:100%;object-fit:cover;">{%- endif -%}
+            </a>
+            <div style="flex:1;display:flex;flex-direction:column;">
+              <div style="display:flex;justify-content:space-between;gap:16px;">
+                <div>
+                  <a href="{{ item.url }}" style="font-size:16px;font-weight:700;color:var(--green-deep);">{{ item.product.title }}</a>
+                  <div style="font-size:13px;color:var(--brown);margin-top:4px;">{{ item.variant.title | remove: 'Default Title' }}</div>
+                </div>
+                <div style="font-size:16px;font-weight:700;color:var(--green-deep);white-space:nowrap;">{{ item.final_line_price | money }}</div>
+              </div>
+              <div style="flex:1;"></div>
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-top:16px;">
+                <div class="nat-qty" style="border-radius:999px;">
+                  <a href="{{ item.url_to_remove }}" style="padding:9px 15px;">−</a>
+                  <span style="padding:0 4px;font-size:14px;font-weight:700;min-width:22px;text-align:center;">{{ item.quantity }}</span>
+                  <a href="{{ routes.cart_change_url }}?line={{ forloop.index }}&quantity={{ item.quantity | plus: 1 }}" style="padding:9px 15px;">+</a>
+                </div>
+                <a href="{{ item.url_to_remove }}" style="font-size:12.5px;color:#9a8b6c;text-decoration:underline;text-underline-offset:3px;">Retirer</a>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+        <a href="{{ routes.all_products_collection_url }}" style="display:inline-block;margin-top:24px;font-size:13px;color:var(--olive);font-weight:700;">← Continuer mes achats</a>
+      </div>
+
+      <!-- récap -->
+      <div style="background:#fff;border:1px solid var(--border);border-radius:6px;padding:28px;">
+        <div class="nat-serif" style="font-size:24px;margin-bottom:18px;">Récapitulatif</div>
+        <div style="display:flex;justify-content:space-between;font-size:14px;color:var(--green-text);margin-bottom:12px;"><span>Sous-total</span><span style="font-weight:700;">{{ cart.total_price | money }}</span></div>
+        {%- assign remaining = 4900 | minus: cart.total_price -%}
+        <div style="background:var(--pale);border-radius:6px;padding:12px 14px;font-size:12.5px;color:var(--green-text);line-height:1.5;">
+          {%- if cart.total_price >= 4900 -%}✦ Votre livraison est offerte.
+          {%- else -%}Plus que {{ remaining | money }} pour bénéficier de la livraison offerte.{%- endif -%}
+        </div>
+        <div style="height:1px;background:var(--border);margin:18px 0;"></div>
+        <div style="display:flex;justify-content:space-between;font-size:18px;color:var(--green-deep);font-weight:700;"><span>Total</span><span>{{ cart.total_price | money }}</span></div>
+        <button type="submit" name="checkout" class="nat-btn" style="display:block;width:100%;margin-top:18px;">Passer la commande</button>
+        <div style="text-align:center;font-size:11.5px;color:#9a8b6c;margin-top:14px;">Paiement sécurisé · Satisfait ou remboursé 30 j</div>
+      </div>
+    </div>
+    {%- endform -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Panier", "settings": [] }
+{% endschema %}

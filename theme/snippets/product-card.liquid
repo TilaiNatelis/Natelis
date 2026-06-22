@@ -1,0 +1,46 @@
+{%- comment -%}
+  Carte produit Natélis.
+  Paramètre : product (objet produit Shopify).
+  Métachamps optionnels :
+    - custom.subtitle (single_line_text)  → sous-titre
+    - custom.rating (number)              → note (ex. 4.8)
+    - custom.rating_count (number)        → nb d'avis
+  Badge : déduit des tags "Best-seller" / "Nouveau".
+{%- endcomment -%}
+{%- assign sub = product.metafields.custom.subtitle | default: product.type -%}
+{%- assign rating = product.metafields.custom.rating -%}
+{%- assign rating_count = product.metafields.custom.rating_count -%}
+{%- assign badge = '' -%}
+{%- if product.tags contains 'Best-seller' -%}{%- assign badge = 'Best-seller' -%}
+{%- elsif product.tags contains 'Nouveau' -%}{%- assign badge = 'Nouveau' -%}{%- endif -%}
+
+<div class="nat-card">
+  <a href="{{ product.url }}" class="nat-card__media">
+    {%- if badge != blank -%}<span class="nat-card__badge">{{ badge }}</span>{%- endif -%}
+    {%- if product.featured_image -%}
+      <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy">
+    {%- else -%}
+      <span class="nat-card__ph">{{ product.title }}</span>
+    {%- endif -%}
+  </a>
+
+  {%- if product.tags.size > 0 -%}
+    <a href="{{ product.url }}" class="nat-card__obj">{{ product.tags | join: ' · ' }}</a>
+  {%- endif -%}
+  <a href="{{ product.url }}" class="nat-card__name">{{ product.title }}</a>
+  {%- if sub != blank -%}<div class="nat-card__sub">{{ sub }}</div>{%- endif -%}
+
+  {%- if rating != blank -%}
+    <div class="nat-card__rating">★★★★★ <span>{{ rating }}{% if rating_count != blank %} · {{ rating_count }} avis{% endif %}</span></div>
+  {%- endif -%}
+
+  <div class="nat-card__row">
+    <span class="nat-card__price">{{ product.price | money }}</span>
+    {%- form 'product', product -%}
+      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+      <button type="submit" class="nat-card__add"{% unless product.available %} disabled{% endunless %}>
+        {%- if product.available -%}Ajouter{%- else -%}Épuisé{%- endif -%}
+      </button>
+    {%- endform -%}
+  </div>
+</div>

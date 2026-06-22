@@ -1,0 +1,99 @@
+{%- assign p = product -%}
+{%- assign sub = p.metafields.custom.subtitle | default: p.type -%}
+{%- assign rating = p.metafields.custom.rating -%}
+{%- assign rating_count = p.metafields.custom.rating_count -%}
+
+<div style="max-width:1300px;margin:0 auto;padding:30px 48px 80px;">
+  <div style="font-size:12.5px;color:#9a8b6c;margin-bottom:26px;">
+    <a href="{{ routes.root_url }}">Accueil</a> ·
+    <a href="{{ routes.all_products_collection_url }}">Produits</a> ·
+    <span style="color:var(--green-deep);">{{ p.title }}</span>
+  </div>
+
+  <div class="nat-pdp">
+    <!-- galerie -->
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="nat-card__media" style="aspect-ratio:1/1;">
+        {%- if p.featured_image -%}
+          <img src="{{ p.featured_image | image_url: width: 1200 }}" alt="{{ p.featured_image.alt | escape }}">
+        {%- else -%}
+          <span class="nat-card__ph">{{ p.title }}</span>
+        {%- endif -%}
+      </div>
+      {%- if p.images.size > 1 -%}
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
+          {%- for image in p.images limit: 4 -%}
+            <div style="aspect-ratio:1/1;border-radius:2px;overflow:hidden;{% if forloop.first %}border:1.5px solid var(--green-deep);{% endif %}">
+              <img src="{{ image | image_url: width: 300 }}" alt="" style="width:100%;height:100%;object-fit:cover;">
+            </div>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- infos -->
+    <div>
+      {%- if p.tags.size > 0 -%}<div class="nat-eyebrow">{{ p.tags | join: ' · ' }}</div>{%- endif -%}
+      <h1 class="nat-pdp__title">{{ p.title }}</h1>
+      {%- if sub != blank -%}<div style="font-size:15px;color:var(--brown);margin-top:8px;">{{ sub }}</div>{%- endif -%}
+      {%- if rating != blank -%}
+        <div style="margin-top:14px;font-size:13px;color:var(--sage);">★★★★★ <span style="color:var(--brown);">{{ rating }}{% if rating_count != blank %} · {{ rating_count }} avis{% endif %}</span></div>
+      {%- endif -%}
+
+      <div class="nat-pdp__price">{{ p.price | money }}</div>
+      {%- if p.selected_or_first_available_variant.title != 'Default Title' -%}
+        <div style="font-size:12.5px;color:#9a8b6c;margin-top:3px;">Soit la cure de {{ p.selected_or_first_available_variant.title }}</div>
+      {%- endif -%}
+
+      <p class="nat-pdp__desc">{{ p.description | strip_html | default: 'Une formule pure et concentrée, pensée pour s’intégrer simplement à votre rituel quotidien. Actifs d’origine naturelle, dosés avec exigence et sans additifs controversés.' }}</p>
+
+      {%- form 'product', p -%}
+        {%- unless p.has_only_default_variant -%}
+          <div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--green-deep);font-weight:700;margin-top:30px;">Format</div>
+          <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
+            {%- for variant in p.variants -%}
+              <label style="font-size:13px;font-weight:600;padding:11px 18px;border-radius:999px;cursor:pointer;border:1.5px solid #DCE2D0;{% if variant == p.selected_or_first_available_variant %}background:var(--green-deep);color:var(--cream);border-color:var(--green-deep);{% endif %}">
+                <input type="radio" name="id" value="{{ variant.id }}" style="display:none;" {% if variant == p.selected_or_first_available_variant %}checked{% endif %} onchange="this.form.submit()">
+                {{ variant.title }}
+              </label>
+            {%- endfor -%}
+          </div>
+        {%- else -%}
+          <input type="hidden" name="id" value="{{ p.selected_or_first_available_variant.id }}">
+        {%- endunless -%}
+
+        <div style="display:flex;align-items:center;gap:16px;margin-top:30px;">
+          <div class="nat-qty">
+            <span onclick="var q=this.parentNode.querySelector('input');q.value=Math.max(1,(+q.value||1)-1);">−</span>
+            <input type="number" name="quantity" value="1" min="1" style="width:46px;text-align:center;border:none;font-size:15px;font-weight:700;font-family:var(--sans);">
+            <span onclick="var q=this.parentNode.querySelector('input');q.value=(+q.value||1)+1;">+</span>
+          </div>
+          <button type="submit" class="nat-btn" style="flex:1;"{% unless p.available %} disabled{% endunless %}>
+            {%- if p.available -%}Ajouter au panier · {{ p.price | money }}{%- else -%}Épuisé{%- endif -%}
+          </button>
+        </div>
+      {%- endform -%}
+
+      {%- assign benefits = p.metafields.custom.benefits.value -%}
+      {%- if benefits -%}
+        <div class="nat-benefits">
+          {%- for b in benefits -%}<div class="nat-benefit"><span>{{ b }}</span></div>{%- endfor -%}
+        </div>
+      {%- endif -%}
+      <div style="font-size:12.5px;color:#9a8b6c;margin-top:24px;line-height:1.6;">Livraison offerte dès 49€ · Fabriqué en France · Sans additifs controversés</div>
+    </div>
+  </div>
+
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div style="margin-top:84px;">
+      <h2 class="nat-serif" style="font-size:32px;margin:0 0 26px;">Vous aimerez aussi</h2>
+      <div class="nat-grid-4">
+        {%- for rec in recommendations.products limit: 4 -%}{%- render 'product-card', product: rec -%}{%- endfor -%}
+      </div>
+    </div>
+  {%- endif -%}
+</div>
+
+{% schema %}
+{ "name": "Produit", "settings": [] }
+{% endschema %}

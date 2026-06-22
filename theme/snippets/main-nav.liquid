@@ -1,0 +1,27 @@
+{%- comment -%}
+  Navigation principale. Branche le menu "main-menu" de Shopify.
+  Les entrées dont le titre contient "Automne" ou "Diagnostic" reçoivent un style spécifique.
+{%- endcomment -%}
+<nav class="nat-nav">
+  <div class="nat-nav__list">
+    {%- for link in linklists.main-menu.links -%}
+      {%- assign t = link.title | downcase -%}
+      {%- if t contains 'automne' -%}
+        {%- assign cls = 'nat-nav__item nat-nav__item--automne' -%}
+      {%- elsif t contains 'diagnostic' -%}
+        {%- assign cls = 'nat-nav__item nat-nav__item--diag' -%}
+      {%- else -%}
+        {%- assign cls = 'nat-nav__item' -%}
+      {%- endif -%}
+      <a class="{{ cls }}{% if link.active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }}</a>
+    {%- else -%}
+      {%- comment -%} Repli si le menu n'est pas encore configuré {%- endcomment -%}
+      <a class="nat-nav__item nat-nav__item--automne" href="{{ routes.root_url }}pages/selection-automne">Sélection d'automne</a>
+      <a class="nat-nav__item" href="{{ routes.all_products_collection_url }}">Nouveautés</a>
+      <a class="nat-nav__item" href="{{ routes.all_products_collection_url }}">Produits</a>
+      <a class="nat-nav__item" href="{{ routes.root_url }}pages/conseils">Conseils</a>
+      <a class="nat-nav__item" href="{{ blogs.first.url | default: routes.root_url }}">Blog</a>
+      <a class="nat-nav__item nat-nav__item--diag" href="{{ routes.root_url }}pages/diagnostic">Diagnostic</a>
+    {%- endfor -%}
+  </div>
+</nav>

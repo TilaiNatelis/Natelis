@@ -1,0 +1,50 @@
+<div class="nat-footer">
+  <div>
+    {%- if section.settings.logo != blank -%}
+      <img src="{{ section.settings.logo | image_url: height: 76 }}" alt="{{ shop.name }}" height="38" style="display:block;">
+    {%- else -%}
+      <span class="nat-serif" style="font-size:22px;">{{ shop.name }}</span>
+    {%- endif -%}
+    <p class="nat-footer__desc">{{ section.settings.description }}</p>
+  </div>
+
+  {%- for block in section.blocks -%}
+    <div {{ block.shopify_attributes }}>
+      <div class="nat-footer__col-title">{{ block.settings.title }}</div>
+      {%- if block.settings.menu != blank -%}
+        {%- for link in linklists[block.settings.menu].links -%}
+          <a class="nat-footer__link" href="{{ link.url }}">{{ link.title }}</a>
+        {%- endfor -%}
+      {%- endif -%}
+    </div>
+  {%- endfor -%}
+</div>
+
+<div class="nat-footer__legal">
+  <span>© {{ 'now' | date: '%Y' }} {{ shop.name }}</span>
+  <span>Mentions légales · CGV · Confidentialité</span>
+</div>
+
+{% schema %}
+{
+  "name": "Pied de page",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "textarea", "id": "description", "label": "Description", "default": "Compléments alimentaires d'origine naturelle, formulés en Provence. Le retour à l'état originel de la plante." }
+  ],
+  "blocks": [
+    {
+      "type": "column",
+      "name": "Colonne de liens",
+      "settings": [
+        { "type": "text", "id": "title", "label": "Titre" },
+        { "type": "link_list", "id": "menu", "label": "Menu" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Pied de page", "blocks": [ { "type": "column" }, { "type": "column" }, { "type": "column" } ] }
+  ]
+}
+{% endschema %}

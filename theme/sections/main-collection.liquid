@@ -1,0 +1,48 @@
+<div class="nat-cat-hero" style="background-image:url('{{ collection.image | image_url: width: 2000 }}');{% if collection.image == blank %}background:var(--beige-gold);{% endif %}">
+  <div class="nat-cat-hero__veil"></div>
+  <div class="nat-cat-hero__body">
+    <div style="font-size:12px;letter-spacing:.1em;opacity:.85;">Accueil · Produits</div>
+    <h1 class="nat-serif" style="font-size:48px;margin:8px 0 0;">{{ collection.title }}</h1>
+    {%- if collection.description != blank -%}
+      <p style="font-size:14px;opacity:.9;margin:8px 0 0;">{{ collection.description | strip_html | truncatewords: 24 }}</p>
+    {%- else -%}
+      <p style="font-size:14px;opacity:.9;margin:8px 0 0;">Des cures naturelles, formulées en Provence.</p>
+    {%- endif -%}
+  </div>
+</div>
+
+<div class="nat-cat-grid">
+  <!-- filtres -->
+  <aside>
+    <div class="nat-filter-title">Objectif</div>
+    <div style="display:flex;flex-direction:column;margin-top:14px;">
+      <a class="nat-filter{% unless collection.current_tags %} is-active{% endunless %}" href="{{ collection.url }}">Tous <span style="color:var(--gold);">{{ collection.all_products_count }}</span></a>
+      {%- for tag in collection.all_tags -%}
+        <a class="nat-filter{% if current_tags contains tag %} is-active{% endif %}" href="{{ collection.url }}/{{ tag | handleize }}">{{ tag }}</a>
+      {%- endfor -%}
+    </div>
+  </aside>
+
+  <!-- grille -->
+  <div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;">
+      <span style="font-size:13.5px;color:var(--brown);">{{ collection.products_count }} produits</span>
+    </div>
+    {%- paginate collection.products by 16 -%}
+      <div class="nat-grid-4" style="gap:28px 24px;">
+        {%- for product in collection.products -%}
+          {%- render 'product-card', product: product -%}
+        {%- else -%}
+          <p>Aucun produit dans cette collection pour le moment.</p>
+        {%- endfor -%}
+      </div>
+      {%- if paginate.pages > 1 -%}
+        <div style="margin-top:40px;text-align:center;">{{ paginate | default_pagination }}</div>
+      {%- endif -%}
+    {%- endpaginate -%}
+  </div>
+</div>
+
+{% schema %}
+{ "name": "Collection", "settings": [] }
+{% endschema %}

@@ -1,0 +1,158 @@
+{%- assign col = section.settings.collection -%}
+<div class="nat-diag">
+  <div class="nat-diag__inner" id="NatDiag-{{ section.id }}">
+
+    <!-- intro -->
+    <div data-step="intro" style="text-align:center;">
+      <div class="nat-eyebrow" style="letter-spacing:.26em;">Diagnostic personnalisé</div>
+      <h1 class="nat-serif" style="font-size:54px;line-height:1.05;margin:16px 0 0;">Trouvez votre cure idéale</h1>
+      <p style="font-size:16px;line-height:1.65;color:var(--green-text);margin:18px auto 0;max-width:480px;">Répondez à 3 questions sur vos besoins et votre mode de vie. Nous composons une routine de compléments sur-mesure, en quelques secondes.</p>
+      <div style="display:flex;justify-content:center;gap:32px;margin:34px 0 38px;">
+        {%- assign labels = 'Objectif,Ressenti,Mode de vie' | split: ',' -%}
+        {%- for l in labels -%}
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
+            <div style="width:42px;height:42px;border-radius:999px;border:1.5px solid var(--sage);color:var(--olive);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;">{{ forloop.index }}</div>
+            <div style="font-size:12px;color:var(--brown-dark);">{{ l }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+      <button class="nat-btn" data-action="start">Commencer le diagnostic</button>
+    </div>
+
+    <!-- question -->
+    <div data-step="question" style="display:none;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+        <span class="nat-eyebrow" data-el="progress"></span>
+        <span data-action="restart" style="font-size:12px;color:#9a8b6c;cursor:pointer;">Recommencer</span>
+      </div>
+      <div class="nat-diag__bar"><span data-el="bar" style="width:0;"></span></div>
+      <h2 class="nat-serif" data-el="question" style="font-size:38px;line-height:1.1;margin:30px 0 26px;"></h2>
+      <div data-el="options" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;"></div>
+    </div>
+
+    <!-- résultat -->
+    <div data-step="result" style="display:none;">
+      <div style="text-align:center;">
+        <div class="nat-eyebrow" style="letter-spacing:.26em;">Votre routine sur-mesure</div>
+        <h1 class="nat-serif" style="font-size:46px;line-height:1.05;margin:14px 0 0;">Recommandé pour : <span data-el="recTitle"></span></h1>
+        <p style="font-size:15px;color:var(--green-text);margin:14px auto 0;max-width:480px;">Voici les compléments les plus adaptés à vos réponses. Composez votre cure ou ajoutez toute la routine en un clic.</p>
+      </div>
+      <div class="nat-grid-4" data-el="recProducts" style="gap:22px;margin:38px 0 0;"></div>
+      <div style="display:flex;justify-content:center;gap:16px;margin-top:40px;flex-wrap:wrap;">
+        <button class="nat-btn" data-action="addRoutine">Ajouter ma routine au panier</button>
+        <button class="nat-btn nat-btn--outline" data-action="restart">Refaire le test</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+(function(){
+  var root = document.getElementById('NatDiag-{{ section.id }}');
+  if(!root) return;
+
+  // Catalogue produit (depuis la collection choisie)
+  var PRODUCTS = [
+    {%- for product in col.products -%}
+    {
+      vid: {{ product.selected_or_first_available_variant.id }},
+      title: {{ product.title | json }},
+      url: {{ product.url | json }},
+      price: {{ product.price | money | json }},
+      img: {{ product.featured_image | image_url: width: 500 | json }},
+      objs: {{ product.tags | json }}
+    }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ];
+
+  var QUESTIONS = [
+    { key:'q1', q:'Quel est votre objectif principal ?', w:2, options:[
+      {label:'Renforcer mon immunité', objs:['Immunité']},
+      {label:'Mieux dormir', objs:['Sommeil']},
+      {label:'Réduire mon stress', objs:['Stress']},
+      {label:'Retrouver de l’énergie', objs:['Énergie']},
+      {label:'Beauté peau & cheveux', objs:['Beauté']},
+      {label:'Confort articulaire', objs:['Articulations']}
+    ]},
+    { key:'q2', q:'Comment vous sentez-vous en ce moment ?', w:1, options:[
+      {label:'Fatigué·e', objs:['Énergie','Immunité']},
+      {label:'Stressé·e / anxieux·se', objs:['Stress']},
+      {label:'Sommeil agité', objs:['Sommeil']},
+      {label:'Peau terne', objs:['Beauté']},
+      {label:'Inconfort digestif', objs:['Digestion']},
+      {label:'Tensions articulaires', objs:['Articulations']}
+    ]},
+    { key:'q3', q:'Votre rythme de vie ?', w:1, options:[
+      {label:'Sportif·ve', objs:['Articulations','Énergie']},
+      {label:'Vie pro intense', objs:['Stress','Énergie']},
+      {label:'Beaucoup d’écrans', objs:['Sommeil']},
+      {label:'Plutôt sédentaire', objs:['Énergie']}
+    ]}
+  ];
+
+  var step = 0, answers = {}, recVids = [];
+  function panel(name){ return root.querySelector('[data-step="'+name+'"]'); }
+  function show(name){ ['intro','question','result'].forEach(function(p){ panel(p).style.display = (p===name)?'':'none'; }); window.scrollTo(0,0); }
+
+  function renderQuestion(){
+    var q = QUESTIONS[step-1];
+    root.querySelector('[data-el="progress"]').textContent = 'Question '+step+' / '+QUESTIONS.length;
+    root.querySelector('[data-el="bar"]').style.width = Math.round((step-1)/QUESTIONS.length*100)+'%';
+    root.querySelector('[data-el="question"]').textContent = q.q;
+    var box = root.querySelector('[data-el="options"]'); box.innerHTML='';
+    q.options.forEach(function(o,i){
+      var b = document.createElement('button');
+      b.className='nat-diag__opt';
+      b.innerHTML = '<span class="bullet"></span>'+o.label;
+      b.addEventListener('click', function(){ answers[q.key]=i; step++; (step>QUESTIONS.length)?finish():renderQuestion(); if(step<=QUESTIONS.length)show('question'); });
+      box.appendChild(b);
+    });
+    show('question');
+  }
+
+  function finish(){
+    var score = {};
+    QUESTIONS.forEach(function(q){ var ai=answers[q.key]; if(ai!=null){ q.options[ai].objs.forEach(function(o){ score[o]=(score[o]||0)+q.w; }); } });
+    var ranked = Object.keys(score).sort(function(a,b){ return score[b]-score[a]; });
+    var top = ranked.slice(0,2);
+    var ids = [];
+    top.forEach(function(o){ PRODUCTS.forEach(function(p){ if(p.objs.indexOf(o)>=0 && ids.indexOf(p.vid)<0) ids.push(p.vid); }); });
+    PRODUCTS.forEach(function(p){ if(ids.indexOf(p.vid)<0) ids.push(p.vid); });
+    recVids = ids.slice(0,4);
+    root.querySelector('[data-el="recTitle"]').textContent = top.length?top.join(' & '):'Vitalité';
+    var grid = root.querySelector('[data-el="recProducts"]'); grid.innerHTML='';
+    recVids.forEach(function(vid){
+      var p = PRODUCTS.filter(function(x){return x.vid===vid;})[0]; if(!p) return;
+      var card = document.createElement('div'); card.className='nat-card';
+      card.innerHTML = '<a href="'+p.url+'" class="nat-card__media">'+(p.img?'<img src="'+p.img+'" alt="">':'<span class="nat-card__ph">'+p.title+'</span>')+'</a>'+
+        '<a href="'+p.url+'" class="nat-card__name">'+p.title+'</a>'+
+        '<div class="nat-card__row"><span class="nat-card__price">'+p.price+'</span></div>';
+      grid.appendChild(card);
+    });
+    show('result');
+  }
+
+  root.addEventListener('click', function(e){
+    var a = e.target.closest('[data-action]'); if(!a) return;
+    var act = a.getAttribute('data-action');
+    if(act==='start'){ step=1; answers={}; renderQuestion(); }
+    if(act==='restart'){ step=0; answers={}; show('intro'); }
+    if(act==='addRoutine'){
+      var items = recVids.map(function(vid){ return {id:vid, quantity:1}; });
+      fetch('/cart/add.js', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({items:items})})
+        .then(function(){ window.location.href='/cart'; });
+    }
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Page Diagnostic",
+  "settings": [
+    { "type": "collection", "id": "collection", "label": "Collection source (produits recommandés)", "info": "Utiliser « Tous nos compléments ». Les tags des produits servent d'objectifs." }
+  ],
+  "presets": [ { "name": "Page Diagnostic" } ]
+}
+{% endschema %}

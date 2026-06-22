@@ -1,0 +1,54 @@
+<div class="nat-hero" id="NatHero-{{ section.id }}">
+  {%- for block in section.blocks -%}
+    {%- if block.settings.image != blank -%}
+      <img class="nat-hero__slide{% if forloop.first %} is-active{% endif %}" src="{{ block.settings.image | image_url: width: 2000 }}" alt="{{ block.settings.image.alt | escape }}" {{ block.shopify_attributes }}>
+    {%- else -%}
+      <div class="nat-hero__slide{% if forloop.first %} is-active{% endif %}" style="background:var(--pale);"></div>
+    {%- endif -%}
+  {%- endfor -%}
+
+  <div class="nat-hero__cta">
+    <a class="nat-btn" href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}">{{ section.settings.cta_label }}</a>
+  </div>
+
+  {%- if section.blocks.size > 1 -%}
+    <div class="nat-hero__dots">
+      {%- for block in section.blocks -%}
+        <span class="nat-dot{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}"></span>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+  (function(){
+    var root = document.getElementById('NatHero-{{ section.id }}');
+    if(!root) return;
+    var slides = root.querySelectorAll('.nat-hero__slide');
+    var dots = root.querySelectorAll('.nat-dot');
+    var i = 0, n = slides.length;
+    function show(k){ i = (k+n)%n;
+      slides.forEach(function(s,j){ s.classList.toggle('is-active', j===i); });
+      dots.forEach(function(d,j){ d.classList.toggle('is-active', j===i); });
+    }
+    dots.forEach(function(d){ d.addEventListener('click', function(){ show(+d.dataset.index); }); });
+    if(n>1) setInterval(function(){ show(i+1); }, 5500);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero accueil",
+  "max_blocks": 5,
+  "settings": [
+    { "type": "text", "id": "cta_label", "label": "Bouton", "default": "Découvrir nos cures" },
+    { "type": "url", "id": "cta_url", "label": "Lien du bouton" }
+  ],
+  "blocks": [
+    { "type": "slide", "name": "Visuel", "settings": [ { "type": "image_picker", "id": "image", "label": "Image" } ] }
+  ],
+  "presets": [
+    { "name": "Hero accueil", "blocks": [ { "type": "slide" }, { "type": "slide" }, { "type": "slide" } ] }
+  ]
+}
+{% endschema %}

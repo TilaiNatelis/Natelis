@@ -1,0 +1,14 @@
+<article style="max-width:760px;margin:0 auto;padding:48px 32px 80px;">
+  <div class="nat-eyebrow">{{ article.tags.first | default: 'Journal' }}</div>
+  <h1 class="nat-serif" style="font-size:46px;line-height:1.07;margin:14px 0 0;">{{ article.title }}</h1>
+  <div style="font-size:13px;color:#9a8b6c;margin-top:12px;">{{ article.published_at | date: '%d %B %Y' }}{% if article.author != blank %} · {{ article.author }}{% endif %}</div>
+  {%- if article.image -%}
+    <img src="{{ article.image | image_url: width: 1400 }}" alt="{{ article.image.alt | escape }}" style="width:100%;border-radius:4px;margin:28px 0;">
+  {%- endif -%}
+  <div class="nat-rte" style="font-size:16px;line-height:1.8;color:var(--brown-dark);">{{ article.content }}</div>
+  <div style="margin-top:40px;"><a class="nat-link" href="{{ blog.url }}">← Tous les articles</a></div>
+</article>
+
+{% schema %}
+{ "name": "Article", "settings": [] }
+{% endschema %}

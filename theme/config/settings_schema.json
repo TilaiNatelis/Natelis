@@ -1,0 +1,17 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Natélis en Provence",
+    "theme_version": "1.0.0",
+    "theme_author": "Natélis",
+    "theme_documentation_url": "https://natelis.com",
+    "theme_support_url": "https://natelis.com"
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      { "type": "header", "content": "Charte Natélis (modifiable dans assets/natelis.css)" },
+      { "type": "paragraph", "content": "Crème #FBF9F6 · Vert profond #2e3a22 · Olive #526F12 · Beige #F4EEE3" }
+    ]
+  }
+]

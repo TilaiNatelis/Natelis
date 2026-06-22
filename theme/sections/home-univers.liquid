@@ -1,0 +1,50 @@
+<div class="nat-wrap" style="padding-top:60px;padding-bottom:8px;">
+  <div class="nat-section-head" style="margin-bottom:26px;">
+    <h2 class="nat-h2">{{ section.settings.title }}</h2>
+    <a class="nat-link" href="{{ routes.all_products_collection_url }}">Tous les produits →</a>
+  </div>
+  <div class="nat-grid-3">
+    {%- for block in section.blocks -%}
+      {%- assign col = block.settings.collection -%}
+      <a class="nat-univers" href="{{ col.url | default: block.settings.link }}" {{ block.shopify_attributes }}>
+        {%- assign img = block.settings.image | default: col.featured_image -%}
+        <div class="nat-univers__img" style="background-image:url('{{ img | image_url: width: 800 }}');"></div>
+        <div class="nat-univers__veil"></div>
+        <div class="nat-univers__body">
+          <div class="nat-univers__title">{{ block.settings.title | default: col.title }}</div>
+          <div class="nat-univers__sub">{{ block.settings.subtitle }}</div>
+          <div class="nat-univers__more">Découvrir →</div>
+        </div>
+      </a>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Univers",
+  "max_blocks": 3,
+  "settings": [
+    { "type": "text", "id": "title", "label": "Titre", "default": "Explorez par univers" }
+  ],
+  "blocks": [
+    {
+      "type": "univers", "name": "Carte univers",
+      "settings": [
+        { "type": "collection", "id": "collection", "label": "Collection" },
+        { "type": "image_picker", "id": "image", "label": "Image (optionnel)" },
+        { "type": "text", "id": "title", "label": "Titre" },
+        { "type": "text", "id": "subtitle", "label": "Sous-titre" },
+        { "type": "url", "id": "link", "label": "Lien (si pas de collection)" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Univers", "blocks": [
+      { "type": "univers", "settings": { "title": "Vitalité & immunité", "subtitle": "Énergie, défenses naturelles, anti-fatigue" } },
+      { "type": "univers", "settings": { "title": "Beauté & sommeil", "subtitle": "Peau, cheveux et nuits sereines" } },
+      { "type": "univers", "settings": { "title": "Sport & bien-être", "subtitle": "Articulations, récupération, équilibre" } }
+    ] }
+  ]
+}
+{% endschema %}

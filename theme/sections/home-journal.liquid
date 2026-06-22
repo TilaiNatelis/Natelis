@@ -1,0 +1,35 @@
+{%- assign blog = blogs[section.settings.blog] -%}
+<div style="background:var(--pale);">
+  <div class="nat-wrap" style="padding-top:76px;padding-bottom:76px;">
+    <div class="nat-section-head">
+      <div>
+        <div class="nat-eyebrow">{{ section.settings.eyebrow }}</div>
+        <h2 class="nat-h2" style="margin-top:10px;">{{ section.settings.title }}</h2>
+      </div>
+      <a class="nat-link" href="{{ blog.url | default: routes.root_url }}">Tous les articles →</a>
+    </div>
+    <div class="nat-grid-3" style="margin-top:32px;">
+      {%- for article in blog.articles limit: 3 -%}
+        <a class="nat-post" href="{{ article.url }}">
+          <div class="nat-post__media" style="background-image:url('{{ article.image | image_url: width: 800 }}');{% if article.image == blank %}background:var(--beige-gold);{% endif %}"></div>
+          <div class="nat-post__meta">{{ article.tags.first | default: 'Journal' }} · {{ article.content | strip_html | truncatewords: 60 | size | divided_by: 200 | at_least: 2 }} min</div>
+          <div class="nat-post__title">{{ article.title }}</div>
+          <div class="nat-post__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 18 }}</div>
+          <div class="nat-post__more">Lire l'article →</div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Journal",
+  "settings": [
+    { "type": "text", "id": "eyebrow", "label": "Sur-titre", "default": "Le journal Natélis" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "À lire en ce moment" },
+    { "type": "blog", "id": "blog", "label": "Blog" }
+  ],
+  "presets": [ { "name": "Journal" } ]
+}
+{% endschema %}

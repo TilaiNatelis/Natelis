@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "hero": { "type": "home-hero" },
+    "univers": { "type": "home-univers" },
+    "selection": { "type": "home-selection" },
+    "editorial": { "type": "home-editorial" },
+    "experience": { "type": "home-experience" },
+    "journal": { "type": "home-journal" }
+  },
+  "order": ["hero", "univers", "selection", "editorial", "experience", "journal"]
+}

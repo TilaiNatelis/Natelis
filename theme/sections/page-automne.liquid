@@ -1,0 +1,48 @@
+{%- assign col = section.settings.collection -%}
+<!-- bannière -->
+<div style="background:var(--beige-gold);color:var(--brown-dark);text-align:center;font-size:12.5px;letter-spacing:.2em;text-transform:uppercase;font-weight:700;padding:11px 16px;">{{ section.settings.banner }}</div>
+
+<!-- visuel -->
+<div class="nat-wrap" style="padding-top:40px;">
+  <div class="nat-eyebrow" style="letter-spacing:.26em;">Sélection d'automne</div>
+  <div style="position:relative;margin-top:18px;border-radius:4px;overflow:hidden;box-shadow:0 2px 26px rgba(12,17,14,.12);">
+    {%- if section.settings.image != blank -%}
+      <img src="{{ section.settings.image | image_url: width: 2000 }}" alt="{{ section.settings.image.alt | escape }}" style="display:block;width:100%;height:560px;object-fit:cover;object-position:center 58%;">
+    {%- else -%}
+      <div style="height:560px;background:var(--pale);"></div>
+    {%- endif -%}
+    <div style="position:absolute;left:0;right:0;bottom:0;height:42%;background:linear-gradient(180deg,rgba(46,58,34,0),rgba(46,58,34,.5));"></div>
+    <div style="position:absolute;left:0;right:0;bottom:0;padding:0 56px 44px;color:var(--cream);">
+      <h1 class="nat-serif" style="font-size:62px;line-height:1;margin:0;max-width:720px;text-shadow:0 1px 18px rgba(12,17,14,.35);">{{ section.settings.title }}</h1>
+    </div>
+  </div>
+  <p style="font-size:16.5px;line-height:1.65;color:var(--green-text);margin:26px auto 0;max-width:620px;text-align:center;">{{ section.settings.intro }}</p>
+</div>
+
+<!-- produits -->
+<div class="nat-wrap" style="padding-top:64px;padding-bottom:16px;">
+  <div class="nat-section-head">
+    <h2 class="nat-h2">Notre sélection de saison</h2>
+    <a class="nat-link" href="{{ col.url | default: routes.all_products_collection_url }}">Tout voir →</a>
+  </div>
+  <p style="font-size:14.5px;color:var(--brown);margin:10px 0 32px;max-width:560px;">Huit compléments pensés pour soutenir l'organisme à l'arrivée du froid.</p>
+  <div class="nat-grid-4" style="gap:28px 24px;">
+    {%- for product in col.products limit: 8 -%}
+      {%- render 'product-card', product: product -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page Sélection d'automne",
+  "settings": [
+    { "type": "text", "id": "banner", "label": "Bannière", "default": "L'automne en Provence · Renforcez vos défenses naturellement" },
+    { "type": "image_picker", "id": "image", "label": "Visuel" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Les cures essentielles de la saison" },
+    { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Quand les jours raccourcissent, le corps a besoin de soutien. Immunité, énergie, sérénité — notre sélection pour traverser l'automne en pleine forme." },
+    { "type": "collection", "id": "collection", "label": "Collection « Sélection d'automne »" }
+  ],
+  "presets": [ { "name": "Page Sélection d'automne" } ]
+}
+{% endschema %}

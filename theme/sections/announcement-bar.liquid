@@ -1,0 +1,18 @@
+<div class="nat-promo">
+  {{ section.settings.text_left }}
+  {%- if section.settings.text_right != blank -%}
+    &nbsp;·&nbsp; <span style="opacity:.85;">{{ section.settings.text_right }}</span>
+    {%- if section.settings.code != blank -%} <strong>{{ section.settings.code }}</strong>{%- endif -%}
+  {%- endif -%}
+</div>
+
+{% schema %}
+{
+  "name": "Bandeau promo",
+  "settings": [
+    { "type": "text", "id": "text_left", "label": "Texte gauche", "default": "Livraison offerte dès 49€" },
+    { "type": "text", "id": "text_right", "label": "Texte droite", "default": "Cure découverte —15% avec le code" },
+    { "type": "text", "id": "code", "label": "Code promo", "default": "AUTOMNE" }
+  ]
+}
+{% endschema %}
