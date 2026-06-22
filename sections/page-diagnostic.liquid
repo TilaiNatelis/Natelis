@@ -1,6 +1,7 @@
 {%- assign col = section.settings.collection -%}
 {%- if col == blank or col.products.size == 0 -%}{%- assign col = collections['tous-nos-complements'] -%}{%- endif -%}
 {%- if col == blank or col.products.size == 0 -%}{%- assign col = collections.all -%}{%- endif -%}
+
 <div class="nat-diag">
   <div class="nat-diag__inner" id="NatDiag-{{ section.id }}">
 
@@ -18,31 +19,38 @@
           </div>
         {%- endfor -%}
       </div>
-      <button class="nat-btn" data-action="start">Commencer le diagnostic</button>
+      <button type="button" class="nat-btn" data-action="start">Commencer le diagnostic</button>
     </div>
 
     <!-- question -->
     <div data-step="question" style="display:none;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
         <span class="nat-eyebrow" data-el="progress"></span>
         <span data-action="restart" style="font-size:12px;color:#9a8b6c;cursor:pointer;">Recommencer</span>
       </div>
       <div class="nat-diag__bar"><span data-el="bar" style="width:0;"></span></div>
-      <h2 class="nat-serif" data-el="question" style="font-size:38px;line-height:1.1;margin:30px 0 26px;"></h2>
+      <div data-el="dots" style="display:flex;gap:6px;margin-top:14px;"></div>
+      <h2 class="nat-serif" data-el="question" style="font-size:38px;line-height:1.1;margin:26px 0 24px;"></h2>
       <div data-el="options" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;"></div>
+      <div style="margin-top:22px;">
+        <button type="button" class="nat-diag__back" data-action="back" style="display:none;background:none;border:none;color:var(--brown);font-size:13.5px;cursor:pointer;font-family:var(--sans);">← Précédent</button>
+      </div>
     </div>
 
     <!-- résultat -->
     <div data-step="result" style="display:none;">
       <div style="text-align:center;">
         <div class="nat-eyebrow" style="letter-spacing:.26em;">Votre routine sur-mesure</div>
-        <h1 class="nat-serif" style="font-size:46px;line-height:1.05;margin:14px 0 0;">Recommandé pour : <span data-el="recTitle"></span></h1>
-        <p style="font-size:15px;color:var(--green-text);margin:14px auto 0;max-width:480px;">Voici les compléments les plus adaptés à vos réponses. Composez votre cure ou ajoutez toute la routine en un clic.</p>
+        <h1 class="nat-serif" style="font-size:46px;line-height:1.05;margin:14px 0 0;">Recommandé pour&nbsp;: <span data-el="recTitle"></span></h1>
+        <p style="font-size:15px;color:var(--green-text);margin:14px auto 0;max-width:520px;">Voici les compléments les plus adaptés à vos réponses. Ajoutez-les à l'unité ou composez toute la routine en un clic.</p>
       </div>
       <div class="nat-grid-4" data-el="recProducts" style="gap:22px;margin:38px 0 0;"></div>
+      <div data-el="recEmpty" style="display:none;text-align:center;margin-top:30px;">
+        <a class="nat-btn" href="{{ routes.all_products_collection_url }}">Voir tous nos compléments</a>
+      </div>
       <div style="display:flex;justify-content:center;gap:16px;margin-top:40px;flex-wrap:wrap;">
-        <button class="nat-btn" data-action="addRoutine">Ajouter ma routine au panier</button>
-        <button class="nat-btn nat-btn--outline" data-action="restart">Refaire le test</button>
+        <button type="button" class="nat-btn" data-action="addRoutine">Ajouter ma routine au panier</button>
+        <button type="button" class="nat-btn nat-btn--outline" data-action="restart">Refaire le test</button>
       </div>
     </div>
 
@@ -54,19 +62,13 @@
   var root = document.getElementById('NatDiag-{{ section.id }}');
   if(!root) return;
 
-  // Catalogue produit (depuis la collection choisie)
+  // Catalogue produit (depuis la collection choisie). Virgule finale tolérée par JS.
   var PRODUCTS = [
     {%- for product in col.products -%}
-    {
-      vid: {{ product.selected_or_first_available_variant.id }},
-      title: {{ product.title | json }},
-      url: {{ product.url | json }},
-      price: {{ product.price | money | json }},
-      img: {{ product.featured_image | image_url: width: 500 | json }},
-      sub: {{ product.metafields.custom.subtitle.value | default: '' | json }},
-      dosage: {{ product.metafields.custom.dosage_text.value | default: '' | json }},
-      objs: {{ product.tags | json }}
-    }{%- unless forloop.last -%},{%- endunless -%}
+      {%- assign vid = product.selected_or_first_available_variant.id | default: product.variants.first.id -%}
+      {%- if vid != blank -%}
+      { vid: {{ vid }}, title: {{ product.title | json }}, url: {{ product.url | json }}, price: {{ product.price | money | json }}, img: {{ product.featured_image | image_url: width: 500 | json }}, sub: {{ product.metafields.custom.subtitle.value | default: '' | json }}, dosage: {{ product.metafields.custom.dosage_text.value | default: '' | json }}, objs: {{ product.tags | json }} },
+      {%- endif -%}
     {%- endfor -%}
   ];
 
@@ -96,67 +98,94 @@
   ];
 
   var step = 0, answers = {}, recVids = [];
+  function $(s){ return root.querySelector(s); }
   function panel(name){ return root.querySelector('[data-step="'+name+'"]'); }
-  function show(name){ ['intro','question','result'].forEach(function(p){ panel(p).style.display = (p===name)?'':'none'; }); window.scrollTo(0,0); }
+  function show(name){ ['intro','question','result'].forEach(function(p){ panel(p).style.display = (p===name)?'':'none'; });
+    try{ root.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ window.scrollTo(0,0); } }
+
+  function renderDots(){
+    var d = $('[data-el="dots"]'); d.innerHTML='';
+    for(var i=0;i<QUESTIONS.length;i++){
+      var s = document.createElement('span');
+      s.style.cssText = 'height:6px;flex:1;border-radius:999px;background:'+((i<step)?'var(--olive)':'#E1E6D7')+';';
+      d.appendChild(s);
+    }
+  }
 
   function renderQuestion(){
     var q = QUESTIONS[step-1];
-    root.querySelector('[data-el="progress"]').textContent = 'Question '+step+' / '+QUESTIONS.length;
-    root.querySelector('[data-el="bar"]').style.width = Math.round((step-1)/QUESTIONS.length*100)+'%';
-    root.querySelector('[data-el="question"]').textContent = q.q;
-    var box = root.querySelector('[data-el="options"]'); box.innerHTML='';
+    $('[data-el="progress"]').textContent = 'Question '+step+' / '+QUESTIONS.length;
+    $('[data-el="bar"]').style.width = Math.round((step-1)/QUESTIONS.length*100)+'%';
+    $('[data-el="question"]').textContent = q.q;
+    renderDots();
+    var box = $('[data-el="options"]'); box.innerHTML='';
     q.options.forEach(function(o,i){
       var b = document.createElement('button');
-      b.className='nat-diag__opt';
+      b.type='button'; b.className='nat-diag__opt';
+      if(answers[q.key]===i) b.className += ' is-selected';
       b.innerHTML = '<span class="bullet"></span>'+o.label;
-      b.addEventListener('click', function(){ answers[q.key]=i; step++; (step>QUESTIONS.length)?finish():renderQuestion(); if(step<=QUESTIONS.length)show('question'); });
+      b.addEventListener('click', function(){
+        answers[q.key]=i;
+        Array.prototype.forEach.call(box.children, function(c){ c.classList.remove('is-selected'); });
+        b.classList.add('is-selected');
+        setTimeout(function(){ step++; (step>QUESTIONS.length) ? finish() : renderQuestion(); }, 240);
+      });
       box.appendChild(b);
     });
+    $('[data-el="bar"]').style.width = Math.round(step/QUESTIONS.length*100)+'%';
+    root.querySelector('[data-action="back"]').style.display = (step>1) ? 'inline-block' : 'none';
     show('question');
   }
 
   function finish(){
     var score = {};
-    QUESTIONS.forEach(function(q){ var ai=answers[q.key]; if(ai!=null){ q.options[ai].objs.forEach(function(o){ score[o]=(score[o]||0)+q.w; }); } });
+    QUESTIONS.forEach(function(q){ var ai=answers[q.key]; if(ai!=null && q.options[ai]){ q.options[ai].objs.forEach(function(o){ score[o]=(score[o]||0)+q.w; }); } });
     var ranked = Object.keys(score).sort(function(a,b){ return score[b]-score[a]; });
     var top = ranked.slice(0,2);
     var ids = [];
     top.forEach(function(o){ PRODUCTS.forEach(function(p){ if(p.objs.indexOf(o)>=0 && ids.indexOf(p.vid)<0) ids.push(p.vid); }); });
     PRODUCTS.forEach(function(p){ if(ids.indexOf(p.vid)<0) ids.push(p.vid); });
     recVids = ids.slice(0,4);
-    root.querySelector('[data-el="recTitle"]').textContent = top.length?top.join(' & '):'Vitalité';
-    var grid = root.querySelector('[data-el="recProducts"]'); grid.innerHTML='';
-    recVids.forEach(function(vid){
-      var p = PRODUCTS.filter(function(x){return x.vid===vid;})[0]; if(!p) return;
-      var card = document.createElement('div'); card.className='nat-card';
-      card.innerHTML = '<a href="'+p.url+'" class="nat-card__media">'+(p.img?'<img src="'+p.img+'" alt="">':'<span class="nat-card__ph">'+p.title+'</span>')+'</a>'+
-        (p.objs && p.objs.length ? '<div class="nat-card__obj">'+p.objs.join(' · ')+'</div>' : '')+
-        '<a href="'+p.url+'" class="nat-card__name">'+p.title+'</a>'+
-        (p.dosage ? '<div class="nat-card__sub">Posologie : '+p.dosage+'</div>' : (p.sub ? '<div class="nat-card__sub">'+p.sub+'</div>' : ''))+
-        '<div class="nat-card__row"><span class="nat-card__price">'+p.price+'</span>'+
-        '<button class="nat-card__add" data-action="addOne" data-vid="'+p.vid+'">Ajouter</button></div>';
-      grid.appendChild(card);
-    });
+    $('[data-el="recTitle"]').textContent = top.length ? top.join(' & ') : 'Vitalité';
+
+    var grid = $('[data-el="recProducts"]'); grid.innerHTML='';
+    if(recVids.length===0){
+      grid.style.display='none';
+      $('[data-el="recEmpty"]').style.display='block';
+    } else {
+      grid.style.display=''; $('[data-el="recEmpty"]').style.display='none';
+      recVids.forEach(function(vid){
+        var p = PRODUCTS.filter(function(x){ return x.vid===vid; })[0]; if(!p) return;
+        var card = document.createElement('div'); card.className='nat-card';
+        card.innerHTML =
+          '<a href="'+p.url+'" class="nat-card__media">'+(p.img ? '<img src="'+p.img+'" alt="">' : '<span class="nat-card__ph">'+p.title+'</span>')+'</a>'+
+          (p.objs && p.objs.length ? '<div class="nat-card__obj">'+p.objs.join(' · ')+'</div>' : '')+
+          '<a href="'+p.url+'" class="nat-card__name">'+p.title+'</a>'+
+          (p.dosage ? '<div class="nat-card__sub">Posologie : '+p.dosage+'</div>' : (p.sub ? '<div class="nat-card__sub">'+p.sub+'</div>' : ''))+
+          '<div class="nat-card__row"><span class="nat-card__price">'+p.price+'</span>'+
+          '<button type="button" class="nat-card__add" data-action="addOne" data-vid="'+p.vid+'">Ajouter</button></div>';
+        grid.appendChild(card);
+      });
+    }
     show('result');
   }
 
-  function addToCart(items, go){
-    return fetch('/cart/add.js', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({items:items})})
-      .then(function(){ if(go){ window.location.href='/cart'; } else { var c=root.querySelector('[data-el="cartcount-flash"]'); } });
+  function addToCart(items, go, btn){
+    if(!items.length) return;
+    fetch('/cart/add.js', {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({items:items})})
+      .then(function(r){ return r.json(); })
+      .then(function(){ if(go){ window.location.href='/cart'; } else if(btn){ btn.textContent='Ajouté ✓'; setTimeout(function(){ btn.textContent='Ajouter'; },1600); } })
+      .catch(function(){ if(btn){ btn.textContent='Réessayer'; } });
   }
 
   root.addEventListener('click', function(e){
     var a = e.target.closest('[data-action]'); if(!a) return;
     var act = a.getAttribute('data-action');
     if(act==='start'){ step=1; answers={}; renderQuestion(); }
-    if(act==='restart'){ step=0; answers={}; show('intro'); }
-    if(act==='addOne'){
-      var vid = parseInt(a.getAttribute('data-vid'),10);
-      addToCart([{id:vid, quantity:1}], false).then(function(){ a.textContent='Ajouté ✓'; setTimeout(function(){ a.textContent='Ajouter'; }, 1600); });
-    }
-    if(act==='addRoutine'){
-      addToCart(recVids.map(function(vid){ return {id:vid, quantity:1}; }), true);
-    }
+    else if(act==='restart'){ step=0; answers={}; show('intro'); }
+    else if(act==='back'){ if(step>1){ step--; renderQuestion(); } }
+    else if(act==='addOne'){ addToCart([{id:parseInt(a.getAttribute('data-vid'),10), quantity:1}], false, a); }
+    else if(act==='addRoutine'){ addToCart(recVids.map(function(v){ return {id:v, quantity:1}; }), true); }
   });
 })();
 </script>
@@ -165,7 +194,7 @@
 {
   "name": "Page Diagnostic",
   "settings": [
-    { "type": "collection", "id": "collection", "label": "Collection source (produits recommandés)", "info": "Utiliser « Tous nos compléments ». Les tags des produits servent d'objectifs." }
+    { "type": "collection", "id": "collection", "label": "Collection source (produits recommandés)", "info": "Par défaut « Tous nos compléments ». Les tags des produits servent d'objectifs." }
   ],
   "presets": [ { "name": "Page Diagnostic" } ]
 }

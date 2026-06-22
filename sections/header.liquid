@@ -1,9 +1,10 @@
 <div class="nat-header">
   <a href="{{ routes.root_url }}" class="nat-logo-link">
+    {%- assign lh = section.settings.logo_height | default: 72 -%}
     {%- if section.settings.logo != blank -%}
-      <img class="nat-header__logo" src="{{ section.settings.logo | image_url: height: 132 }}" alt="{{ shop.name }}" height="66">
+      <img class="nat-header__logo" src="{{ section.settings.logo | image_url: height: 400 }}" alt="{{ shop.name }}" style="height:{{ lh }}px;width:auto;">
     {%- else -%}
-      <span class="nat-logo-text">Natélis</span>
+      <span class="nat-logo-text" style="font-size:{{ lh | times: 0.7 | round }}px;">Natélis</span>
     {%- endif -%}
   </a>
 
@@ -31,7 +32,8 @@
 {
   "name": "En-tête",
   "settings": [
-    { "type": "image_picker", "id": "logo", "label": "Logo" }
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_height", "label": "Hauteur du logo (px)", "min": 32, "max": 140, "step": 2, "unit": "px", "default": 72 }
   ]
 }
 {% endschema %}

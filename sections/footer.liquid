@@ -6,10 +6,11 @@
 
 <div class="nat-footer">
   <div>
+    {%- assign flh = section.settings.logo_height | default: 48 -%}
     {%- if section.settings.logo != blank -%}
-      <img src="{{ section.settings.logo | image_url: height: 88 }}" alt="{{ shop.name }}" height="44" style="display:block;">
+      <img src="{{ section.settings.logo | image_url: height: 300 }}" alt="{{ shop.name }}" style="display:block;height:{{ flh }}px;width:auto;">
     {%- else -%}
-      <span class="nat-logo-text" style="font-size:34px;">Natélis</span>
+      <span class="nat-logo-text" style="font-size:{{ flh | times: 0.7 | round }}px;">Natélis</span>
     {%- endif -%}
     <p class="nat-footer__desc">{{ section.settings.description }}</p>
   </div>
@@ -62,6 +63,7 @@
   "max_blocks": 3,
   "settings": [
     { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_height", "label": "Hauteur du logo (px)", "min": 28, "max": 120, "step": 2, "unit": "px", "default": 48 },
     { "type": "textarea", "id": "description", "label": "Description", "default": "Compléments alimentaires d'origine naturelle, formulés en Provence. Le retour à l'état originel de la plante." }
   ],
   "blocks": [
