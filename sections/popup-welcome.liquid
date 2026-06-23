@@ -1,0 +1,68 @@
+{%- if section.settings.enable -%}
+{%- assign pop_img = section.settings.image -%}
+<div class="nat-pop-overlay" id="NatPop" data-days="{{ section.settings.frequency | default: 7 }}">
+  <div class="nat-pop">
+    <button class="nat-pop__close" id="NatPopClose" aria-label="Fermer">×</button>
+    <div class="nat-pop__img" style="{% if pop_img != blank %}background-image:url('{{ pop_img | image_url: width: 900 }}');{% else %}background:linear-gradient(160deg,var(--pale),var(--beige-gold));{% endif %}"></div>
+    <div class="nat-pop__body">
+      <div class="nat-eyebrow">{{ section.settings.eyebrow }}</div>
+      <h2 class="nat-serif" style="font-size:34px;line-height:1.1;margin:10px 0 0;color:var(--green-deep);">{{ section.settings.title }}</h2>
+      <p style="font-size:14.5px;line-height:1.6;color:var(--brown);margin:12px 0 0;">{{ section.settings.text }}</p>
+      {%- if section.settings.code != blank -%}
+        <div class="nat-pop__code">{{ section.settings.code }}</div>
+      {%- endif -%}
+      {%- form 'customer' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter, popup-bienvenue">
+        <div class="nat-pop__form">
+          <input type="email" name="contact[email]" placeholder="Votre adresse e-mail" required>
+          <button type="submit" class="nat-btn">{{ section.settings.cta }}</button>
+        </div>
+        {%- if form.posted_successfully? -%}
+          <p style="font-size:13px;color:var(--olive);margin-top:10px;">Merci ! Votre code est à vous. ✦</p>
+        {%- endif -%}
+      {%- endform -%}
+      <button type="button" class="nat-pop__decline" id="NatPopDecline" style="background:none;border:none;color:#9a8b6c;font-size:12.5px;margin-top:14px;cursor:pointer;text-decoration:underline;text-underline-offset:3px;font-family:var(--sans);">Non merci, peut-être plus tard</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var KEY = 'natelis_popup_seen';
+    var pop = document.getElementById('NatPop');
+    if(!pop) return;
+    var days = parseInt(pop.getAttribute('data-days'),10) || 7;
+    function seenRecently(){
+      try{ var t = parseInt(localStorage.getItem(KEY),10);
+        return t && (Date.now() - t) < days*86400000; }catch(e){ return false; }
+    }
+    function close(){ pop.classList.remove('is-open'); try{ localStorage.setItem(KEY, Date.now()); }catch(e){} }
+    {%- if request.design_mode -%}
+      pop.classList.add('is-open'); // toujours visible dans l'éditeur
+    {%- else -%}
+      if(!seenRecently()){ setTimeout(function(){ pop.classList.add('is-open'); }, {{ section.settings.delay | default: 1200 }}); }
+    {%- endif -%}
+    document.getElementById('NatPopClose').addEventListener('click', close);
+    document.getElementById('NatPopDecline').addEventListener('click', close);
+    pop.addEventListener('click', function(e){ if(e.target === pop) close(); });
+    document.addEventListener('keydown', function(e){ if(e.key === 'Escape') close(); });
+  })();
+</script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Pop-up bienvenue",
+  "settings": [
+    { "type": "checkbox", "id": "enable", "label": "Activer la pop-up", "default": true },
+    { "type": "image_picker", "id": "image", "label": "Image" },
+    { "type": "text", "id": "eyebrow", "label": "Sur-titre", "default": "Offre de bienvenue" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "—15% sur votre première cure" },
+    { "type": "textarea", "id": "text", "label": "Texte", "default": "Inscrivez-vous à la lettre Natélis et profitez de —15% sur votre première commande, plus nos rituels de saison." },
+    { "type": "text", "id": "code", "label": "Code promo affiché", "default": "AUTOMNE" },
+    { "type": "text", "id": "cta", "label": "Bouton", "default": "J'en profite" },
+    { "type": "range", "id": "delay", "label": "Délai d'apparition (ms)", "min": 0, "max": 6000, "step": 200, "unit": "ms", "default": 1200 },
+    { "type": "range", "id": "frequency", "label": "Ne pas réafficher avant (jours)", "min": 0, "max": 30, "step": 1, "unit": "j", "default": 7 }
+  ]
+}
+{% endschema %}

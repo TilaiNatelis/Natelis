@@ -15,9 +15,10 @@
       {%- if link.links.size > 0 -%}
         {%- comment -%} collection d'aperçu selon l'entrée {%- endcomment -%}
         {%- assign preview = blank -%}
-        {%- if t contains 'produit' -%}{%- assign preview = collections['meilleures-ventes'] -%}
-        {%- elsif t contains 'conseil' -%}{%- assign preview = collections['vitalite-immunite'] -%}{%- endif -%}
-        {%- if preview == blank or preview.products.size == 0 -%}{%- assign preview = collections['tous-nos-complements'] -%}{%- endif -%}
+        {%- if t contains 'produit' -%}
+          {%- assign preview = collections['meilleures-ventes'] -%}
+          {%- if preview == blank or preview.products.size == 0 -%}{%- assign preview = collections['tous-nos-complements'] -%}{%- endif -%}
+        {%- endif -%}
 
         <div class="nat-nav__parent">
           <a class="{{ cls }}{% if link.active or link.child_active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }} ▾</a>

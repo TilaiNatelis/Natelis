@@ -18,15 +18,24 @@
     <button class="nat-tab" data-tab="nouv">Nouveautés</button>
   </div>
 
-  <div class="nat-grid-5" data-panel="ventes">
-    {%- for product in col_ventes.products limit: 5 -%}
-      {%- render 'product-card', product: product -%}
-    {%- endfor -%}
+  <div class="nat-slider-wrap" data-panel="ventes">
+    <button class="nat-slider-arrow nat-slider-arrow--prev" data-dir="-1" aria-label="Précédent">‹</button>
+    <div class="nat-slider">
+      {%- for product in col_ventes.products limit: 12 -%}
+        {%- render 'product-card', product: product -%}
+      {%- endfor -%}
+    </div>
+    <button class="nat-slider-arrow nat-slider-arrow--next" data-dir="1" aria-label="Suivant">›</button>
   </div>
-  <div class="nat-grid-5" data-panel="nouv" style="display:none;">
-    {%- for product in col_nouv.products limit: 5 -%}
-      {%- render 'product-card', product: product -%}
-    {%- endfor -%}
+
+  <div class="nat-slider-wrap" data-panel="nouv" style="display:none;">
+    <button class="nat-slider-arrow nat-slider-arrow--prev" data-dir="-1" aria-label="Précédent">‹</button>
+    <div class="nat-slider">
+      {%- for product in col_nouv.products limit: 12 -%}
+        {%- render 'product-card', product: product -%}
+      {%- endfor -%}
+    </div>
+    <button class="nat-slider-arrow nat-slider-arrow--next" data-dir="1" aria-label="Suivant">›</button>
   </div>
 </div>
 
@@ -34,6 +43,7 @@
   (function(){
     var root = document.getElementById('NatSel-{{ section.id }}');
     if(!root) return;
+    // onglets
     root.querySelectorAll('.nat-tab').forEach(function(tab){
       tab.addEventListener('click', function(){
         root.querySelectorAll('.nat-tab').forEach(function(t){ t.classList.remove('is-active'); });
@@ -41,6 +51,13 @@
         root.querySelectorAll('[data-panel]').forEach(function(p){
           p.style.display = (p.dataset.panel === tab.dataset.tab) ? '' : 'none';
         });
+      });
+    });
+    // flèches de slider
+    root.querySelectorAll('.nat-slider-arrow').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var slider = btn.parentNode.querySelector('.nat-slider');
+        if(slider) slider.scrollBy({ left: (btn.dataset.dir|0) * Math.round(slider.clientWidth * 0.8), behavior:'smooth' });
       });
     });
   })();

@@ -18,7 +18,10 @@
   <a href="{{ product.url }}" class="nat-card__media">
     {%- if badge != blank -%}<span class="nat-card__badge">{{ badge }}</span>{%- endif -%}
     {%- if product.featured_image -%}
-      <img src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy">
+      <img class="nat-card__img nat-card__img--1" src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy">
+      {%- if product.images[1] -%}
+        <img class="nat-card__img nat-card__img--2" src="{{ product.images[1] | image_url: width: 600 }}" alt="" loading="lazy">
+      {%- endif -%}
     {%- else -%}
       <span class="nat-card__ph">{{ product.title }}</span>
     {%- endif -%}

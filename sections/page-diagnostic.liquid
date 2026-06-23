@@ -57,6 +57,24 @@
   </div>
 </div>
 
+<!-- Composer une cure qui vous ressemble -->
+<div class="nat-wrap" style="padding-top:64px;padding-bottom:20px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:10px;overflow:hidden;box-shadow:0 1px 16px rgba(12,17,14,.07);">
+    {%- if section.settings.routine_image != blank -%}{%- assign rimg = section.settings.routine_image | image_url: width: 1000 -%}{%- else -%}{%- assign rimg = 'prov-lavande.jpg' | asset_url -%}{%- endif -%}
+    <div style="background-image:url('{{ rimg }}');background-size:cover;background-position:center;min-height:420px;"></div>
+    <div style="background:#fff;padding:52px 48px;display:flex;flex-direction:column;justify-content:center;">
+      <div class="nat-eyebrow" style="letter-spacing:.22em;">La routine idéale</div>
+      <h2 class="nat-serif" style="font-size:36px;line-height:1.08;margin:12px 0 22px;">Composer une cure qui vous ressemble</h2>
+      <div style="display:flex;flex-direction:column;gap:14px;">
+        {%- assign checks = "Une cure ciblée sur 1 à 3 mois, plutôt qu'une prise ponctuelle|Le matin pour l'énergie, le soir pour la détente et le sommeil|Trois à quatre compléments complémentaires au maximum|Une pause d'une à deux semaines entre deux cures intensives" | split: '|' -%}
+        {%- for c in checks -%}
+          <div style="display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--olive);font-size:15px;">✦</span><span style="font-size:14.5px;color:var(--green-text);line-height:1.5;">{{ c }}</span></div>
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   var root = document.getElementById('NatDiag-{{ section.id }}');
@@ -194,7 +212,8 @@
 {
   "name": "Page Diagnostic",
   "settings": [
-    { "type": "collection", "id": "collection", "label": "Collection source (produits recommandés)", "info": "Par défaut « Tous nos compléments ». Les tags des produits servent d'objectifs." }
+    { "type": "collection", "id": "collection", "label": "Collection source (produits recommandés)", "info": "Par défaut « Tous nos compléments ». Les tags des produits servent d'objectifs." },
+    { "type": "image_picker", "id": "routine_image", "label": "Image « Composer une cure »" }
   ],
   "presets": [ { "name": "Page Diagnostic" } ]
 }
