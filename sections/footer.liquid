@@ -38,6 +38,7 @@
     <div>
       <div class="nat-footer__col-title">La marque</div>
       <a class="nat-footer__link" href="{{ routes.root_url }}pages/notre-histoire">Notre histoire</a>
+      <a class="nat-footer__link" href="{{ routes.root_url }}pages/nos-engagements">Nos engagements</a>
       <a class="nat-footer__link" href="{{ routes.root_url }}pages/complements-alimentaires-provence">Compléments alimentaires en Provence</a>
       <a class="nat-footer__link" href="{{ routes.root_url }}pages/conseils">Nos conseils</a>
       <a class="nat-footer__link" href="{{ routes.root_url }}pages/diagnostic">Diagnostic</a>
@@ -56,7 +57,11 @@
 
 <div class="nat-footer__legal">
   <span>© {{ 'now' | date: '%Y' }} {{ shop.name }} en Provence</span>
-  <span>Mentions légales · CGV · Confidentialité</span>
+  <span>
+    <a href="{{ routes.root_url }}pages/mentions-legales">Mentions légales</a> ·
+    <a href="{{ routes.root_url }}pages/cgv">CGV</a> ·
+    <a href="{{ routes.root_url }}pages/politique-confidentialite">Confidentialité</a>
+  </span>
 </div>
 
 {% schema %}
