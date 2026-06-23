@@ -21,8 +21,8 @@
       "header": {
         "type": "header",
         "settings": {
-          "logo": "shopify://shop_images/Aa_7.png",
-          "logo_height": 80
+          "logo": "shopify://shop_images/Aa_7_7ada689e-2be8-4c21-bcf0-184841f849af.png",
+          "logo_height": 48
         }
       },
       "newsletter": {
@@ -39,6 +39,19 @@
           "logo": "shopify://shop_images/Aa_7.png",
           "logo_height": 76,
           "description": "Compléments alimentaires d'origine naturelle, formulés en Provence. Le retour à l'état originel de la plante."
+        }
+      },
+      "popup-welcome": {
+        "type": "popup-welcome",
+        "settings": {
+          "enable": true,
+          "eyebrow": "Offre de bienvenue",
+          "title": "—15% sur votre première cure",
+          "text": "Inscrivez-vous à la lettre Natélis et profitez de —15% sur votre première commande, plus nos rituels de saison.",
+          "code": "AUTOMNE",
+          "cta": "J'en profite",
+          "delay": 1200,
+          "frequency": 7
         }
       }
     },
