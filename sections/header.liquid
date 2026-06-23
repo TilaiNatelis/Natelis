@@ -1,4 +1,7 @@
 <div class="nat-header">
+  <button type="button" class="nat-burger" id="NatBurger" aria-label="Menu" aria-expanded="false">
+    <span></span><span></span><span></span>
+  </button>
   <a href="{{ routes.root_url }}" class="nat-logo-link">
     {%- assign lh = section.settings.logo_height | default: 72 -%}
     {%- if section.settings.logo != blank -%}

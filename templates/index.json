@@ -41,16 +41,6 @@
         "cta_url": ""
       }
     },
-    "reassurance": {
-      "type": "reassurance",
-      "blocks": {
-        "r1": { "type": "item", "settings": { "icon": "🚚", "title": "Livraison offerte", "text": "Dès 49€ d'achat" } },
-        "r2": { "type": "item", "settings": { "icon": "🌿", "title": "Fabriqué en France", "text": "Formulé en Provence" } },
-        "r3": { "type": "item", "settings": { "icon": "🔒", "title": "Paiement sécurisé", "text": "CB · Apple Pay · PayPal" } },
-        "r4": { "type": "item", "settings": { "icon": "↩️", "title": "Satisfait ou remboursé", "text": "30 jours" } }
-      },
-      "block_order": ["r1", "r2", "r3", "r4"]
-    },
     "univers": {
       "type": "home-univers",
       "blocks": {
@@ -173,7 +163,6 @@
   },
   "order": [
     "hero",
-    "reassurance",
     "univers",
     "selection",
     "editorial",

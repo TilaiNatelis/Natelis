@@ -49,3 +49,45 @@
     {%- endfor -%}
   </div>
 </nav>
+
+{%- comment -%} ---------- Navigation mobile (tiroir) ---------- {%- endcomment -%}
+<div class="nat-mnav-overlay" id="NatMnavOverlay"></div>
+<aside class="nat-mnav" id="NatMnav" aria-hidden="true">
+  <div class="nat-mnav__head">
+    <span class="nat-logo-text" style="font-size:26px;">Natélis</span>
+    <button type="button" class="nat-mnav__close" id="NatMnavClose" aria-label="Fermer">×</button>
+  </div>
+  <nav class="nat-mnav__list">
+    {%- for link in linklists.main-menu.links -%}
+      {%- if link.links.size > 0 -%}
+        <details class="nat-mnav__group">
+          <summary>{{ link.title }}</summary>
+          <a class="nat-mnav__sub nat-mnav__sub--all" href="{{ link.url }}">Tout voir →</a>
+          {%- for child in link.links -%}
+            <a class="nat-mnav__sub" href="{{ child.url }}">{{ child.title }}</a>
+          {%- endfor -%}
+        </details>
+      {%- else -%}
+        <a class="nat-mnav__link" href="{{ link.url }}">{{ link.title }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+    <a class="nat-mnav__link" href="{{ routes.search_url }}">Rechercher</a>
+    <a class="nat-mnav__link" href="{{ routes.account_url | default: routes.account_login_url }}">Mon compte</a>
+  </nav>
+</aside>
+
+<script>
+  (function(){
+    var b = document.getElementById('NatBurger');
+    var m = document.getElementById('NatMnav');
+    var o = document.getElementById('NatMnavOverlay');
+    var c = document.getElementById('NatMnavClose');
+    if(!b || !m) return;
+    function open(){ m.classList.add('is-open'); o.classList.add('is-open'); b.setAttribute('aria-expanded','true'); m.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+    function close(){ m.classList.remove('is-open'); o.classList.remove('is-open'); b.setAttribute('aria-expanded','false'); m.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+    b.addEventListener('click', open);
+    c.addEventListener('click', close);
+    o.addEventListener('click', close);
+    document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+  })();
+</script>
