@@ -82,6 +82,21 @@
         </div>
       {%- endif -%}
       <div style="font-size:12.5px;color:#9a8b6c;margin-top:24px;line-height:1.6;">Livraison offerte dès 49€ · Fabriqué en France · Sans additifs controversés</div>
+
+      {%- comment -%} Accordéon : composition, conseils, allergènes, FAQ (métachamps) {%- endcomment -%}
+      <div class="nat-acc" style="margin-top:30px;">
+        {%- assign composition = p.metafields.custom.composition -%}
+        {%- assign usage = p.metafields.custom.usage -%}
+        {%- assign allergens = p.metafields.custom.allergens -%}
+        {%- assign faq = p.metafields.custom.faq -%}
+        {%- if composition != blank -%}<details class="nat-acc__item"><summary>Composition</summary><div class="nat-acc__body">{{ composition }}</div></details>{%- endif -%}
+        {%- if usage != blank -%}<details class="nat-acc__item"><summary>Conseils d'utilisation</summary><div class="nat-acc__body">{{ usage }}</div></details>{%- endif -%}
+        {%- if allergens != blank -%}<details class="nat-acc__item"><summary>Allergènes</summary><div class="nat-acc__body">{{ allergens }}</div></details>{%- endif -%}
+        {%- if faq != blank -%}<details class="nat-acc__item"><summary>Questions fréquentes</summary><div class="nat-acc__body">{{ faq }}</div></details>{%- endif -%}
+        <details class="nat-acc__item"><summary>Précautions d'emploi</summary><div class="nat-acc__body">
+          <p>Complément alimentaire. Ne se substitue pas à une alimentation variée et équilibrée ni à un mode de vie sain. Ne pas dépasser la dose journalière recommandée. Tenir hors de portée des enfants. Déconseillé aux femmes enceintes ou allaitantes sans avis médical. En cas de traitement, demandez conseil à un professionnel de santé.</p>
+        </div></details>
+      </div>
     </div>
   </div>
 

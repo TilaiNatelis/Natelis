@@ -1,0 +1,109 @@
+{%- comment -%} Mini-panier latéral (drawer) avec ajout AJAX, sans quitter la page. {%- endcomment -%}
+<div class="nat-drawer-overlay" id="NatDrawerOverlay"></div>
+<aside class="nat-drawer" id="NatDrawer" aria-hidden="true" aria-label="Panier">
+  <div class="nat-drawer__head">
+    <span class="nat-serif" style="font-size:24px;">Votre panier</span>
+    <button type="button" class="nat-drawer__close" id="NatDrawerClose" aria-label="Fermer">×</button>
+  </div>
+  <div class="nat-drawer__ship" id="NatDrawerShip"></div>
+  <div class="nat-drawer__body" id="NatDrawerBody"></div>
+  <div class="nat-drawer__foot" id="NatDrawerFoot" style="display:none;">
+    <div class="nat-drawer__subtotal"><span>Sous-total</span><span id="NatDrawerSubtotal"></span></div>
+    <a href="{{ routes.cart_url }}/checkout" class="nat-btn" style="display:block;text-align:center;width:100%;margin-top:12px;">Commander</a>
+    <button type="button" class="nat-btn nat-btn--outline" id="NatDrawerContinue" style="width:100%;margin-top:10px;">Continuer mes achats</button>
+    <a href="{{ routes.cart_url }}" class="nat-drawer__viewcart">Voir le panier</a>
+  </div>
+</aside>
+
+<script>
+(function(){
+  var FREE = 4900; // seuil livraison offerte (49€ en centimes)
+  var overlay = document.getElementById('NatDrawerOverlay');
+  var drawer  = document.getElementById('NatDrawer');
+  if(!drawer) return;
+  var body = document.getElementById('NatDrawerBody');
+  var foot = document.getElementById('NatDrawerFoot');
+
+  function eur(c){ return (c/100).toFixed(2).replace('.', ',') + ' €'; }
+  function open(){ overlay.classList.add('is-open'); drawer.classList.add('is-open'); drawer.setAttribute('aria-hidden','false'); document.body.style.overflow='hidden'; }
+  function close(){ overlay.classList.remove('is-open'); drawer.classList.remove('is-open'); drawer.setAttribute('aria-hidden','true'); document.body.style.overflow=''; }
+
+  function counts(c){ document.querySelectorAll('.nat-cart-count').forEach(function(el){ el.textContent = c.item_count; }); }
+
+  function shipBar(total){
+    var el = document.getElementById('NatDrawerShip');
+    if(total >= FREE){ el.innerHTML = '<div class="nat-drawer__shipmsg">✦ Votre livraison est offerte.</div>'; }
+    else {
+      var pct = Math.min(100, Math.round(total/FREE*100));
+      el.innerHTML = '<div class="nat-drawer__shipmsg">Plus que <strong>'+eur(FREE-total)+'</strong> pour la livraison offerte</div><div class="nat-drawer__bar"><span style="width:'+pct+'%"></span></div>';
+    }
+  }
+
+  function render(c){
+    counts(c); shipBar(c.total_price);
+    if(c.item_count === 0){
+      body.innerHTML = '<div class="nat-drawer__empty">Votre panier est vide.<br><a href="{{ routes.all_products_collection_url }}">Découvrir nos cures</a></div>';
+      foot.style.display='none'; return;
+    }
+    foot.style.display='';
+    document.getElementById('NatDrawerSubtotal').textContent = eur(c.total_price);
+    var html = '';
+    c.items.forEach(function(it, i){
+      html += '<div class="nat-dline">'+
+        '<a href="'+it.url+'" class="nat-dline__media">'+(it.image?'<img src="'+it.image+'" alt="">':'')+'</a>'+
+        '<div class="nat-dline__info">'+
+          '<a href="'+it.url+'" class="nat-dline__name">'+it.product_title+'</a>'+
+          (it.variant_title && it.variant_title.indexOf('Default')<0 ? '<div class="nat-dline__opt">'+it.variant_title+'</div>' : '')+
+          '<div class="nat-dline__bottom">'+
+            '<div class="nat-dqty">'+
+              '<button type="button" data-line="'+(i+1)+'" data-qty="'+(it.quantity-1)+'">−</button>'+
+              '<span>'+it.quantity+'</span>'+
+              '<button type="button" data-line="'+(i+1)+'" data-qty="'+(it.quantity+1)+'">+</button>'+
+            '</div>'+
+            '<span class="nat-dline__price">'+eur(it.final_line_price)+'</span>'+
+          '</div>'+
+        '</div>'+
+        '<button type="button" class="nat-dline__remove" data-line="'+(i+1)+'" data-qty="0" aria-label="Retirer">×</button>'+
+      '</div>';
+    });
+    body.innerHTML = html;
+  }
+
+  function getCart(){ return fetch('{{ routes.cart_url }}.js',{headers:{'Accept':'application/json'}}).then(function(r){return r.json();}); }
+  function change(line, qty){
+    fetch('{{ routes.cart_url }}/change.js',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({line:line,quantity:qty})})
+      .then(function(r){return r.json();}).then(render);
+  }
+
+  // ouvrir le panier au clic sur l'icône panier de l'en-tête
+  document.querySelectorAll('a[href$="/cart"], a[href="{{ routes.cart_url }}"]').forEach(function(a){
+    if(a.closest('.nat-drawer')) return;
+    a.addEventListener('click', function(e){ if(window.innerWidth>600){ e.preventDefault(); getCart().then(function(c){ render(c); open(); }); } });
+  });
+
+  // ajout AJAX
+  document.addEventListener('submit', function(e){
+    var form = e.target; if(!form.getAttribute) return;
+    if((form.getAttribute('action')||'').indexOf('/cart/add') === -1) return;
+    e.preventDefault();
+    var btn = form.querySelector('[type="submit"]'); var lbl = btn?btn.innerHTML:'';
+    if(btn){ btn.disabled=true; btn.innerHTML='…'; }
+    fetch('{{ routes.cart_url }}/add.js',{method:'POST',body:new FormData(form),headers:{'X-Requested-With':'XMLHttpRequest'}})
+      .then(function(r){return r.json();})
+      .then(function(){ return getCart(); })
+      .then(function(c){ render(c); open(); })
+      .catch(function(){ window.location.href='{{ routes.cart_url }}'; })
+      .then(function(){ if(btn){ btn.disabled=false; btn.innerHTML=lbl; } });
+  });
+
+  body.addEventListener('click', function(e){
+    var b = e.target.closest('[data-line]'); if(!b) return;
+    change(parseInt(b.getAttribute('data-line'),10), parseInt(b.getAttribute('data-qty'),10));
+  });
+
+  document.getElementById('NatDrawerClose').addEventListener('click', close);
+  document.getElementById('NatDrawerContinue').addEventListener('click', close);
+  overlay.addEventListener('click', close);
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') close(); });
+})();
+</script>

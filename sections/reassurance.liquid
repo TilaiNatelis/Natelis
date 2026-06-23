@@ -1,0 +1,39 @@
+{% render 'section-fonts', section: section %}
+<div class="nat-reassure">
+  <div class="nat-reassure__inner">
+    {%- for block in section.blocks -%}
+      <div class="nat-reassure__item" {{ block.shopify_attributes }}>
+        <span class="nat-reassure__icon">{{ block.settings.icon | default: '✦' }}</span>
+        <div>
+          <div class="nat-reassure__title">{{ block.settings.title }}</div>
+          {%- if block.settings.text != blank -%}<div class="nat-reassure__text">{{ block.settings.text }}</div>{%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Bandeau réassurance",
+  "max_blocks": 5,
+  "blocks": [
+    {
+      "type": "item", "name": "Argument",
+      "settings": [
+        { "type": "text", "id": "icon", "label": "Icône (emoji)", "default": "✦" },
+        { "type": "text", "id": "title", "label": "Titre" },
+        { "type": "text", "id": "text", "label": "Sous-texte" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Bandeau réassurance", "blocks": [
+      { "type": "item", "settings": { "icon": "🚚", "title": "Livraison offerte", "text": "Dès 49€ d'achat" } },
+      { "type": "item", "settings": { "icon": "🌿", "title": "Fabriqué en France", "text": "Formulé en Provence" } },
+      { "type": "item", "settings": { "icon": "🔒", "title": "Paiement sécurisé", "text": "CB · Apple Pay · PayPal" } },
+      { "type": "item", "settings": { "icon": "↩️", "title": "Satisfait ou remboursé", "text": "30 jours" } }
+    ] }
+  ]
+}
+{% endschema %}
