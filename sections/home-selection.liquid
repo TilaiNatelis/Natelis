@@ -1,3 +1,4 @@
+{% render 'section-fonts', section: section %}
 {%- assign col_ventes = section.settings.collection_ventes -%}
 {%- if col_ventes == blank or col_ventes.products.size == 0 -%}{%- assign col_ventes = collections['meilleures-ventes'] -%}{%- endif -%}
 {%- if col_ventes == blank or col_ventes.products.size == 0 -%}{%- assign col_ventes = collections['tous-nos-complements'] -%}{%- endif -%}
@@ -79,6 +80,10 @@
 {
   "name": "Sélection produits",
   "settings": [
+      { "type": "header", "content": "Polices (cette section)" },
+      { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
+      { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
+    ,
     { "type": "text", "id": "title", "label": "Titre", "default": "Votre sélection" },
     { "type": "collection", "id": "collection_ventes", "label": "Collection « Meilleures ventes »" },
     { "type": "collection", "id": "collection_nouveautes", "label": "Collection « Nouveautés »" }

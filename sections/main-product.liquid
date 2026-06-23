@@ -1,3 +1,4 @@
+{% render 'section-fonts', section: section %}
 {%- assign p = product -%}
 {%- assign sub = p.metafields.custom.subtitle | default: p.type -%}
 {%- assign rating = p.metafields.custom.rating -%}
@@ -95,5 +96,9 @@
 </div>
 
 {% schema %}
-{ "name": "Produit", "settings": [] }
+{ "name": "Produit", "settings": [
+      { "type": "header", "content": "Polices (cette section)" },
+      { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
+      { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
+  ] }
 {% endschema %}

@@ -1,3 +1,4 @@
+{% render 'section-fonts', section: section %}
 <!-- héros -->
 <div style="background:var(--pale);">
   <div style="max-width:920px;margin:0 auto;padding:74px 48px 66px;text-align:center;">
@@ -134,6 +135,10 @@
 {
   "name": "Page Conseils",
   "settings": [
+      { "type": "header", "content": "Polices (cette section)" },
+      { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
+      { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
+    ,
     { "type": "header", "content": "En-tête" },
     { "type": "text", "id": "hero_eyebrow", "label": "Sur-titre", "default": "Le guide Natélis" },
     { "type": "text", "id": "hero_title", "label": "Titre", "default": "Bien choisir ses compléments alimentaires" },

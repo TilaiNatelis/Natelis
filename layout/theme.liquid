@@ -37,16 +37,20 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Mulish:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  {%- assign hfont = settings.heading_font_name | default: 'Cormorant Garamond' -%}
+  {%- assign bfont = settings.body_font_name | default: 'Mulish' -%}
+  {%- assign hfam = hfont | replace: ' ', '+' -%}
+  {%- assign bfam = bfont | replace: ' ', '+' -%}
+  {%- if hfont == bfont -%}
+    <link href="https://fonts.googleapis.com/css2?family={{ hfam }}:wght@400;500;600;700&display=swap" rel="stylesheet">
+  {%- else -%}
+    <link href="https://fonts.googleapis.com/css2?family={{ hfam }}:wght@400;500;600;700&family={{ bfam }}:wght@400;500;600;700&display=swap" rel="stylesheet">
+  {%- endif -%}
 
   {{ content_for_header }}
   {{ 'natelis.css' | asset_url | stylesheet_tag }}
 
   {%- comment -%} Réglages de thème (couleurs & polices) éditables dans Personnaliser → Paramètres {%- endcomment -%}
-  {%- if settings.custom_fonts -%}
-    {{ settings.heading_font | font_face: font_display: 'swap' }}
-    {{ settings.body_font | font_face: font_display: 'swap' }}
-  {%- endif -%}
   <style>
     :root{
       --cream: {{ settings.color_bg | default: '#FFFFFF' }};
@@ -59,10 +63,8 @@
       --autumn: {{ settings.color_autumn | default: '#B5651D' }};
       --terra: {{ settings.color_terra | default: '#9a3b2e' }};
       --border: {{ settings.color_border | default: '#ECE4D6' }};
-      {%- if settings.custom_fonts -%}
-      --serif: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
-      --sans: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
-      {%- endif -%}
+      --serif: "{{ hfont }}", Georgia, serif;
+      --sans: "{{ bfont }}", -apple-system, BlinkMacSystemFont, sans-serif;
     }
     .nat-logo-text{ color: {{ settings.color_logo | default: '#4F7A1F' }}; }
   </style>

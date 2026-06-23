@@ -1,0 +1,24 @@
+{%- comment -%}
+  Polices personnalisées par section (surcharge la police globale, pour cette section seulement).
+  Usage : {% render 'section-fonts', section: section %}
+  Réglages attendus dans la section : heading_font_name / body_font_name (select, "" = hérite du global).
+  Le style est limité à #shopify-section-{id} (Shopify entoure chaque section de cet ID).
+{%- endcomment -%}
+{%- assign sh = section.settings.heading_font_name -%}
+{%- assign sb = section.settings.body_font_name -%}
+{%- if sh != blank or sb != blank -%}
+  {%- if sh != blank -%}<link href="https://fonts.googleapis.com/css2?family={{ sh | replace: ' ', '+' }}:wght@400;500;600;700&display=swap" rel="stylesheet">{%- endif -%}
+  {%- if sb != blank and sb != sh -%}<link href="https://fonts.googleapis.com/css2?family={{ sb | replace: ' ', '+' }}:wght@400;500;600;700&display=swap" rel="stylesheet">{%- endif -%}
+  <style>
+    {%- if sh != blank -%}
+    #shopify-section-{{ section.id }} .nat-serif,
+    #shopify-section-{{ section.id }} .nat-h2,
+    #shopify-section-{{ section.id }} h1,
+    #shopify-section-{{ section.id }} h2,
+    #shopify-section-{{ section.id }} h3{font-family:"{{ sh }}", Georgia, serif;}
+    {%- endif -%}
+    {%- if sb != blank -%}
+    #shopify-section-{{ section.id }}{font-family:"{{ sb }}", sans-serif;}
+    {%- endif -%}
+  </style>
+{%- endif -%}
