@@ -2,16 +2,37 @@
   {
     "name": "theme_info",
     "theme_name": "Natélis en Provence",
-    "theme_version": "1.0.0",
+    "theme_version": "1.1.0",
     "theme_author": "Natélis",
-    "theme_documentation_url": "https://natelis.com",
-    "theme_support_url": "https://natelis.com"
+    "theme_documentation_url": "https://natelis.fr",
+    "theme_support_url": "https://natelis.fr"
   },
   {
     "name": "Couleurs",
     "settings": [
-      { "type": "header", "content": "Charte Natélis (modifiable dans assets/natelis.css)" },
-      { "type": "paragraph", "content": "Crème #FBF9F6 · Vert profond #2e3a22 · Olive #526F12 · Beige #F4EEE3" }
+      { "type": "header", "content": "Fonds" },
+      { "type": "color", "id": "color_bg", "label": "Fond du site", "default": "#FFFFFF" },
+      { "type": "color", "id": "color_soft", "label": "Fond clair (champs)", "default": "#FAFAF9" },
+      { "type": "color", "id": "color_section_bg", "label": "Fond de section (vert pâle)", "default": "#EEF1E7" },
+      { "type": "header", "content": "Texte & marque" },
+      { "type": "color", "id": "color_text", "label": "Texte principal (vert foncé)", "default": "#2e3a22" },
+      { "type": "color", "id": "color_accent", "label": "Accent (olive)", "default": "#526F12" },
+      { "type": "color", "id": "color_accent_light", "label": "Accent clair", "default": "#758C41" },
+      { "type": "color", "id": "color_brown", "label": "Texte secondaire (brun)", "default": "#7B6C50" },
+      { "type": "color", "id": "color_logo", "label": "Logo texte", "default": "#4F7A1F" },
+      { "type": "header", "content": "Saison & alertes" },
+      { "type": "color", "id": "color_autumn", "label": "Automne", "default": "#B5651D" },
+      { "type": "color", "id": "color_terra", "label": "Alerte (terracotta)", "default": "#9a3b2e" },
+      { "type": "color", "id": "color_border", "label": "Bordures", "default": "#ECE4D6" }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      { "type": "paragraph", "content": "Par défaut : titres en Cormorant Garamond, textes en Mulish. Activez les polices personnalisées pour choisir les vôtres." },
+      { "type": "checkbox", "id": "custom_fonts", "label": "Utiliser des polices personnalisées", "default": false },
+      { "type": "font_picker", "id": "heading_font", "label": "Police des titres", "default": "playfair_display_n4" },
+      { "type": "font_picker", "id": "body_font", "label": "Police du texte", "default": "assistant_n4" }
     ]
   }
 ]

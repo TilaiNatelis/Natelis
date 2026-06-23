@@ -41,6 +41,31 @@
 
   {{ content_for_header }}
   {{ 'natelis.css' | asset_url | stylesheet_tag }}
+
+  {%- comment -%} Réglages de thème (couleurs & polices) éditables dans Personnaliser → Paramètres {%- endcomment -%}
+  {%- if settings.custom_fonts -%}
+    {{ settings.heading_font | font_face: font_display: 'swap' }}
+    {{ settings.body_font | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  <style>
+    :root{
+      --cream: {{ settings.color_bg | default: '#FFFFFF' }};
+      --soft: {{ settings.color_soft | default: '#FAFAF9' }};
+      --pale: {{ settings.color_section_bg | default: '#EEF1E7' }};
+      --green-deep: {{ settings.color_text | default: '#2e3a22' }};
+      --olive: {{ settings.color_accent | default: '#526F12' }};
+      --olive-light: {{ settings.color_accent_light | default: '#758C41' }};
+      --brown: {{ settings.color_brown | default: '#7B6C50' }};
+      --autumn: {{ settings.color_autumn | default: '#B5651D' }};
+      --terra: {{ settings.color_terra | default: '#9a3b2e' }};
+      --border: {{ settings.color_border | default: '#ECE4D6' }};
+      {%- if settings.custom_fonts -%}
+      --serif: {{ settings.heading_font.family }}, {{ settings.heading_font.fallback_families }};
+      --sans: {{ settings.body_font.family }}, {{ settings.body_font.fallback_families }};
+      {%- endif -%}
+    }
+    .nat-logo-text{ color: {{ settings.color_logo | default: '#4F7A1F' }}; }
+  </style>
   {% render 'seo-schema' %}
 </head>
 <body>
