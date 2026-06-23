@@ -1,0 +1,118 @@
+{%- comment -%}
+  Données structurées (schema.org) pour le référencement naturel.
+  Cible : compléments alimentaires · Aix-en-Provence / Provence.
+  Réglages éditables : voir les blocs "settings" du thème (config) ou modifier ici.
+{%- endcomment -%}
+{%- assign brand = shop.name -%}
+{%- assign city = 'Aix-en-Provence' -%}
+{%- assign region = "Provence-Alpes-Côte d'Azur" -%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": {{ brand | json }},
+  "url": {{ shop.url | json }},
+  "logo": "{{ 'logo.png' | asset_url | prepend: 'https:' }}",
+  "description": "Compléments alimentaires d'origine naturelle formulés en Provence, près d'Aix-en-Provence.",
+  "areaServed": ["Aix-en-Provence", "Provence", "France"],
+  "sameAs": []
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HealthAndBeautyBusiness",
+  "name": {{ brand | json }},
+  "image": "{{ 'logo.png' | asset_url | prepend: 'https:' }}",
+  "url": {{ shop.url | json }},
+  "priceRange": "€€",
+  "description": "Boutique de compléments alimentaires naturels en Provence (Aix-en-Provence et alentours) : immunité, sommeil, stress, beauté, énergie.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": {{ city | json }},
+    "addressRegion": {{ region | json }},
+    "addressCountry": "FR"
+  },
+  "areaServed": [
+    { "@type": "City", "name": "Aix-en-Provence" },
+    { "@type": "AdministrativeArea", "name": "Provence" }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": {{ brand | json }},
+  "url": {{ shop.url | json }},
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ shop.url }}{{ routes.search_url }}?q={search_term_string}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+
+{%- if template.name == 'product' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "description": {{ product.description | strip_html | truncatewords: 60 | json }},
+  "sku": {{ product.selected_or_first_available_variant.sku | default: product.id | json }},
+  "brand": { "@type": "Brand", "name": {{ brand | json }} },
+  "category": {{ product.type | default: 'Complément alimentaire' | json }},
+  {%- if product.featured_image -%}"image": "https:{{ product.featured_image | image_url: width: 1200 }}",{%- endif -%}
+  "offers": {
+    "@type": "Offer",
+    "url": "{{ shop.url }}{{ product.url }}",
+    "priceCurrency": {{ cart.currency.iso_code | json }},
+    "price": "{{ product.price | divided_by: 100.0 }}",
+    "availability": "{% if product.available %}https://schema.org/InStock{% else %}https://schema.org/OutOfStock{% endif %}",
+    "areaServed": "Provence"
+  }
+  {%- assign r = product.metafields.custom.rating.value -%}
+  {%- assign rc = product.metafields.custom.rating_count.value -%}
+  {%- if r != blank and rc != blank -%},
+  "aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ r }}",
+    "reviewCount": "{{ rc }}"
+  }
+  {%- endif -%}
+}
+</script>
+{%- endif -%}
+
+{%- if template.name == 'article' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": {{ article.title | json }},
+  "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+  "author": { "@type": "Organization", "name": {{ brand | json }} },
+  "publisher": { "@type": "Organization", "name": {{ brand | json }} },
+  {%- if article.image -%}"image": "https:{{ article.image | image_url: width: 1200 }}",{%- endif -%}
+  "description": {{ article.excerpt_or_content | strip_html | truncatewords: 40 | json }},
+  "mainEntityOfPage": "{{ shop.url }}{{ article.url }}"
+}
+</script>
+{%- endif -%}
+
+{%- if template.name == 'collection' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Accueil", "item": "{{ shop.url }}" },
+    { "@type": "ListItem", "position": 2, "name": {{ collection.title | json }}, "item": "{{ shop.url }}{{ collection.url }}" }
+  ]
+}
+</script>
+{%- endif -%}

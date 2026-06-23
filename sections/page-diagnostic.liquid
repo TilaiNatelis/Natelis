@@ -7,9 +7,9 @@
 
     <!-- intro -->
     <div data-step="intro" style="text-align:center;">
-      <div class="nat-eyebrow" style="letter-spacing:.26em;">Diagnostic personnalisé</div>
-      <h1 class="nat-serif" style="font-size:54px;line-height:1.05;margin:16px 0 0;">Trouvez votre cure idéale</h1>
-      <p style="font-size:16px;line-height:1.65;color:var(--green-text);margin:18px auto 0;max-width:480px;">Répondez à 3 questions sur vos besoins et votre mode de vie. Nous composons une routine de compléments sur-mesure, en quelques secondes.</p>
+      <div class="nat-eyebrow" style="letter-spacing:.26em;">{{ section.settings.intro_eyebrow | default: 'Diagnostic personnalisé' }}</div>
+      <h1 class="nat-serif" style="font-size:54px;line-height:1.05;margin:16px 0 0;">{{ section.settings.intro_title | default: 'Trouvez votre cure idéale' }}</h1>
+      <p style="font-size:16px;line-height:1.65;color:var(--green-text);margin:18px auto 0;max-width:480px;">{{ section.settings.intro_text | default: 'Répondez à 3 questions sur vos besoins et votre mode de vie. Nous composons une routine de compléments alimentaires sur-mesure, en quelques secondes.' }}</p>
       <div style="display:flex;justify-content:center;gap:32px;margin:34px 0 38px;">
         {%- assign labels = 'Objectif,Ressenti,Mode de vie' | split: ',' -%}
         {%- for l in labels -%}
@@ -19,7 +19,7 @@
           </div>
         {%- endfor -%}
       </div>
-      <button type="button" class="nat-btn" data-action="start">Commencer le diagnostic</button>
+      <button type="button" class="nat-btn" data-action="start">{{ section.settings.start_label | default: 'Commencer le diagnostic' }}</button>
     </div>
 
     <!-- question -->
@@ -63,8 +63,8 @@
     {%- if section.settings.routine_image != blank -%}{%- assign rimg = section.settings.routine_image | image_url: width: 1000 -%}{%- else -%}{%- assign rimg = 'prov-lavande.jpg' | asset_url -%}{%- endif -%}
     <div style="background-image:url('{{ rimg }}');background-size:cover;background-position:center;min-height:420px;"></div>
     <div style="background:#fff;padding:52px 48px;display:flex;flex-direction:column;justify-content:center;">
-      <div class="nat-eyebrow" style="letter-spacing:.22em;">La routine idéale</div>
-      <h2 class="nat-serif" style="font-size:36px;line-height:1.08;margin:12px 0 22px;">Composer une cure qui vous ressemble</h2>
+      <div class="nat-eyebrow" style="letter-spacing:.22em;">{{ section.settings.routine_eyebrow | default: 'La routine idéale' }}</div>
+      <h2 class="nat-serif" style="font-size:36px;line-height:1.08;margin:12px 0 22px;">{{ section.settings.routine_title | default: 'Composer une cure qui vous ressemble' }}</h2>
       <div style="display:flex;flex-direction:column;gap:14px;">
         {%- assign checks = "Une cure ciblée sur 1 à 3 mois, plutôt qu'une prise ponctuelle|Le matin pour l'énergie, le soir pour la détente et le sommeil|Trois à quatre compléments complémentaires au maximum|Une pause d'une à deux semaines entre deux cures intensives" | split: '|' -%}
         {%- for c in checks -%}
@@ -227,8 +227,17 @@
 {
   "name": "Page Diagnostic",
   "settings": [
-    { "type": "collection", "id": "collection", "label": "Collection source (produits recommandés)", "info": "Par défaut « Tous nos compléments ». Les tags des produits servent d'objectifs." },
-    { "type": "image_picker", "id": "routine_image", "label": "Image « Composer une cure »" }
+    { "type": "header", "content": "Introduction" },
+    { "type": "text", "id": "intro_eyebrow", "label": "Sur-titre", "default": "Diagnostic personnalisé" },
+    { "type": "text", "id": "intro_title", "label": "Titre", "default": "Trouvez votre cure idéale" },
+    { "type": "textarea", "id": "intro_text", "label": "Texte d'intro", "default": "Répondez à 3 questions sur vos besoins et votre mode de vie. Nous composons une routine de compléments alimentaires sur-mesure, en quelques secondes." },
+    { "type": "text", "id": "start_label", "label": "Bouton de démarrage", "default": "Commencer le diagnostic" },
+    { "type": "header", "content": "Bloc « Composer une cure »" },
+    { "type": "text", "id": "routine_eyebrow", "label": "Sur-titre", "default": "La routine idéale" },
+    { "type": "text", "id": "routine_title", "label": "Titre", "default": "Composer une cure qui vous ressemble" },
+    { "type": "image_picker", "id": "routine_image", "label": "Image" },
+    { "type": "header", "content": "Réglages" },
+    { "type": "collection", "id": "collection", "label": "Collection source (produits recommandés)", "info": "Par défaut « Tous nos compléments ». Les tags des produits servent d'objectifs." }
   ],
   "presets": [ { "name": "Page Diagnostic" } ]
 }
