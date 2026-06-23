@@ -160,26 +160,41 @@
     QUESTIONS.forEach(function(q){ var ai=answers[q.key]; if(ai!=null && q.options[ai]){ q.options[ai].objs.forEach(function(o){ score[o]=(score[o]||0)+q.w; }); } });
     var ranked = Object.keys(score).sort(function(a,b){ return score[b]-score[a]; });
     var top = ranked.slice(0,2);
-    var ids = [];
-    top.forEach(function(o){ PRODUCTS.forEach(function(p){ if(p.objs.indexOf(o)>=0 && ids.indexOf(p.vid)<0) ids.push(p.vid); }); });
-    PRODUCTS.forEach(function(p){ if(ids.indexOf(p.vid)<0) ids.push(p.vid); });
-    recVids = ids.slice(0,4);
+
+    // produits réellement liés aux objectifs retenus, tri par pertinence
+    var scored = PRODUCTS.map(function(p){
+      var s = 0, why = '';
+      p.objs.forEach(function(o){ if(score[o]){ s += score[o]; if(!why) why = o; } });
+      return { p:p, s:s, why:why };
+    }).filter(function(x){ return x.s > 0; })
+      .sort(function(a,b){ return b.s - a.s; });
+
+    var chosen = scored.slice(0,4);
+    // complément si moins de 3 résultats liés
+    if(chosen.length < 3){
+      PRODUCTS.forEach(function(p){
+        if(chosen.length < 3 && !chosen.some(function(x){ return x.p.vid===p.vid; })){ chosen.push({ p:p, s:0, why:'' }); }
+      });
+    }
+    recVids = chosen.map(function(x){ return x.p.vid; });
     $('[data-el="recTitle"]').textContent = top.length ? top.join(' & ') : 'Vitalité';
 
     var grid = $('[data-el="recProducts"]'); grid.innerHTML='';
-    if(recVids.length===0){
+    if(chosen.length===0){
       grid.style.display='none';
       $('[data-el="recEmpty"]').style.display='block';
     } else {
       grid.style.display=''; $('[data-el="recEmpty"]').style.display='none';
-      recVids.forEach(function(vid){
-        var p = PRODUCTS.filter(function(x){ return x.vid===vid; })[0]; if(!p) return;
-        var card = document.createElement('div'); card.className='nat-card';
+      chosen.forEach(function(x){
+        var p = x.p;
+        var card = document.createElement('div'); card.className='nat-card nat-card--reco';
+        var media = p.img
+          ? '<img class="nat-card__img nat-card__img--1" src="'+p.img+'" alt="">'
+          : '<span class="nat-card__ph">'+p.title+'</span>';
         card.innerHTML =
-          '<a href="'+p.url+'" class="nat-card__media">'+(p.img ? '<img src="'+p.img+'" alt="">' : '<span class="nat-card__ph">'+p.title+'</span>')+'</a>'+
-          (p.objs && p.objs.length ? '<div class="nat-card__obj">'+p.objs.join(' · ')+'</div>' : '')+
+          '<a href="'+p.url+'" class="nat-card__media">'+(x.why ? '<span class="nat-card__reco">✓ '+x.why+'</span>' : '')+media+'</a>'+
           '<a href="'+p.url+'" class="nat-card__name">'+p.title+'</a>'+
-          (p.dosage ? '<div class="nat-card__sub">Posologie : '+p.dosage+'</div>' : (p.sub ? '<div class="nat-card__sub">'+p.sub+'</div>' : ''))+
+          (p.dosage ? '<div class="nat-card__sub">'+p.dosage+'</div>' : (p.sub ? '<div class="nat-card__sub">'+p.sub+'</div>' : ''))+
           '<div class="nat-card__row"><span class="nat-card__price">'+p.price+'</span>'+
           '<button type="button" class="nat-card__add" data-action="addOne" data-vid="'+p.vid+'">Ajouter</button></div>';
         grid.appendChild(card);

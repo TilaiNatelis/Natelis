@@ -23,13 +23,41 @@
     <h2 class="nat-h2">Notre sélection de saison</h2>
     <a class="nat-link" href="{{ col.url | default: routes.all_products_collection_url }}">Tout voir →</a>
   </div>
-  <p style="font-size:14.5px;color:var(--brown);margin:10px 0 32px;max-width:560px;">Huit compléments pensés pour soutenir l'organisme à l'arrivée du froid.</p>
+  <p style="font-size:14.5px;color:var(--brown);margin:10px 0 32px;max-width:560px;">{{ section.settings.grid_intro | default: 'Des compléments pensés pour soutenir l’organisme à l’arrivée du froid.' }}</p>
   <div class="nat-grid-4" style="gap:28px 24px;">
-    {%- for product in col.products limit: 8 -%}
+    {%- for product in col.products limit: 12 -%}
       {%- render 'product-card', product: product -%}
     {%- endfor -%}
   </div>
 </div>
+
+{%- comment -%} Pourquoi ces cures cette saison — blocs éditables (produit + texte) {%- endcomment -%}
+{%- if section.blocks.size > 0 -%}
+<div class="nat-wrap" style="padding-top:30px;padding-bottom:72px;">
+  <h2 class="nat-h2" style="margin-bottom:6px;">{{ section.settings.why_title | default: 'Pourquoi ces cures cet automne ?' }}</h2>
+  <p style="font-size:14.5px;color:var(--brown);margin:0 0 30px;max-width:600px;">{{ section.settings.why_intro | default: 'Le bon actif, au bon moment de la saison.' }}</p>
+  <div style="display:flex;flex-direction:column;gap:22px;">
+    {%- for block in section.blocks -%}
+      {%- assign bp = block.settings.product -%}
+      <div class="nat-why" {{ block.shopify_attributes }}>
+        <a href="{{ bp.url | default: '#' }}" class="nat-why__media">
+          {%- if bp.featured_image -%}<img src="{{ bp.featured_image | image_url: width: 300 }}" alt="{{ bp.title | escape }}">{%- else -%}<span style="font-size:10px;color:#c5b596;padding:8px;text-align:center;">{{ bp.title }}</span>{%- endif -%}
+        </a>
+        <div class="nat-why__body">
+          <a href="{{ bp.url | default: '#' }}" class="nat-why__name">{{ block.settings.title | default: bp.title }}</a>
+          <p class="nat-why__text">{{ block.settings.text }}</p>
+          {%- if bp != blank -%}
+            {%- form 'product', bp -%}
+              <input type="hidden" name="id" value="{{ bp.selected_or_first_available_variant.id }}">
+              <button type="submit" class="nat-btn nat-btn--outline nat-btn--sm" style="margin-top:10px;">Ajouter · {{ bp.price | money }}</button>
+            {%- endform -%}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
 
 {% schema %}
 {
@@ -39,8 +67,29 @@
     { "type": "image_picker", "id": "image", "label": "Visuel" },
     { "type": "text", "id": "title", "label": "Titre", "default": "Les cures essentielles de la saison" },
     { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Quand les jours raccourcissent, le corps a besoin de soutien. Immunité, énergie, sérénité — notre sélection pour traverser l'automne en pleine forme." },
-    { "type": "collection", "id": "collection", "label": "Collection « Sélection d'automne »" }
+    { "type": "collection", "id": "collection", "label": "Collection « Sélection d'automne »" },
+    { "type": "text", "id": "grid_intro", "label": "Texte sous le titre de la grille" },
+    { "type": "header", "content": "Bloc « Pourquoi cette saison »" },
+    { "type": "text", "id": "why_title", "label": "Titre", "default": "Pourquoi ces cures cet automne ?" },
+    { "type": "text", "id": "why_intro", "label": "Sous-titre", "default": "Le bon actif, au bon moment de la saison." }
   ],
-  "presets": [ { "name": "Page Sélection d'automne" } ]
+  "blocks": [
+    {
+      "type": "why", "name": "Produit + explication",
+      "settings": [
+        { "type": "product", "id": "product", "label": "Produit" },
+        { "type": "text", "id": "title", "label": "Titre (optionnel)" },
+        { "type": "textarea", "id": "text", "label": "Pourquoi cette saison" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Page Sélection d'automne", "blocks": [
+      { "type": "why", "settings": { "text": "À l'arrivée du froid, la Vitamine C liposomale soutient vos défenses et combat la fatigue : le réflexe immunité de la saison." } },
+      { "type": "why", "settings": { "text": "Avec moins de soleil, la Vitamine D3 devient essentielle pour l'immunité et la solidité osseuse de l'automne à l'hiver." } },
+      { "type": "why", "settings": { "text": "Le Zinc complète le duo immunité : un coup de pouce naturel pour traverser la saison des refroidissements." } },
+      { "type": "why", "settings": { "text": "Les Probiotiques renforcent la flore intestinale, première ligne de défense quand les microbes circulent." } }
+    ] }
+  ]
 }
 {% endschema %}

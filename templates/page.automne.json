@@ -1,1 +1,19 @@
-{ "sections": { "main": { "type": "page-automne" } }, "order": ["main"] }
+{
+  "sections": {
+    "main": {
+      "type": "page-automne",
+      "settings": {
+        "collection": "selection-dautomne"
+      },
+      "blocks": {
+        "w1": { "type": "why", "settings": { "product": "vitamine-c-liposomale", "text": "À l'arrivée du froid, la Vitamine C liposomale soutient vos défenses et combat la fatigue : le réflexe immunité de la saison." } },
+        "w2": { "type": "why", "settings": { "product": "vitamine-d3", "text": "Avec moins de soleil, la Vitamine D3 devient essentielle pour l'immunité et la solidité osseuse, de l'automne à l'hiver." } },
+        "w3": { "type": "why", "settings": { "product": "zinc-bisglycinate", "text": "Le Zinc complète le duo immunité : un coup de pouce naturel pour traverser la saison des refroidissements." } },
+        "w4": { "type": "why", "settings": { "product": "probiotiques", "text": "Les Probiotiques renforcent la flore intestinale, première ligne de défense quand les microbes circulent." } },
+        "w5": { "type": "why", "settings": { "product": "magnesium-bisglycinate", "text": "Jours plus courts, sommeil perturbé : le Magnésium bisglycinate apaise et aide à récupérer pendant les soirées d'automne." } }
+      },
+      "block_order": ["w1", "w2", "w3", "w4", "w5"]
+    }
+  },
+  "order": ["main"]
+}

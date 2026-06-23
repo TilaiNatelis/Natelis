@@ -7,6 +7,13 @@
   </div>
 </div>
 
+<!-- texte immersif éditable (admin > Pages > contenu) -->
+{%- if page.content != blank -%}
+  <div class="nat-wrap nat-rte" style="max-width:760px;padding-top:54px;padding-bottom:6px;font-size:17px;line-height:1.85;color:var(--brown-dark);">
+    {{ page.content }}
+  </div>
+{%- endif -%}
+
 <!-- 3 étapes -->
 <div class="nat-wrap" style="padding-top:74px;padding-bottom:4px;">
   <div class="nat-grid-3" style="gap:36px;">
@@ -100,6 +107,26 @@
       {%- endfor -%}
     </div>
   </div>
+</div>
+{%- endif -%}
+
+<!-- La gamme en bref (format compact, proche du texte) -->
+{%- assign gamme = collections['tous-nos-complements'] -%}
+{%- if gamme != blank and gamme.products.size > 0 -%}
+<div class="nat-wrap" style="max-width:760px;padding-top:40px;padding-bottom:80px;">
+  <h2 class="nat-serif" style="font-size:24px;margin:0 0 6px;">La gamme Natélis en bref</h2>
+  <p style="font-size:14px;color:var(--brown);margin:0 0 18px;">Tous nos compléments, à composer selon votre objectif.</p>
+  <div style="border-top:1px solid var(--border);">
+    {%- for product in gamme.products -%}
+      <a href="{{ product.url }}" class="nat-mini">
+        <span class="nat-mini__media">{%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 80 }}" alt="">{%- endif -%}</span>
+        <span class="nat-mini__name">{{ product.title }}</span>
+        <span class="nat-mini__sub">{{ product.metafields.custom.subtitle.value }}</span>
+        <span class="nat-mini__price">{{ product.price | money }}</span>
+      </a>
+    {%- endfor -%}
+  </div>
+  <a class="nat-link" style="display:inline-block;margin-top:18px;" href="{{ gamme.url }}">Voir tous les produits →</a>
 </div>
 {%- endif -%}
 

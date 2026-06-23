@@ -1,8 +1,9 @@
 {%- comment -%}
-  Navigation principale + méga-menu interactif.
-  - Les entrées avec sous-liens ouvrent un panneau au survol.
-  - Bouton « Voir tout » toujours présent (lien vers l'entrée parente).
-  - Aperçus produits pour l'entrée « Produits ».
+  Navigation principale + méga-menu avec vignettes.
+  Chaque sous-catégorie affiche une photo :
+    - liens collection -> image de la collection (modifiable dans Admin > Collections)
+    - liens conseils    -> image de la collection d'univers associée
+  Repli : 1re photo produit de la collection, sinon visuel par défaut.
 {%- endcomment -%}
 <nav class="nat-nav">
   <div class="nat-nav__list">
@@ -13,44 +14,26 @@
       {%- else -%}{%- assign cls = 'nat-nav__item' -%}{%- endif -%}
 
       {%- if link.links.size > 0 -%}
-        {%- comment -%} collection d'aperçu selon l'entrée {%- endcomment -%}
-        {%- assign preview = blank -%}
-        {%- if t contains 'produit' -%}
-          {%- assign preview = collections['meilleures-ventes'] -%}
-          {%- if preview == blank or preview.products.size == 0 -%}{%- assign preview = collections['tous-nos-complements'] -%}{%- endif -%}
-        {%- endif -%}
-
+        {%- if t contains 'conseil' -%}{%- assign all_label = 'Tous nos conseils' -%}{%- else -%}{%- assign all_label = 'Tous les produits' -%}{%- endif -%}
         <div class="nat-nav__parent">
           <a class="{{ cls }}{% if link.active or link.child_active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }} ▾</a>
           <div class="nat-mega">
-            <div class="nat-mega__inner">
-              <div class="nat-mega__links">
-                <div class="nat-mega__col-title">{{ link.title }}</div>
-                {%- for child in link.links -%}
-                  <a class="nat-mega__link" href="{{ child.url }}">{{ child.title }}</a>
-                {%- endfor -%}
-                <a class="nat-mega__all" href="{{ link.url }}">
-                  {%- if t contains 'conseil' -%}Tous nos conseils{%- else -%}Tous les produits{%- endif -%} →
+            <div class="nat-mega__cards">
+              {%- for child in link.links -%}
+                {%- assign seg = child.url | split: '/' | last -%}
+                {%- assign cc = blank -%}
+                {%- if child.url contains '/collections/' -%}{%- assign cc = collections[seg] -%}
+                {%- elsif child.url contains 'vitalite' -%}{%- assign cc = collections['vitalite-immunite'] -%}
+                {%- elsif child.url contains 'beaute' -%}{%- assign cc = collections['beaute-sommeil'] -%}
+                {%- elsif child.url contains 'sport' -%}{%- assign cc = collections['sport-bien-etre'] -%}{%- endif -%}
+                {%- assign thumb = cc.image | default: cc.products.first.featured_image -%}
+                <a class="nat-mega__card" href="{{ child.url }}">
+                  <span class="nat-mega__thumb" style="{% if thumb != blank %}background-image:url('{{ thumb | image_url: width: 240 }}');{% else %}background-image:url('{{ 'prov-lavande.jpg' | asset_url }}');{% endif %}"></span>
+                  <span class="nat-mega__cardlabel">{{ child.title }}</span>
                 </a>
-              </div>
-              {%- if preview != blank and preview.products.size > 0 -%}
-                <div class="nat-mega__preview">
-                  {%- for product in preview.products limit: 3 -%}
-                    <a class="nat-mega__pcard" href="{{ product.url }}">
-                      <div class="nat-mega__pmedia">
-                        {%- if product.featured_image -%}
-                          <img src="{{ product.featured_image | image_url: width: 240 }}" alt="{{ product.title | escape }}" loading="lazy">
-                        {%- else -%}
-                          <span class="nat-mega__pname">{{ product.title }}</span>
-                        {%- endif -%}
-                      </div>
-                      <div class="nat-mega__pname">{{ product.title }}</div>
-                      <div class="nat-mega__pprice">{{ product.price | money }}</div>
-                    </a>
-                  {%- endfor -%}
-                </div>
-              {%- endif -%}
+              {%- endfor -%}
             </div>
+            <a class="nat-mega__all" href="{{ link.url }}">{{ all_label }} →</a>
           </div>
         </div>
       {%- else -%}
@@ -62,7 +45,6 @@
       <a class="nat-nav__item" href="{{ routes.all_products_collection_url }}">Nouveautés</a>
       <a class="nat-nav__item" href="{{ routes.all_products_collection_url }}">Produits</a>
       <a class="nat-nav__item" href="{{ routes.root_url }}pages/conseils">Conseils</a>
-      <a class="nat-nav__item" href="{{ blogs.first.url | default: routes.root_url }}">Blog</a>
       <a class="nat-nav__item nat-nav__item--diag" href="{{ routes.root_url }}pages/diagnostic">Diagnostic</a>
     {%- endfor -%}
   </div>

@@ -1,0 +1,44 @@
+{%- comment -%} Notification d'ajout panier (AJAX) avec "Continuer mes achats" en option principale {%- endcomment -%}
+<div id="NatToast" class="nat-toast" role="status" aria-live="polite">
+  <div class="nat-toast__inner">
+    <span class="nat-toast__msg">✓ Ajouté au panier</span>
+    <div class="nat-toast__actions">
+      <button type="button" class="nat-btn nat-btn--sm" id="NatToastContinue">Continuer mes achats</button>
+      <a class="nat-btn nat-btn--outline nat-btn--sm" href="{{ routes.cart_url }}">Voir le panier</a>
+    </div>
+  </div>
+</div>
+
+<script>
+  (function(){
+    var toast = document.getElementById('NatToast');
+    if(!toast) return;
+    var hideT;
+    function show(){ toast.classList.add('is-open'); clearTimeout(hideT); hideT = setTimeout(hide, 6000); }
+    function hide(){ toast.classList.remove('is-open'); }
+    document.getElementById('NatToastContinue').addEventListener('click', hide);
+
+    function refreshCount(){
+      fetch('{{ routes.cart_url }}.js', {headers:{'Accept':'application/json'}})
+        .then(function(r){ return r.json(); })
+        .then(function(c){ document.querySelectorAll('.nat-cart-count').forEach(function(el){ el.textContent = c.item_count; }); })
+        .catch(function(){});
+    }
+
+    document.addEventListener('submit', function(e){
+      var form = e.target;
+      if(!form || !form.getAttribute) return;
+      var action = form.getAttribute('action') || '';
+      if(action.indexOf('/cart/add') === -1) return;
+      e.preventDefault();
+      var btn = form.querySelector('[type="submit"]');
+      var label = btn ? btn.innerHTML : '';
+      if(btn){ btn.disabled = true; btn.innerHTML = '…'; }
+      fetch('{{ routes.cart_url }}/add.js', { method:'POST', body:new FormData(form), headers:{'X-Requested-With':'XMLHttpRequest'} })
+        .then(function(r){ return r.json(); })
+        .then(function(){ refreshCount(); show(); })
+        .catch(function(){ window.location.href = '{{ routes.cart_url }}'; })
+        .then(function(){ if(btn){ btn.disabled = false; btn.innerHTML = label; } });
+    });
+  })();
+</script>
