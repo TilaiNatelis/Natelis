@@ -99,7 +99,7 @@
         "title": "Une nature à l'état brut, distillée avec soin",
         "text": "Né au cœur de la Provence, Natélis restaure le lien entre le corps et la terre. Des actifs purs, traçables et dosés avec exigence — rien de superflu.",
         "cta_label": "Notre histoire",
-        "cta_url": ""
+        "cta_url": "/pages/notre-histoire"
       }
     },
     "experience": {
@@ -111,7 +111,7 @@
             "title": "La science de la plante",
             "text": "Née en Provence, des formules naturelles et traçables.",
             "cta": "Découvrir",
-            "link": "/collections/tous-nos-complements"
+            "link": "/pages/science-de-la-plante"
           }
         },
         "e2": {
@@ -129,7 +129,7 @@
             "title": "Nos terres de Provence",
             "text": "Des actifs cultivés au plus près de la garrigue.",
             "cta": "En savoir plus",
-            "link": "/pages/conseils"
+            "link": "/pages/terres-de-provence"
           }
         },
         "e4": {

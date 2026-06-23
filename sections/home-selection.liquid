@@ -21,8 +21,14 @@
   <div class="nat-slider-wrap" data-panel="ventes">
     <button class="nat-slider-arrow nat-slider-arrow--prev" data-dir="-1" aria-label="Précédent">‹</button>
     <div class="nat-slider">
+      {%- assign seen_v = '' -%}
       {%- for product in col_ventes.products limit: 12 -%}
         {%- render 'product-card', product: product -%}
+        {%- assign seen_v = seen_v | append: '|' | append: product.id | append: '|' -%}
+      {%- endfor -%}
+      {%- for product in collections['tous-nos-complements'].products limit: 16 -%}
+        {%- assign mk = '|' | append: product.id | append: '|' -%}
+        {%- unless seen_v contains mk -%}{%- render 'product-card', product: product -%}{%- endunless -%}
       {%- endfor -%}
     </div>
     <button class="nat-slider-arrow nat-slider-arrow--next" data-dir="1" aria-label="Suivant">›</button>
@@ -31,8 +37,14 @@
   <div class="nat-slider-wrap" data-panel="nouv" style="display:none;">
     <button class="nat-slider-arrow nat-slider-arrow--prev" data-dir="-1" aria-label="Précédent">‹</button>
     <div class="nat-slider">
+      {%- assign seen_n = '' -%}
       {%- for product in col_nouv.products limit: 12 -%}
         {%- render 'product-card', product: product -%}
+        {%- assign seen_n = seen_n | append: '|' | append: product.id | append: '|' -%}
+      {%- endfor -%}
+      {%- for product in collections['tous-nos-complements'].products limit: 16 -%}
+        {%- assign mk = '|' | append: product.id | append: '|' -%}
+        {%- unless seen_n contains mk -%}{%- render 'product-card', product: product -%}{%- endunless -%}
       {%- endfor -%}
     </div>
     <button class="nat-slider-arrow nat-slider-arrow--next" data-dir="1" aria-label="Suivant">›</button>

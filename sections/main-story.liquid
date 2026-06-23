@@ -1,0 +1,43 @@
+{%- comment -%}
+  Page éditoriale "histoire" (Notre histoire, La science de la plante, Nos terres de Provence…).
+  Le texte est éditable dans l'admin (Pages → contenu). L'image du héros est choisie
+  par handle de page, ou via le réglage de section.
+{%- endcomment -%}
+{%- assign h = page.handle -%}
+{%- if section.settings.hero_image != blank -%}{%- assign hero = section.settings.hero_image | image_url: width: 2400 -%}
+{%- elsif h contains 'science' -%}{%- assign hero = 'prov-lavande.jpg' | asset_url -%}
+{%- elsif h contains 'terres' or h contains 'provence' -%}{%- assign hero = 'prov-calanque.jpg' | asset_url -%}
+{%- else -%}{%- assign hero = 'prov-vignes.jpg' | asset_url -%}{%- endif -%}
+
+<div class="nat-story-hero">
+  <img src="{{ hero }}" alt="{{ page.title | escape }}" style="display:block;width:100%;height:380px;object-fit:cover;object-position:center;">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,58,34,.15),rgba(46,58,34,.6));"></div>
+  <div class="nat-wrap" style="position:absolute;left:0;right:0;bottom:0;padding-bottom:42px;color:#fff;">
+    <div class="nat-eyebrow" style="color:#EBE2CF;">{{ section.settings.eyebrow | default: 'Natélis en Provence' }}</div>
+    <h1 class="nat-serif" style="font-size:56px;line-height:1.02;margin:8px 0 0;max-width:820px;text-shadow:0 1px 18px rgba(12,17,14,.4);">{{ page.title }}</h1>
+  </div>
+</div>
+
+<div class="nat-wrap nat-rte" style="max-width:820px;padding-top:50px;padding-bottom:80px;font-size:16.5px;line-height:1.8;color:var(--brown-dark);">
+  {{ page.content }}
+</div>
+
+<div style="background:var(--pale);">
+  <div class="nat-wrap" style="padding-top:48px;padding-bottom:48px;text-align:center;">
+    <h2 class="nat-serif" style="font-size:30px;margin:0 0 18px;">{{ section.settings.cta_title | default: 'Découvrir nos cures' }}</h2>
+    <a class="nat-btn" href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}">{{ section.settings.cta_label | default: 'Voir les produits' }}</a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Page Histoire",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Image du héros (optionnel)" },
+    { "type": "text", "id": "eyebrow", "label": "Sur-titre", "default": "Natélis en Provence" },
+    { "type": "text", "id": "cta_title", "label": "Titre du bloc final", "default": "Découvrir nos cures" },
+    { "type": "text", "id": "cta_label", "label": "Bouton final", "default": "Voir les produits" },
+    { "type": "url", "id": "cta_url", "label": "Lien du bouton final" }
+  ]
+}
+{% endschema %}

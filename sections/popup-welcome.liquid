@@ -3,7 +3,8 @@
 <div class="nat-pop-overlay" id="NatPop" data-days="{{ section.settings.frequency | default: 7 }}">
   <div class="nat-pop">
     <button class="nat-pop__close" id="NatPopClose" aria-label="Fermer">×</button>
-    <div class="nat-pop__img" style="{% if pop_img != blank %}background-image:url('{{ pop_img | image_url: width: 900 }}');{% else %}background:linear-gradient(160deg,var(--pale),var(--beige-gold));{% endif %}"></div>
+    {%- if pop_img != blank -%}{%- assign pop_src = pop_img | image_url: width: 900 -%}{%- else -%}{%- assign pop_src = 'prov-lavande.jpg' | asset_url -%}{%- endif -%}
+    <div class="nat-pop__img" style="background-image:url('{{ pop_src }}');"></div>
     <div class="nat-pop__body">
       <div class="nat-eyebrow">{{ section.settings.eyebrow }}</div>
       <h2 class="nat-serif" style="font-size:34px;line-height:1.1;margin:10px 0 0;color:var(--green-deep);">{{ section.settings.title }}</h2>

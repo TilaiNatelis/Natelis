@@ -1,0 +1,93 @@
+{%- comment -%}
+  Page conseil thématique. Le thème est déduit du handle de page :
+  conseil-vitalite-immunite / conseil-beaute-sommeil / conseil-sport-bien-etre.
+  Affiche le contenu éditable (page.content) + les articles du blog en lien + la gamme.
+{%- endcomment -%}
+{%- assign h = page.handle -%}
+{%- if h contains 'vitalite' -%}
+  {%- assign tags = 'Saison,Énergie,Terroir' | split: ',' -%}{%- assign coll = 'vitalite-immunite' -%}{%- assign hero = 'prov-vignes.jpg' -%}
+{%- elsif h contains 'beaute' -%}
+  {%- assign tags = 'Beauté,Bien-être' | split: ',' -%}{%- assign coll = 'beaute-sommeil' -%}{%- assign hero = 'prov-lavande.jpg' -%}
+{%- elsif h contains 'sport' -%}
+  {%- assign tags = 'Énergie,Conseils' | split: ',' -%}{%- assign coll = 'sport-bien-etre' -%}{%- assign hero = 'prov-calanque.jpg' -%}
+{%- else -%}
+  {%- assign tags = 'Saison,Conseils,Bien-être,Beauté,Énergie,Terroir' | split: ',' -%}{%- assign coll = 'tous-nos-complements' -%}{%- assign hero = 'prov-vignes.jpg' -%}
+{%- endif -%}
+{%- assign collection = collections[coll] -%}
+{%- assign blog = blogs['carnet-de-la-vigne'] -%}
+
+<!-- héros -->
+<div class="nat-story-hero">
+  <img src="{{ hero | asset_url }}" alt="{{ page.title | escape }}" style="display:block;width:100%;height:300px;object-fit:cover;">
+  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,58,34,.15),rgba(46,58,34,.6));"></div>
+  <div class="nat-wrap" style="position:absolute;left:0;right:0;bottom:0;padding-bottom:34px;color:#fff;">
+    <div class="nat-eyebrow" style="color:#EBE2CF;">Le guide Natélis</div>
+    <h1 class="nat-serif" style="font-size:50px;line-height:1.03;margin:8px 0 0;text-shadow:0 1px 18px rgba(12,17,14,.4);">{{ page.title }}</h1>
+  </div>
+</div>
+
+<!-- contenu éditable -->
+{%- if page.content != blank -%}
+  <div class="nat-wrap nat-rte" style="max-width:820px;padding-top:46px;padding-bottom:10px;font-size:16.5px;line-height:1.8;color:var(--brown-dark);">
+    {{ page.content }}
+  </div>
+{%- endif -%}
+
+<!-- articles de blog en lien -->
+<div class="nat-wrap" style="padding-top:40px;padding-bottom:8px;">
+  <div class="nat-section-head">
+    <div>
+      <div class="nat-eyebrow">Le journal Natélis</div>
+      <h2 class="nat-h2" style="margin-top:8px;">Articles en lien</h2>
+    </div>
+    <a class="nat-link" href="{{ blog.url | default: '/blogs/carnet-de-la-vigne' }}">Tous les articles →</a>
+  </div>
+  <div class="nat-grid-3" style="margin-top:28px;">
+    {%- assign shown = 0 -%}
+    {%- for article in blog.articles -%}
+      {%- if shown >= 3 -%}{%- break -%}{%- endif -%}
+      {%- assign match = false -%}
+      {%- for t in tags -%}{%- if article.tags contains t -%}{%- assign match = true -%}{%- endif -%}{%- endfor -%}
+      {%- if match -%}
+        {%- assign shown = shown | plus: 1 -%}
+        <a class="nat-post" href="{{ article.url }}">
+          <div class="nat-post__media" style="background-image:url('{{ article.image | image_url: width: 800 }}');{% if article.image == blank %}background:var(--beige-gold);{% endif %}"></div>
+          <div class="nat-post__meta">{{ article.tags.first | default: 'Journal' }}</div>
+          <div class="nat-post__title">{{ article.title }}</div>
+          <div class="nat-post__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 18 }}</div>
+          <div class="nat-post__more">Lire l'article →</div>
+        </a>
+      {%- endif -%}
+    {%- endfor -%}
+    {%- if shown == 0 -%}
+      {%- for article in blog.articles limit: 3 -%}
+        <a class="nat-post" href="{{ article.url }}">
+          <div class="nat-post__media" style="background-image:url('{{ article.image | image_url: width: 800 }}');{% if article.image == blank %}background:var(--beige-gold);{% endif %}"></div>
+          <div class="nat-post__meta">{{ article.tags.first | default: 'Journal' }}</div>
+          <div class="nat-post__title">{{ article.title }}</div>
+          <div class="nat-post__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 18 }}</div>
+          <div class="nat-post__more">Lire l'article →</div>
+        </a>
+      {%- endfor -%}
+    {%- endif -%}
+  </div>
+</div>
+
+<!-- gamme associée -->
+{%- if collection != blank and collection.products.size > 0 -%}
+<div class="nat-wrap" style="padding-top:54px;padding-bottom:72px;">
+  <div class="nat-section-head">
+    <h2 class="nat-h2">La gamme {{ page.title | remove: 'Conseils — ' }}</h2>
+    <a class="nat-link" href="{{ collection.url }}">Voir tout →</a>
+  </div>
+  <div class="nat-grid-4" style="margin-top:26px;gap:28px 24px;">
+    {%- for product in collection.products limit: 4 -%}
+      {%- render 'product-card', product: product -%}
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{ "name": "Page Conseil thématique", "settings": [] }
+{% endschema %}

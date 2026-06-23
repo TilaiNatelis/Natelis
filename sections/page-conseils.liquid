@@ -76,6 +76,33 @@
   <div style="border-top:1px solid var(--border);"></div>
 </div>
 
+<!-- Le journal Natélis -->
+{%- assign cblog = blogs['carnet-de-la-vigne'] -%}
+{%- if cblog != blank and cblog.articles_count > 0 -%}
+<div style="background:var(--pale);margin-top:60px;">
+  <div class="nat-wrap" style="padding-top:64px;padding-bottom:70px;">
+    <div class="nat-section-head">
+      <div>
+        <div class="nat-eyebrow">Le journal Natélis</div>
+        <h2 class="nat-h2" style="margin-top:8px;">À lire pour aller plus loin</h2>
+      </div>
+      <a class="nat-link" href="{{ cblog.url }}">Tous les articles →</a>
+    </div>
+    <div class="nat-grid-3" style="margin-top:30px;">
+      {%- for article in cblog.articles limit: 3 -%}
+        <a class="nat-post" href="{{ article.url }}">
+          <div class="nat-post__media" style="background-image:url('{{ article.image | image_url: width: 800 }}');{% if article.image == blank %}background:var(--beige-gold);{% endif %}"></div>
+          <div class="nat-post__meta">{{ article.tags.first | default: 'Journal' }}</div>
+          <div class="nat-post__title">{{ article.title }}</div>
+          <div class="nat-post__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 18 }}</div>
+          <div class="nat-post__more">Lire l'article →</div>
+        </a>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+{%- endif -%}
+
 {% schema %}
 {
   "name": "Page Conseils",
