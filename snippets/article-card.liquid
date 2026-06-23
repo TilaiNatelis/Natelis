@@ -1,0 +1,8 @@
+{%- comment -%} Carte d'article de blog. Paramètre : article {%- endcomment -%}
+<a class="nat-post" href="{{ article.url }}">
+  <div class="nat-post__media" style="background-image:url('{{ article.image | image_url: width: 800 }}');{% if article.image == blank %}background:var(--beige-gold);{% endif %}"></div>
+  <div class="nat-post__meta">{{ article.tags.first | default: 'Journal' }}{% if article.published_at %} · {{ article.published_at | date: '%d/%m/%Y' }}{% endif %}</div>
+  <div class="nat-post__title">{{ article.title }}</div>
+  <div class="nat-post__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 18 }}</div>
+  <div class="nat-post__more">Lire l'article →</div>
+</a>

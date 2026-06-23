@@ -1,44 +1,94 @@
 {% render 'section-fonts', section: section %}
 {%- comment -%}
-  Page conseil thématique. Le thème est déduit du handle de page :
+  Page conseil thématique. Thème déduit du handle :
   conseil-vitalite-immunite / conseil-beaute-sommeil / conseil-sport-bien-etre.
-  Affiche le contenu éditable (page.content) + les articles du blog en lien + la gamme.
+  Ordre : héros → conseil éditable → produits conseillés (compacts) → image → articles.
 {%- endcomment -%}
 {%- assign h = page.handle -%}
 {%- if h contains 'vitalite' -%}
-  {%- assign tags = 'Saison,Énergie,Terroir' | split: ',' -%}{%- assign coll = 'vitalite-immunite' -%}{%- assign hero = 'prov-vignes.jpg' -%}
+  {%- assign tags = 'Saison,Énergie,Terroir' | split: ',' -%}{%- assign coll = 'vitalite-immunite' -%}{%- assign hero = 'prov-vignes.jpg' -%}{%- assign band = 'prov-calanque.jpg' -%}
+  {%- assign chips = 'Immunité,Énergie' | split: ',' -%}{%- assign chip_handles = 'immunite,energie' | split: ',' -%}
 {%- elsif h contains 'beaute' -%}
-  {%- assign tags = 'Beauté,Bien-être' | split: ',' -%}{%- assign coll = 'beaute-sommeil' -%}{%- assign hero = 'prov-lavande.jpg' -%}
+  {%- assign tags = 'Beauté,Bien-être' | split: ',' -%}{%- assign coll = 'beaute-sommeil' -%}{%- assign hero = 'prov-lavande.jpg' -%}{%- assign band = 'prov-vignes.jpg' -%}
+  {%- assign chips = 'Beauté,Sommeil' | split: ',' -%}{%- assign chip_handles = 'beaute,sommeil' | split: ',' -%}
 {%- elsif h contains 'sport' -%}
-  {%- assign tags = 'Énergie,Conseils' | split: ',' -%}{%- assign coll = 'sport-bien-etre' -%}{%- assign hero = 'prov-calanque.jpg' -%}
+  {%- assign tags = 'Énergie,Conseils' | split: ',' -%}{%- assign coll = 'sport-bien-etre' -%}{%- assign hero = 'prov-calanque.jpg' -%}{%- assign band = 'prov-calanque2.jpg' -%}
+  {%- assign chips = 'Articulations,Énergie' | split: ',' -%}{%- assign chip_handles = 'articulations,energie' | split: ',' -%}
 {%- else -%}
-  {%- assign tags = 'Saison,Conseils,Bien-être,Beauté,Énergie,Terroir' | split: ',' -%}{%- assign coll = 'tous-nos-complements' -%}{%- assign hero = 'prov-vignes.jpg' -%}
+  {%- assign tags = 'Saison,Conseils,Bien-être,Beauté,Énergie,Terroir' | split: ',' -%}{%- assign coll = 'tous-nos-complements' -%}{%- assign hero = 'prov-vignes.jpg' -%}{%- assign band = 'prov-lavande.jpg' -%}
+  {%- assign chips = '' | split: ',' -%}{%- assign chip_handles = '' | split: ',' -%}
 {%- endif -%}
 {%- assign collection = collections[coll] -%}
 {%- assign blog = blogs['carnet-de-la-vigne'] -%}
+{%- assign hero_src = section.settings.hero_image | default: hero -%}
 
 <!-- héros -->
-<div class="nat-story-hero">
-  <img src="{{ hero | asset_url }}" alt="{{ page.title | escape }}" style="display:block;width:100%;height:300px;object-fit:cover;">
-  <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,58,34,.15),rgba(46,58,34,.6));"></div>
+<div class="nat-story-hero nat-conseil-hero">
+  {%- if section.settings.hero_image != blank -%}
+    <img src="{{ section.settings.hero_image | image_url: width: 2400 }}" alt="{{ page.title | escape }}">
+  {%- else -%}
+    <img src="{{ hero | asset_url }}" alt="{{ page.title | escape }}">
+  {%- endif -%}
+  <div class="nat-conseil-hero__veil"></div>
   <div class="nat-wrap" style="position:absolute;left:0;right:0;bottom:0;padding-bottom:34px;color:#fff;">
-    <div class="nat-eyebrow" style="color:#EBE2CF;">Le guide Natélis</div>
+    <div class="nat-eyebrow" style="color:#EBE2CF;">Le guide Natélis · Provence</div>
     <h1 class="nat-serif" style="font-size:50px;line-height:1.03;margin:8px 0 0;text-shadow:0 1px 18px rgba(12,17,14,.4);">{{ page.title }}</h1>
+    {%- if chips.size > 0 and chips.first != blank -%}
+      <div class="nat-chips">
+        {%- for c in chips -%}
+          <a class="nat-chip" href="/collections/{{ chip_handles[forloop.index0] }}">{{ c }}</a>
+        {%- endfor -%}
+      </div>
+    {%- endif -%}
   </div>
 </div>
 
-<!-- contenu éditable -->
+<!-- conseil éditable -->
 {%- if page.content != blank -%}
-  <div class="nat-wrap nat-rte" style="max-width:820px;padding-top:46px;padding-bottom:10px;font-size:16.5px;line-height:1.8;color:var(--brown-dark);">
+  <div class="nat-wrap nat-rte" style="max-width:800px;padding-top:48px;padding-bottom:14px;font-size:16.5px;line-height:1.85;color:var(--brown-dark);">
     {{ page.content }}
   </div>
 {%- endif -%}
 
+<!-- produits conseillés (compacts), juste sous le conseil -->
+{%- if collection != blank and collection.products.size > 0 -%}
+<div class="nat-wrap" style="max-width:980px;padding-top:18px;padding-bottom:8px;">
+  <h2 class="nat-serif" style="font-size:26px;margin:0 0 4px;">{{ section.settings.reco_title | default: 'Nos compléments conseillés' }}</h2>
+  <p style="font-size:14px;color:var(--brown);margin:0 0 22px;">{{ section.settings.reco_intro | default: 'À composer selon votre objectif.' }}</p>
+  <div class="nat-recos">
+    {%- for product in collection.products limit: 6 -%}
+      <div class="nat-rprod">
+        <a href="{{ product.url }}" class="nat-rprod__media">
+          {%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title | escape }}">{%- endif -%}
+        </a>
+        <a href="{{ product.url }}" class="nat-rprod__name">{{ product.title }}</a>
+        <div class="nat-rprod__row">
+          <span class="nat-rprod__price">{{ product.price | money }}</span>
+          {%- form 'product', product -%}
+            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
+            <button type="submit" class="nat-rprod__add" aria-label="Ajouter {{ product.title | escape }}">+</button>
+          {%- endform -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+  <a class="nat-link" style="display:inline-block;margin-top:16px;" href="{{ collection.url }}">Voir toute la gamme →</a>
+</div>
+{%- endif -%}
+
+<!-- image d'ambiance -->
+{%- if section.settings.band_image != blank -%}{%- assign band_src = section.settings.band_image | image_url: width: 2000 -%}{%- else -%}{%- assign band_src = band | asset_url -%}{%- endif -%}
+<div class="nat-conseil-band" style="background-image:linear-gradient(rgba(46,58,34,.4),rgba(46,58,34,.45)),url('{{ band_src }}');">
+  <div class="nat-conseil-band__inner">
+    <p class="nat-serif" style="font-size:30px;color:#fff;max-width:620px;margin:0;text-shadow:0 1px 16px rgba(12,17,14,.4);">{{ section.settings.band_text | default: 'Le bon actif, au bon moment, formulé en Provence.' }}</p>
+  </div>
+</div>
+
 <!-- articles de blog en lien -->
-<div class="nat-wrap" style="padding-top:40px;padding-bottom:8px;">
+<div class="nat-wrap" style="padding-top:54px;padding-bottom:72px;">
   <div class="nat-section-head">
     <div>
-      <div class="nat-eyebrow">Le journal Natélis</div>
+      <div class="nat-eyebrow">Pour aller plus loin</div>
       <h2 class="nat-h2" style="margin-top:8px;">Articles en lien</h2>
     </div>
     <a class="nat-link" href="{{ blog.url | default: '/blogs/carnet-de-la-vigne' }}">Tous les articles →</a>
@@ -51,46 +101,25 @@
       {%- for t in tags -%}{%- if article.tags contains t -%}{%- assign match = true -%}{%- endif -%}{%- endfor -%}
       {%- if match -%}
         {%- assign shown = shown | plus: 1 -%}
-        <a class="nat-post" href="{{ article.url }}">
-          <div class="nat-post__media" style="background-image:url('{{ article.image | image_url: width: 800 }}');{% if article.image == blank %}background:var(--beige-gold);{% endif %}"></div>
-          <div class="nat-post__meta">{{ article.tags.first | default: 'Journal' }}</div>
-          <div class="nat-post__title">{{ article.title }}</div>
-          <div class="nat-post__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 18 }}</div>
-          <div class="nat-post__more">Lire l'article →</div>
-        </a>
+        {%- render 'article-card', article: article -%}
       {%- endif -%}
     {%- endfor -%}
     {%- if shown == 0 -%}
-      {%- for article in blog.articles limit: 3 -%}
-        <a class="nat-post" href="{{ article.url }}">
-          <div class="nat-post__media" style="background-image:url('{{ article.image | image_url: width: 800 }}');{% if article.image == blank %}background:var(--beige-gold);{% endif %}"></div>
-          <div class="nat-post__meta">{{ article.tags.first | default: 'Journal' }}</div>
-          <div class="nat-post__title">{{ article.title }}</div>
-          <div class="nat-post__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 18 }}</div>
-          <div class="nat-post__more">Lire l'article →</div>
-        </a>
-      {%- endfor -%}
+      {%- for article in blog.articles limit: 3 -%}{%- render 'article-card', article: article -%}{%- endfor -%}
     {%- endif -%}
   </div>
 </div>
 
-<!-- gamme associée -->
-{%- if collection != blank and collection.products.size > 0 -%}
-<div class="nat-wrap" style="padding-top:54px;padding-bottom:72px;">
-  <div class="nat-section-head">
-    <h2 class="nat-h2">La gamme {{ page.title | remove: 'Conseils — ' }}</h2>
-    <a class="nat-link" href="{{ collection.url }}">Voir tout →</a>
-  </div>
-  <div class="nat-grid-4" style="margin-top:26px;gap:28px 24px;">
-    {%- for product in collection.products limit: 4 -%}
-      {%- render 'product-card', product: product -%}
-    {%- endfor -%}
-  </div>
-</div>
-{%- endif -%}
-
 {% schema %}
 { "name": "Page Conseil thématique", "settings": [
+      { "type": "header", "content": "En-tête" },
+      { "type": "image_picker", "id": "hero_image", "label": "Image du héros (optionnel)" },
+      { "type": "header", "content": "Produits conseillés" },
+      { "type": "text", "id": "reco_title", "label": "Titre", "default": "Nos compléments conseillés" },
+      { "type": "text", "id": "reco_intro", "label": "Sous-titre", "default": "À composer selon votre objectif." },
+      { "type": "header", "content": "Image d'ambiance" },
+      { "type": "image_picker", "id": "band_image", "label": "Image" },
+      { "type": "text", "id": "band_text", "label": "Phrase", "default": "Le bon actif, au bon moment, formulé en Provence." },
       { "type": "header", "content": "Polices (cette section)" },
       { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
       { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
