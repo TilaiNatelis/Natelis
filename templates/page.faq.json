@@ -1,1 +1,18 @@
-{ "sections": { "main": { "type": "faq" } }, "order": ["main"] }
+{
+  "sections": {
+    "main": {
+      "type": "faq",
+      "blocks": {
+        "q1": { "type": "qa", "settings": { "q": "Quels sont les délais et frais de livraison ?", "a": "La livraison est offerte dès 49€ d'achat. En dessous, des frais réduits s'appliquent. Les commandes sont expédiées sous 24–48 h ouvrées." } },
+        "q2": { "type": "qa", "settings": { "q": "Quels moyens de paiement acceptez-vous ?", "a": "Carte bancaire, Apple Pay, Google Pay et PayPal, via un paiement 100% sécurisé." } },
+        "q3": { "type": "qa", "settings": { "q": "Puis-je retourner un produit ?", "a": "Vous disposez de 30 jours (satisfait ou remboursé). Pour des raisons d'hygiène, les produits ouverts ne peuvent être repris." } },
+        "q4": { "type": "qa", "settings": { "q": "Combien de temps dure une cure ?", "a": "La plupart de nos cures se prennent sur 1 à 3 mois. Comptez 2 à 4 semaines pour les premiers ressentis." } },
+        "q5": { "type": "qa", "settings": { "q": "Peut-on associer plusieurs compléments ?", "a": "Oui : un actif principal et un ou deux compléments de soutien suffisent. Notre diagnostic compose une routine équilibrée pour vous." } },
+        "q6": { "type": "qa", "settings": { "q": "Vos compléments conviennent-ils à tout le monde ?", "a": "Nos formules sont d'origine naturelle, sans additifs controversés. En cas de grossesse, d'allaitement, de traitement ou de doute, demandez conseil à un professionnel de santé." } },
+        "q7": { "type": "qa", "settings": { "q": "Où sont fabriqués vos produits ?", "a": "Nos compléments alimentaires sont formulés en Provence (près d'Aix-en-Provence) et fabriqués en France." } }
+      },
+      "block_order": ["q1", "q2", "q3", "q4", "q5", "q6", "q7"]
+    }
+  },
+  "order": ["main"]
+}
