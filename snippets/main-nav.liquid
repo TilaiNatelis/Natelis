@@ -26,7 +26,8 @@
                 {%- elsif child.url contains 'vitalite' -%}{%- assign cc = collections['vitalite-immunite'] -%}
                 {%- elsif child.url contains 'beaute' -%}{%- assign cc = collections['beaute-sommeil'] -%}
                 {%- elsif child.url contains 'sport' -%}{%- assign cc = collections['sport-bien-etre'] -%}
-                {%- elsif child.url contains 'conseil' -%}{%- assign cc = collections['tous-nos-complements'] -%}{%- endif -%}
+                {%- elsif child.url contains 'conseil' -%}{%- assign cc = collections['tous-nos-complements'] -%}
+                {%- elsif child.url contains '/blogs/' -%}{%- assign cc = collections['articulations'] -%}{%- endif -%}
                 {%- assign thumb = cc.image | default: cc.products.first.featured_image -%}
                 <a class="nat-mega__card" href="{{ child.url }}">
                   <span class="nat-mega__thumb" style="{% if thumb != blank %}background-image:url('{{ thumb | image_url: width: 240 }}');{% else %}background-image:url('{{ 'prov-lavande.jpg' | asset_url }}');{% endif %}"></span>
@@ -34,7 +35,6 @@
                 </a>
               {%- endfor -%}
             </div>
-            <a class="nat-mega__all" href="{{ link.url }}">{{ all_label }} →</a>
           </div>
         </div>
       {%- else -%}

@@ -37,6 +37,29 @@
   </div>
 {%- endif -%}
 
+<!-- Le journal — articles de la rubrique, mis en avant -->
+{%- if cblog != blank and cblog.articles_count > 0 -%}
+<div class="nat-wrap" style="padding-top:50px;padding-bottom:8px;">
+  <div class="nat-section-head">
+    <div>
+      <div class="nat-eyebrow">Le journal Natélis</div>
+      <h2 class="nat-h2" style="margin-top:8px;">À lire sur {{ sub | downcase }}</h2>
+    </div>
+    <a class="nat-link" href="{{ cblog.url }}">Tous les articles →</a>
+  </div>
+  <div class="nat-grid-3" style="margin-top:28px;">
+    {%- assign shown = 0 -%}
+    {%- for article in cblog.articles -%}
+      {%- if shown >= 3 -%}{%- break -%}{%- endif -%}
+      {%- assign match = false -%}
+      {%- for t in tags -%}{%- if article.tags contains t -%}{%- assign match = true -%}{%- endif -%}{%- endfor -%}
+      {%- if match -%}{%- assign shown = shown | plus: 1 -%}{%- render 'article-card', article: article -%}{%- endif -%}
+    {%- endfor -%}
+    {%- if shown == 0 -%}{%- for article in cblog.articles limit: 3 -%}{%- render 'article-card', article: article -%}{%- endfor -%}{%- endif -%}
+  </div>
+</div>
+{%- endif -%}
+
 <!-- 3 étapes -->
 <div class="nat-wrap" style="padding-top:64px;padding-bottom:4px;">
   <div class="nat-grid-3" style="gap:36px;">
@@ -102,31 +125,6 @@
   {%- endfor -%}
   <div style="border-top:1px solid var(--border);"></div>
 </div>
-
-<!-- Le journal — articles liés à la rubrique -->
-{%- if cblog != blank and cblog.articles_count > 0 -%}
-<div style="background:var(--pale);margin-top:60px;">
-  <div class="nat-wrap" style="padding-top:64px;padding-bottom:70px;">
-    <div class="nat-section-head">
-      <div>
-        <div class="nat-eyebrow">Le journal Natélis</div>
-        <h2 class="nat-h2" style="margin-top:8px;">À lire sur {{ sub | downcase }}</h2>
-      </div>
-      <a class="nat-link" href="{{ cblog.url }}">Tous les articles →</a>
-    </div>
-    <div class="nat-grid-3" style="margin-top:30px;">
-      {%- assign shown = 0 -%}
-      {%- for article in cblog.articles -%}
-        {%- if shown >= 3 -%}{%- break -%}{%- endif -%}
-        {%- assign match = false -%}
-        {%- for t in tags -%}{%- if article.tags contains t -%}{%- assign match = true -%}{%- endif -%}{%- endfor -%}
-        {%- if match -%}{%- assign shown = shown | plus: 1 -%}{%- render 'article-card', article: article -%}{%- endif -%}
-      {%- endfor -%}
-      {%- if shown == 0 -%}{%- for article in cblog.articles limit: 3 -%}{%- render 'article-card', article: article -%}{%- endfor -%}{%- endif -%}
-    </div>
-  </div>
-</div>
-{%- endif -%}
 
 {% schema %}
 {
