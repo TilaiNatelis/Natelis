@@ -47,15 +47,15 @@
     </div>
     <a class="nat-link" href="{{ cblog.url }}">Tous les articles →</a>
   </div>
-  <div class="nat-grid-3" style="margin-top:28px;">
+  <div class="nat-blog5" style="margin-top:26px;">
     {%- assign shown = 0 -%}
     {%- for article in cblog.articles -%}
-      {%- if shown >= 3 -%}{%- break -%}{%- endif -%}
+      {%- if shown >= 5 -%}{%- break -%}{%- endif -%}
       {%- assign match = false -%}
       {%- for t in tags -%}{%- if article.tags contains t -%}{%- assign match = true -%}{%- endif -%}{%- endfor -%}
-      {%- if match -%}{%- assign shown = shown | plus: 1 -%}{%- render 'article-card', article: article -%}{%- endif -%}
+      {%- if match -%}{%- assign shown = shown | plus: 1 -%}{%- render 'article-mini', article: article -%}{%- endif -%}
     {%- endfor -%}
-    {%- if shown == 0 -%}{%- for article in cblog.articles limit: 3 -%}{%- render 'article-card', article: article -%}{%- endfor -%}{%- endif -%}
+    {%- if shown == 0 -%}{%- for article in cblog.articles limit: 5 -%}{%- render 'article-mini', article: article -%}{%- endfor -%}{%- endif -%}
   </div>
 </div>
 {%- endif -%}
@@ -104,9 +104,14 @@
     </div>
     <a class="nat-link" href="{{ collection.url }}">Voir tout →</a>
   </div>
-  <div class="nat-grid-4" style="margin-top:26px;gap:28px 24px;">
-    {%- for product in collection.products limit: 4 -%}
-      {%- render 'product-card', product: product -%}
+  <div style="border-top:1px solid var(--border);margin-top:22px;">
+    {%- for product in collection.products -%}
+      <a href="{{ product.url }}" class="nat-mini">
+        <span class="nat-mini__media">{%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 80 }}" alt="">{%- endif -%}</span>
+        <span class="nat-mini__name">{{ product.title }}</span>
+        <span class="nat-mini__sub">{{ product.metafields.custom.subtitle.value }}</span>
+        <span class="nat-mini__price">{{ product.price | money }}</span>
+      </a>
     {%- endfor -%}
   </div>
 </div>

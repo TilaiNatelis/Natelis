@@ -1,0 +1,6 @@
+{%- comment -%} Carte d'article compacte (petit format). Paramètre : article {%- endcomment -%}
+<a class="nat-postmini" href="{{ article.url }}">
+  <span class="nat-postmini__media" style="background-image:url('{{ article.image | image_url: width: 400 }}');{% if article.image == blank %}background:var(--beige-gold);{% endif %}"></span>
+  <span class="nat-postmini__meta">{{ article.tags.first | default: 'Journal' }}</span>
+  <span class="nat-postmini__title">{{ article.title }}</span>
+</a>
