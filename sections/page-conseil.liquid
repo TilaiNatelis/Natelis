@@ -1,127 +1,141 @@
 {% render 'section-fonts', section: section %}
 {%- comment -%}
-  Page conseil thématique. Thème déduit du handle :
-  conseil-vitalite-immunite / conseil-beaute-sommeil / conseil-sport-bien-etre.
-  Ordre : héros → conseil éditable → produits conseillés (compacts) → image → articles.
+  Pages conseils thématiques, organisées comme « Le guide Natélis » mais filtrées par rubrique.
+  Rubrique déduite du handle : conseil-vitalite-immunite / conseil-beaute-sommeil / conseil-sport-bien-etre.
 {%- endcomment -%}
 {%- assign h = page.handle -%}
 {%- if h contains 'vitalite' -%}
-  {%- assign tags = 'Saison,Énergie,Terroir' | split: ',' -%}{%- assign coll = 'vitalite-immunite' -%}{%- assign hero = 'prov-vignes.jpg' -%}{%- assign band = 'prov-calanque.jpg' -%}
-  {%- assign chips = 'Immunité,Énergie' | split: ',' -%}{%- assign chip_handles = 'immunite,energie' | split: ',' -%}
+  {%- assign tags = 'Saison,Énergie,Terroir' | split: ',' -%}{%- assign coll = 'vitalite-immunite' -%}{%- assign hero = 'prov-vignes.jpg' -%}
+  {%- assign sub = 'Vitalité & immunité' -%}{%- assign intro = 'Renforcez vos défenses et votre énergie avec les bons actifs, formulés en Provence.' -%}
 {%- elsif h contains 'beaute' -%}
-  {%- assign tags = 'Beauté,Bien-être' | split: ',' -%}{%- assign coll = 'beaute-sommeil' -%}{%- assign hero = 'prov-lavande.jpg' -%}{%- assign band = 'prov-vignes.jpg' -%}
-  {%- assign chips = 'Beauté,Sommeil' | split: ',' -%}{%- assign chip_handles = 'beaute,sommeil' | split: ',' -%}
+  {%- assign tags = 'Beauté,Bien-être' | split: ',' -%}{%- assign coll = 'beaute-sommeil' -%}{%- assign hero = 'prov-lavande.jpg' -%}
+  {%- assign sub = 'Beauté & sommeil' -%}{%- assign intro = 'Sublimez votre peau et retrouvez des nuits sereines, naturellement.' -%}
 {%- elsif h contains 'sport' -%}
-  {%- assign tags = 'Énergie,Conseils' | split: ',' -%}{%- assign coll = 'sport-bien-etre' -%}{%- assign hero = 'prov-calanque.jpg' -%}{%- assign band = 'prov-calanque2.jpg' -%}
-  {%- assign chips = 'Articulations,Énergie' | split: ',' -%}{%- assign chip_handles = 'articulations,energie' | split: ',' -%}
+  {%- assign tags = 'Énergie,Conseils' | split: ',' -%}{%- assign coll = 'sport-bien-etre' -%}{%- assign hero = 'prov-calanque.jpg' -%}
+  {%- assign sub = 'Sport & bien-être' -%}{%- assign intro = 'Récupération, articulations et équilibre : les compléments qui accompagnent votre activité.' -%}
 {%- else -%}
-  {%- assign tags = 'Saison,Conseils,Bien-être,Beauté,Énergie,Terroir' | split: ',' -%}{%- assign coll = 'tous-nos-complements' -%}{%- assign hero = 'prov-vignes.jpg' -%}{%- assign band = 'prov-lavande.jpg' -%}
-  {%- assign chips = '' | split: ',' -%}{%- assign chip_handles = '' | split: ',' -%}
+  {%- assign tags = 'Saison,Conseils,Bien-être,Beauté,Énergie,Terroir' | split: ',' -%}{%- assign coll = 'tous-nos-complements' -%}{%- assign hero = 'prov-vignes.jpg' -%}
+  {%- assign sub = 'Conseils' -%}{%- assign intro = 'Nos conseils pour composer votre cure idéale.' -%}
 {%- endif -%}
 {%- assign collection = collections[coll] -%}
-{%- assign blog = blogs['carnet-de-la-vigne'] -%}
-{%- assign hero_src = section.settings.hero_image | default: hero -%}
+{%- assign cblog = blogs['carnet-de-la-vigne'] -%}
+{%- if section.settings.hero_image != blank -%}{%- assign hero_src = section.settings.hero_image | image_url: width: 1200 -%}{%- else -%}{%- assign hero_src = hero | asset_url -%}{%- endif -%}
 
 <!-- héros -->
-<div class="nat-story-hero nat-conseil-hero">
-  {%- if section.settings.hero_image != blank -%}
-    <img src="{{ section.settings.hero_image | image_url: width: 2400 }}" alt="{{ page.title | escape }}">
-  {%- else -%}
-    <img src="{{ hero | asset_url }}" alt="{{ page.title | escape }}">
-  {%- endif -%}
-  <div class="nat-conseil-hero__veil"></div>
-  <div class="nat-wrap" style="position:absolute;left:0;right:0;bottom:0;padding-bottom:34px;color:#fff;">
-    <div class="nat-eyebrow" style="color:#EBE2CF;">Le guide Natélis · Provence</div>
-    <h1 class="nat-serif" style="font-size:50px;line-height:1.03;margin:8px 0 0;text-shadow:0 1px 18px rgba(12,17,14,.4);">{{ page.title }}</h1>
-    {%- if chips.size > 0 and chips.first != blank -%}
-      <div class="nat-chips">
-        {%- for c in chips -%}
-          <a class="nat-chip" href="/collections/{{ chip_handles[forloop.index0] }}">{{ c }}</a>
-        {%- endfor -%}
-      </div>
-    {%- endif -%}
+<div style="background:var(--pale);">
+  <div style="max-width:920px;margin:0 auto;padding:74px 48px 66px;text-align:center;">
+    <div class="nat-eyebrow" style="letter-spacing:.28em;">Le guide Natélis · {{ sub }}</div>
+    <h1 class="nat-serif" style="font-size:54px;line-height:1.04;margin:18px 0 0;">{{ page.title }}</h1>
+    <p style="font-size:16.5px;line-height:1.7;color:var(--green-text);margin:18px auto 0;max-width:600px;">{{ intro }}</p>
   </div>
 </div>
 
-<!-- conseil éditable -->
+<!-- texte immersif éditable (admin > Pages > contenu) -->
 {%- if page.content != blank -%}
-  <div class="nat-wrap nat-rte" style="max-width:800px;padding-top:48px;padding-bottom:14px;font-size:16.5px;line-height:1.85;color:var(--brown-dark);">
+  <div class="nat-wrap nat-rte" style="max-width:760px;padding-top:54px;padding-bottom:6px;font-size:17px;line-height:1.85;color:var(--brown-dark);">
     {{ page.content }}
   </div>
 {%- endif -%}
 
-<!-- produits conseillés (compacts), juste sous le conseil -->
-{%- if collection != blank and collection.products.size > 0 -%}
-<div class="nat-wrap" style="max-width:980px;padding-top:18px;padding-bottom:8px;">
-  <h2 class="nat-serif" style="font-size:26px;margin:0 0 4px;">{{ section.settings.reco_title | default: 'Nos compléments conseillés' }}</h2>
-  <p style="font-size:14px;color:var(--brown);margin:0 0 22px;">{{ section.settings.reco_intro | default: 'À composer selon votre objectif.' }}</p>
-  <div class="nat-recos">
-    {%- for product in collection.products limit: 6 -%}
-      <div class="nat-rprod">
-        <a href="{{ product.url }}" class="nat-rprod__media">
-          {%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 300 }}" alt="{{ product.title | escape }}">{%- endif -%}
-        </a>
-        <a href="{{ product.url }}" class="nat-rprod__name">{{ product.title }}</a>
-        <div class="nat-rprod__row">
-          <span class="nat-rprod__price">{{ product.price | money }}</span>
-          {%- form 'product', product -%}
-            <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-            <button type="submit" class="nat-rprod__add" aria-label="Ajouter {{ product.title | escape }}">+</button>
-          {%- endform -%}
-        </div>
+<!-- 3 étapes -->
+<div class="nat-wrap" style="padding-top:64px;padding-bottom:4px;">
+  <div class="nat-grid-3" style="gap:36px;">
+    {%- assign steps_n = '01,02,03' | split: ',' -%}
+    {%- assign steps_t = 'Cibler votre besoin,Choisir les bons actifs,Installer le rituel' | split: ',' -%}
+    {%- assign steps_d = "Partez d'un objectif clair plutôt que d'accumuler les compléments.|Privilégiez des formes assimilables et bien dosées. Un actif principal, un ou deux en soutien.|Une cure se vit sur 1 à 3 mois, à heure fixe, pour ne rien oublier." | split: '|' -%}
+    {%- for n in steps_n -%}
+      <div style="border-top:2px solid var(--green-deep);padding-top:22px;">
+        <div class="nat-serif" style="font-size:42px;color:var(--sage);line-height:1;">{{ n }}</div>
+        <div style="font-size:20px;font-weight:700;color:var(--green-deep);margin-top:14px;">{{ steps_t[forloop.index0] }}</div>
+        <p style="font-size:14px;line-height:1.65;color:var(--brown);margin:10px 0 0;">{{ steps_d[forloop.index0] }}</p>
       </div>
     {%- endfor -%}
   </div>
-  <a class="nat-link" style="display:inline-block;margin-top:16px;" href="{{ collection.url }}">Voir toute la gamme →</a>
+</div>
+
+<!-- routine idéale -->
+<div class="nat-wrap" style="padding-top:60px;padding-bottom:60px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:4px;overflow:hidden;box-shadow:0 1px 16px rgba(12,17,14,.07);">
+    <div style="background-image:url('{{ hero_src }}');background-size:cover;background-position:center;min-height:460px;"></div>
+    <div style="background:#fff;padding:58px 56px;display:flex;flex-direction:column;justify-content:center;">
+      <div class="nat-eyebrow" style="letter-spacing:.22em;">La routine idéale</div>
+      <h2 class="nat-serif" style="font-size:38px;line-height:1.08;margin:14px 0 24px;">Composer une cure qui vous ressemble</h2>
+      <div style="display:flex;flex-direction:column;gap:15px;">
+        {%- assign checks = "Une cure ciblée sur 1 à 3 mois, plutôt qu'une prise ponctuelle|Le matin pour l'énergie, le soir pour la détente et le sommeil|Trois à quatre compléments complémentaires au maximum|Une pause entre deux cures intensives" | split: '|' -%}
+        {%- for c in checks -%}
+          <div style="display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--olive);">✦</span><span style="font-size:14.5px;color:var(--green-text);line-height:1.5;">{{ c }}</span></div>
+        {%- endfor -%}
+      </div>
+      <a class="nat-btn" style="align-self:flex-start;margin-top:32px;" href="/pages/diagnostic">Faire mon diagnostic →</a>
+    </div>
+  </div>
+</div>
+
+<!-- les compléments de la rubrique -->
+{%- if collection != blank and collection.products.size > 0 -%}
+<div class="nat-wrap" style="padding-top:4px;padding-bottom:8px;">
+  <div class="nat-section-head">
+    <div>
+      <div class="nat-eyebrow">{{ sub }}</div>
+      <h2 class="nat-h2" style="margin-top:8px;">Les compléments conseillés</h2>
+    </div>
+    <a class="nat-link" href="{{ collection.url }}">Voir tout →</a>
+  </div>
+  <div class="nat-grid-4" style="margin-top:26px;gap:28px 24px;">
+    {%- for product in collection.products limit: 4 -%}
+      {%- render 'product-card', product: product -%}
+    {%- endfor -%}
+  </div>
 </div>
 {%- endif -%}
 
-<!-- image d'ambiance -->
-{%- if section.settings.band_image != blank -%}{%- assign band_src = section.settings.band_image | image_url: width: 2000 -%}{%- else -%}{%- assign band_src = band | asset_url -%}{%- endif -%}
-<div class="nat-conseil-band" style="background-image:linear-gradient(rgba(46,58,34,.4),rgba(46,58,34,.45)),url('{{ band_src }}');">
-  <div class="nat-conseil-band__inner">
-    <p class="nat-serif" style="font-size:30px;color:#fff;max-width:620px;margin:0;text-shadow:0 1px 16px rgba(12,17,14,.4);">{{ section.settings.band_text | default: 'Le bon actif, au bon moment, formulé en Provence.' }}</p>
-  </div>
+<!-- FAQ -->
+<div style="max-width:900px;margin:0 auto;padding:64px 48px 12px;">
+  <h2 class="nat-h2" style="font-size:34px;margin:0 0 24px;text-align:center;">Questions fréquentes</h2>
+  {%- assign faq_q = "Combien de temps dure une cure ?|Faut-il les prendre le matin ou le soir ?|Peut-on associer plusieurs compléments ?|Vos compléments conviennent-ils à tout le monde ?" | split: '|' -%}
+  {%- assign faq_a = "La plupart de nos cures se prennent sur 1 à 3 mois ; comptez 2 à 4 semaines pour les premiers ressentis.|Les actifs toniques (vitamine C, multivitamines, oméga 3) plutôt le matin ; magnésium, mélatonine et adaptogènes le soir.|Oui : un actif principal et un ou deux de soutien suffisent. Notre diagnostic compose une routine équilibrée.|Formules d'origine naturelle sans additifs controversés. En cas de grossesse, traitement ou doute, demandez conseil à un professionnel de santé." | split: '|' -%}
+  {%- for q in faq_q -%}
+    <details style="border-top:1px solid var(--border);">
+      <summary style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 4px;cursor:pointer;list-style:none;font-size:17px;font-weight:700;color:var(--green-deep);">{{ q }}<span style="font-size:24px;color:var(--olive-light);">+</span></summary>
+      <p style="font-size:14.5px;line-height:1.7;color:var(--brown);margin:0;padding:0 4px 24px;max-width:700px;">{{ faq_a[forloop.index0] }}</p>
+    </details>
+  {%- endfor -%}
+  <div style="border-top:1px solid var(--border);"></div>
 </div>
 
-<!-- articles de blog en lien -->
-<div class="nat-wrap" style="padding-top:54px;padding-bottom:72px;">
-  <div class="nat-section-head">
-    <div>
-      <div class="nat-eyebrow">Pour aller plus loin</div>
-      <h2 class="nat-h2" style="margin-top:8px;">Articles en lien</h2>
+<!-- Le journal — articles liés à la rubrique -->
+{%- if cblog != blank and cblog.articles_count > 0 -%}
+<div style="background:var(--pale);margin-top:60px;">
+  <div class="nat-wrap" style="padding-top:64px;padding-bottom:70px;">
+    <div class="nat-section-head">
+      <div>
+        <div class="nat-eyebrow">Le journal Natélis</div>
+        <h2 class="nat-h2" style="margin-top:8px;">À lire sur {{ sub | downcase }}</h2>
+      </div>
+      <a class="nat-link" href="{{ cblog.url }}">Tous les articles →</a>
     </div>
-    <a class="nat-link" href="{{ blog.url | default: '/blogs/carnet-de-la-vigne' }}">Tous les articles →</a>
-  </div>
-  <div class="nat-grid-3" style="margin-top:28px;">
-    {%- assign shown = 0 -%}
-    {%- for article in blog.articles -%}
-      {%- if shown >= 3 -%}{%- break -%}{%- endif -%}
-      {%- assign match = false -%}
-      {%- for t in tags -%}{%- if article.tags contains t -%}{%- assign match = true -%}{%- endif -%}{%- endfor -%}
-      {%- if match -%}
-        {%- assign shown = shown | plus: 1 -%}
-        {%- render 'article-card', article: article -%}
-      {%- endif -%}
-    {%- endfor -%}
-    {%- if shown == 0 -%}
-      {%- for article in blog.articles limit: 3 -%}{%- render 'article-card', article: article -%}{%- endfor -%}
-    {%- endif -%}
+    <div class="nat-grid-3" style="margin-top:30px;">
+      {%- assign shown = 0 -%}
+      {%- for article in cblog.articles -%}
+        {%- if shown >= 3 -%}{%- break -%}{%- endif -%}
+        {%- assign match = false -%}
+        {%- for t in tags -%}{%- if article.tags contains t -%}{%- assign match = true -%}{%- endif -%}{%- endfor -%}
+        {%- if match -%}{%- assign shown = shown | plus: 1 -%}{%- render 'article-card', article: article -%}{%- endif -%}
+      {%- endfor -%}
+      {%- if shown == 0 -%}{%- for article in cblog.articles limit: 3 -%}{%- render 'article-card', article: article -%}{%- endfor -%}{%- endif -%}
+    </div>
   </div>
 </div>
+{%- endif -%}
 
 {% schema %}
-{ "name": "Page Conseil thématique", "settings": [
-      { "type": "header", "content": "En-tête" },
-      { "type": "image_picker", "id": "hero_image", "label": "Image du héros (optionnel)" },
-      { "type": "header", "content": "Produits conseillés" },
-      { "type": "text", "id": "reco_title", "label": "Titre", "default": "Nos compléments conseillés" },
-      { "type": "text", "id": "reco_intro", "label": "Sous-titre", "default": "À composer selon votre objectif." },
-      { "type": "header", "content": "Image d'ambiance" },
-      { "type": "image_picker", "id": "band_image", "label": "Image" },
-      { "type": "text", "id": "band_text", "label": "Phrase", "default": "Le bon actif, au bon moment, formulé en Provence." },
-      { "type": "header", "content": "Polices (cette section)" },
-      { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
-      { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
-  ] }
+{
+  "name": "Page Conseil thématique",
+  "settings": [
+    { "type": "image_picker", "id": "hero_image", "label": "Image (bloc routine)" },
+    { "type": "header", "content": "Polices (cette section)" },
+    { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
+    { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
+  ]
+}
 {% endschema %}
