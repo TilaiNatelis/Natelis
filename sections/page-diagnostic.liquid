@@ -10,9 +10,9 @@
     <div class="nat-finder__introbox">
       <div class="nat-finder__eyebrow">{{ section.settings.intro_eyebrow | default: 'Diagnostic personnalisé' }}</div>
       <h1 class="nat-finder__title">{{ section.settings.intro_title | default: 'Trouvez votre cure idéale' }}</h1>
-      <p class="nat-finder__lede">{{ section.settings.intro_text | default: 'Répondez à 3 questions sur vos besoins et votre mode de vie. Nous composons une routine de compléments sur-mesure, en quelques secondes.' }}</p>
+      <p class="nat-finder__lede">{{ section.settings.intro_text | default: 'Répondez à 5 questions sur vos besoins, votre ressenti et votre mode de vie. Nous composons une routine de compléments sur-mesure, en quelques secondes.' }}</p>
       <div class="nat-finder__steps">
-        {%- assign labels = 'Objectif,Ressenti,Mode de vie' | split: ',' -%}
+        {%- assign labels = 'Objectif,Au quotidien,Rythme,Sommeil,Priorité' | split: ',' -%}
         {%- for l in labels -%}
           <div class="nat-finder__stepchip"><span>{{ forloop.index }}</span>{{ l }}</div>
         {%- endfor -%}
@@ -61,24 +61,6 @@
 
 </section>
 
-<!-- Composer une cure qui vous ressemble -->
-<div class="nat-wrap" style="padding-top:64px;padding-bottom:20px;">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:10px;overflow:hidden;box-shadow:0 1px 16px rgba(12,17,14,.07);">
-    {%- if section.settings.routine_image != blank -%}{%- assign rimg = section.settings.routine_image | image_url: width: 1000 -%}{%- else -%}{%- assign rimg = 'prov-lavande.jpg' | asset_url -%}{%- endif -%}
-    <div style="background-image:url('{{ rimg }}');background-size:cover;background-position:center;min-height:420px;"></div>
-    <div style="background:#fff;padding:52px 48px;display:flex;flex-direction:column;justify-content:center;">
-      <div class="nat-eyebrow" style="letter-spacing:.22em;">{{ section.settings.routine_eyebrow | default: 'La routine idéale' }}</div>
-      <h2 class="nat-serif" style="font-size:36px;line-height:1.08;margin:12px 0 22px;">{{ section.settings.routine_title | default: 'Composer une cure qui vous ressemble' }}</h2>
-      <div style="display:flex;flex-direction:column;gap:14px;">
-        {%- assign checks = "Une cure ciblée sur 1 à 3 mois, plutôt qu'une prise ponctuelle|Le matin pour l'énergie, le soir pour la détente et le sommeil|Trois à quatre compléments complémentaires au maximum|Une pause d'une à deux semaines entre deux cures intensives" | split: '|' -%}
-        {%- for c in checks -%}
-          <div style="display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--olive);font-size:15px;">✦</span><span style="font-size:14.5px;color:var(--green-text);line-height:1.5;">{{ c }}</span></div>
-        {%- endfor -%}
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
 (function(){
   var root = document.getElementById('NatDiag-{{ section.id }}');
@@ -93,28 +75,46 @@
     {%- endfor -%}
   ];
 
+  // Diagnostic pondéré : chaque réponse alimente un ou plusieurs objectifs (objs),
+  // avec un poids (w) décroissant selon l'importance de la question.
   var QUESTIONS = [
-    { key:'q1', name:'Objectif', q:'Quel est votre objectif principal ?', w:2, options:[
+    { key:'q1', name:'Objectif', q:'Quel est votre objectif principal ?', w:3, options:[
       {label:'Renforcer mon immunité', icon:'🛡️', objs:['Immunité']},
       {label:'Mieux dormir', icon:'🌙', objs:['Sommeil']},
-      {label:'Réduire mon stress', icon:'🧘', objs:['Stress']},
+      {label:'Apaiser mon stress', icon:'🧘', objs:['Stress']},
       {label:'Retrouver de l’énergie', icon:'⚡', objs:['Énergie']},
-      {label:'Beauté peau & cheveux', icon:'✨', objs:['Beauté']},
-      {label:'Confort articulaire', icon:'🦴', objs:['Articulations']}
+      {label:'Beauté peau, cheveux & ongles', icon:'✨', objs:['Beauté']},
+      {label:'Confort articulaire', icon:'🦴', objs:['Articulations']},
+      {label:'Confort digestif', icon:'🌿', objs:['Digestion']}
     ]},
-    { key:'q2', name:'Ressenti', q:'Comment vous sentez-vous en ce moment ?', w:1, options:[
-      {label:'Fatigué·e', icon:'🥱', objs:['Énergie','Immunité']},
-      {label:'Stressé·e / anxieux·se', icon:'😰', objs:['Stress']},
-      {label:'Sommeil agité', icon:'🌙', objs:['Sommeil']},
-      {label:'Peau terne', icon:'🌫️', objs:['Beauté']},
-      {label:'Inconfort digestif', icon:'🌿', objs:['Digestion']},
-      {label:'Tensions articulaires', icon:'🦵', objs:['Articulations']}
+    { key:'q2', name:'Au quotidien', q:'Qu’est-ce qui vous gêne le plus en ce moment ?', w:2, options:[
+      {label:'Coups de fatigue', icon:'🥱', objs:['Énergie','Immunité']},
+      {label:'Tension nerveuse, anxiété', icon:'😰', objs:['Stress']},
+      {label:'Nuits agitées, réveils nocturnes', icon:'🌙', objs:['Sommeil','Stress']},
+      {label:'Teint terne, cheveux fragiles', icon:'🪞', objs:['Beauté']},
+      {label:'Ballonnements, transit irrégulier', icon:'🌿', objs:['Digestion']},
+      {label:'Raideurs ou gênes articulaires', icon:'🦵', objs:['Articulations']},
+      {label:'Rhumes à répétition', icon:'🤧', objs:['Immunité']}
     ]},
-    { key:'q3', name:'Mode de vie', q:'Votre rythme de vie ?', w:1, options:[
-      {label:'Sportif·ve', icon:'🏃', objs:['Articulations','Énergie']},
+    { key:'q3', name:'Rythme', q:'Quel est votre rythme de vie ?', w:1, options:[
+      {label:'Sportif·ve régulier·e', icon:'🏃', objs:['Articulations','Énergie']},
       {label:'Vie pro intense', icon:'💼', objs:['Stress','Énergie']},
-      {label:'Beaucoup d’écrans', icon:'💻', objs:['Sommeil']},
-      {label:'Plutôt sédentaire', icon:'🛋️', objs:['Énergie']}
+      {label:'Beaucoup d’écrans', icon:'💻', objs:['Sommeil','Stress']},
+      {label:'Plutôt sédentaire', icon:'🛋️', objs:['Énergie','Digestion']},
+      {label:'Rythme équilibré', icon:'🌳', objs:['Énergie']}
+    ]},
+    { key:'q4', name:'Sommeil', q:'Comment sont vos nuits ?', w:2, options:[
+      {label:'Difficile de m’endormir', icon:'🛌', objs:['Sommeil','Stress']},
+      {label:'Je me réveille fatigué·e', icon:'😴', objs:['Énergie','Sommeil']},
+      {label:'Correct, mais perfectible', icon:'🌗', objs:['Sommeil']},
+      {label:'Je dors très bien', icon:'🌟', objs:[]}
+    ]},
+    { key:'q5', name:'Priorité', q:'Votre priorité pour les prochaines semaines ?', w:1, options:[
+      {label:'Passer l’hiver sans tomber malade', icon:'❄️', objs:['Immunité']},
+      {label:'Retrouver de l’éclat', icon:'💆', objs:['Beauté']},
+      {label:'Plus de calme et de sérénité', icon:'☮️', objs:['Stress','Sommeil']},
+      {label:'Un vrai regain de vitalité', icon:'🔆', objs:['Énergie']},
+      {label:'Un système digestif léger', icon:'🍃', objs:['Digestion']}
     ]}
   ];
 
@@ -247,12 +247,8 @@
     { "type": "header", "content": "Introduction" },
     { "type": "text", "id": "intro_eyebrow", "label": "Sur-titre", "default": "Diagnostic personnalisé" },
     { "type": "text", "id": "intro_title", "label": "Titre", "default": "Trouvez votre cure idéale" },
-    { "type": "textarea", "id": "intro_text", "label": "Texte d'intro", "default": "Répondez à 3 questions sur vos besoins et votre mode de vie. Nous composons une routine de compléments alimentaires sur-mesure, en quelques secondes." },
+    { "type": "textarea", "id": "intro_text", "label": "Texte d'intro", "default": "Répondez à 5 questions sur vos besoins, votre ressenti et votre mode de vie. Nous composons une routine de compléments alimentaires sur-mesure, en quelques secondes." },
     { "type": "text", "id": "start_label", "label": "Bouton de démarrage", "default": "Commencer le diagnostic" },
-    { "type": "header", "content": "Bloc « Composer une cure »" },
-    { "type": "text", "id": "routine_eyebrow", "label": "Sur-titre", "default": "La routine idéale" },
-    { "type": "text", "id": "routine_title", "label": "Titre", "default": "Composer une cure qui vous ressemble" },
-    { "type": "image_picker", "id": "routine_image", "label": "Image" },
     { "type": "header", "content": "Réglages" },
     { "type": "collection", "id": "collection", "label": "Collection source (produits recommandés)", "info": "Par défaut « Tous nos compléments ». Les tags des produits servent d'objectifs." }
   ],
