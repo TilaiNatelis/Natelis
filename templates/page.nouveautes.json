@@ -1,6 +1,9 @@
 {
   "sections": {
-    "main": { "type": "page-nouveautes" }
+    "main": {
+      "type": "page-nouveautes",
+      "settings": {}
+    }
   },
   "order": ["main"]
 }
