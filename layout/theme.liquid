@@ -42,9 +42,9 @@
   {%- assign hfam = hfont | replace: ' ', '+' -%}
   {%- assign bfam = bfont | replace: ' ', '+' -%}
   {%- if hfont == bfont -%}
-    <link href="https://fonts.googleapis.com/css2?family={{ hfam }}:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family={{ hfam }}:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   {%- else -%}
-    <link href="https://fonts.googleapis.com/css2?family={{ hfam }}:wght@400;500;600;700&family={{ bfam }}:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family={{ hfam }}:wght@400;500;600;700&family={{ bfam }}:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
   {%- endif -%}
 
   {{ content_for_header }}

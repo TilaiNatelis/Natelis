@@ -92,15 +92,6 @@
         "collection_nouveautes": "nouveautes"
       }
     },
-    "routines": {
-      "type": "home-routines",
-      "settings": {
-        "eyebrow": "Offres groupées",
-        "title": "Nos routines",
-        "subtitle": "Des cures complètes, pensées ensemble et à prix réduit.",
-        "collection": "routines"
-      }
-    },
     "editorial": {
       "type": "home-editorial",
       "settings": {
@@ -174,7 +165,6 @@
     "hero",
     "univers",
     "selection",
-    "routines",
     "editorial",
     "experience",
     "journal"

@@ -39,12 +39,17 @@
 <div class="nat-wrap" style="padding-top:30px;padding-bottom:72px;">
   <h2 class="nat-h2" style="margin-bottom:6px;">{{ section.settings.why_title | default: 'Pourquoi ces cures cet automne ?' }}</h2>
   <p style="font-size:14.5px;color:var(--brown);margin:0 0 30px;max-width:600px;">{{ section.settings.why_intro | default: 'Le bon actif, au bon moment de la saison.' }}</p>
-  <div style="display:flex;flex-direction:column;gap:22px;">
+  <div style="display:flex;flex-direction:column;gap:32px;">
     {%- for block in section.blocks -%}
       {%- assign bp = block.settings.product -%}
-      <div class="nat-why" {{ block.shopify_attributes }}>
+      {%- assign mod = forloop.index | modulo: 2 -%}
+      <div class="nat-why{% if mod == 0 %} nat-why--rev{% endif %}" {{ block.shopify_attributes }}>
         <a href="{{ bp.url | default: '#' }}" class="nat-why__media">
-          {%- if bp.featured_image -%}<img src="{{ bp.featured_image | image_url: width: 300 }}" alt="{{ bp.title | escape }}">{%- else -%}<span style="font-size:10px;color:#c5b596;padding:8px;text-align:center;">{{ bp.title }}</span>{%- endif -%}
+          {%- if bp.featured_image -%}
+            <img src="{{ bp.featured_image | image_url: width: 800 }}" alt="{{ bp.title | escape }}">
+          {%- else -%}
+            <span style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:13px;color:#c5b596;padding:16px;text-align:center;">{{ bp.title }}</span>
+          {%- endif -%}
         </a>
         <div class="nat-why__body">
           <a href="{{ bp.url | default: '#' }}" class="nat-why__name">{{ block.settings.title | default: bp.title }}</a>
@@ -52,7 +57,7 @@
           {%- if bp != blank -%}
             {%- form 'product', bp -%}
               <input type="hidden" name="id" value="{{ bp.selected_or_first_available_variant.id }}">
-              <button type="submit" class="nat-btn nat-btn--outline nat-btn--sm" style="margin-top:10px;">Ajouter · {{ bp.price | money }}</button>
+              <button type="submit" class="nat-btn nat-btn--outline nat-btn--sm" style="margin-top:20px;">Ajouter · {{ bp.price | money }}</button>
             {%- endform -%}
           {%- endif -%}
         </div>
