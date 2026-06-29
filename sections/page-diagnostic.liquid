@@ -3,60 +3,63 @@
 {%- if col == blank or col.products.size == 0 -%}{%- assign col = collections['tous-nos-complements'] -%}{%- endif -%}
 {%- if col == blank or col.products.size == 0 -%}{%- assign col = collections.all -%}{%- endif -%}
 
-<div class="nat-diag">
-  <div class="nat-diag__inner" id="NatDiag-{{ section.id }}">
+<section class="nat-finder" id="NatDiag-{{ section.id }}">
 
-    <!-- intro -->
-    <div data-step="intro" style="text-align:center;">
-      <div class="nat-eyebrow" style="letter-spacing:.26em;">{{ section.settings.intro_eyebrow | default: 'Diagnostic personnalisé' }}</div>
-      <h1 class="nat-serif" style="font-size:54px;line-height:1.05;margin:16px 0 0;">{{ section.settings.intro_title | default: 'Trouvez votre cure idéale' }}</h1>
-      <p style="font-size:16px;line-height:1.65;color:var(--green-text);margin:18px auto 0;max-width:480px;">{{ section.settings.intro_text | default: 'Répondez à 3 questions sur vos besoins et votre mode de vie. Nous composons une routine de compléments alimentaires sur-mesure, en quelques secondes.' }}</p>
-      <div style="display:flex;justify-content:center;gap:32px;margin:34px 0 38px;">
+  <!-- intro -->
+  <div class="nat-finder__stage nat-finder__stage--intro" data-step="intro">
+    <div class="nat-finder__introbox">
+      <div class="nat-finder__eyebrow">{{ section.settings.intro_eyebrow | default: 'Diagnostic personnalisé' }}</div>
+      <h1 class="nat-finder__title">{{ section.settings.intro_title | default: 'Trouvez votre cure idéale' }}</h1>
+      <p class="nat-finder__lede">{{ section.settings.intro_text | default: 'Répondez à 3 questions sur vos besoins et votre mode de vie. Nous composons une routine de compléments sur-mesure, en quelques secondes.' }}</p>
+      <div class="nat-finder__steps">
         {%- assign labels = 'Objectif,Ressenti,Mode de vie' | split: ',' -%}
         {%- for l in labels -%}
-          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;">
-            <div style="width:42px;height:42px;border-radius:999px;border:1.5px solid var(--sage);color:var(--olive);display:flex;align-items:center;justify-content:center;font-family:var(--serif);font-size:20px;">{{ forloop.index }}</div>
-            <div style="font-size:12px;color:var(--brown-dark);">{{ l }}</div>
-          </div>
+          <div class="nat-finder__stepchip"><span>{{ forloop.index }}</span>{{ l }}</div>
         {%- endfor -%}
       </div>
-      <button type="button" class="nat-btn" data-action="start">{{ section.settings.start_label | default: 'Commencer le diagnostic' }}</button>
+      <button type="button" class="nat-finder__cta" data-action="start">{{ section.settings.start_label | default: 'Commencer le diagnostic' }}</button>
     </div>
+  </div>
 
-    <!-- question -->
-    <div data-step="question" style="display:none;">
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">
-        <span class="nat-eyebrow" data-el="progress"></span>
-        <span data-action="restart" style="font-size:12px;color:#9a8b6c;cursor:pointer;">Recommencer</span>
-      </div>
-      <div class="nat-diag__bar"><span data-el="bar" style="width:0;"></span></div>
-      <div data-el="dots" style="display:flex;gap:6px;margin-top:14px;"></div>
-      <h2 class="nat-serif" data-el="question" style="font-size:38px;line-height:1.1;margin:26px 0 24px;"></h2>
-      <div data-el="options" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;"></div>
-      <div style="margin-top:22px;">
-        <button type="button" class="nat-diag__back" data-action="back" style="display:none;background:none;border:none;color:var(--brown);font-size:13.5px;cursor:pointer;font-family:var(--sans);">← Précédent</button>
-      </div>
+  <!-- question -->
+  <div class="nat-finder__stage" data-step="question" style="display:none;">
+    <div class="nat-finder__topbar">
+      <div class="nat-finder__steplabel" data-el="stepname"></div>
+      <div class="nat-finder__progress"><span data-el="bar"></span></div>
     </div>
+    <div class="nat-finder__main">
+      <h2 class="nat-finder__q" data-el="question"></h2>
+      <div class="nat-finder__options" data-el="options"></div>
+    </div>
+    <div class="nat-finder__nav">
+      <button type="button" class="nat-finder__back" data-action="back">← Précédent</button>
+      <button type="button" class="nat-finder__next" data-action="next" disabled>
+        <span class="nat-finder__next-arrow">→</span>
+        <span class="nat-finder__next-labels"><strong data-el="nextname">Suivant</strong><em>Suivant</em></span>
+      </button>
+    </div>
+  </div>
 
-    <!-- résultat -->
-    <div data-step="result" style="display:none;">
-      <div style="text-align:center;">
-        <div class="nat-eyebrow" style="letter-spacing:.26em;">Votre routine sur-mesure</div>
-        <h1 class="nat-serif" style="font-size:46px;line-height:1.05;margin:14px 0 0;">Recommandé pour&nbsp;: <span data-el="recTitle"></span></h1>
-        <p style="font-size:15px;color:var(--green-text);margin:14px auto 0;max-width:520px;">Voici les compléments les plus adaptés à vos réponses. Ajoutez-les à l'unité ou composez toute la routine en un clic.</p>
-      </div>
-      <div class="nat-grid-4" data-el="recProducts" style="gap:22px;margin:38px 0 0;"></div>
-      <div data-el="recEmpty" style="display:none;text-align:center;margin-top:30px;">
+  <!-- résultat -->
+  <div class="nat-finder__stage nat-finder__stage--result" data-step="result" style="display:none;">
+    <div class="nat-finder__result-head">
+      <div class="nat-finder__eyebrow">Votre routine sur-mesure</div>
+      <h1 class="nat-finder__title">Recommandé&nbsp;: <span data-el="recTitle"></span></h1>
+      <p class="nat-finder__lede">Voici les compléments les plus adaptés à vos réponses. Ajoutez-les à l'unité ou composez toute la routine en un clic.</p>
+    </div>
+    <div class="nat-finder__panel">
+      <div class="nat-grid-4" data-el="recProducts" style="gap:22px;"></div>
+      <div data-el="recEmpty" style="display:none;text-align:center;">
         <a class="nat-btn" href="{{ routes.all_products_collection_url }}">Voir tous nos compléments</a>
       </div>
-      <div style="display:flex;justify-content:center;gap:16px;margin-top:40px;flex-wrap:wrap;">
-        <button type="button" class="nat-btn" data-action="addRoutine">Ajouter ma routine au panier</button>
-        <button type="button" class="nat-btn nat-btn--outline" data-action="restart">Refaire le test</button>
-      </div>
     </div>
-
+    <div class="nat-finder__result-actions">
+      <button type="button" class="nat-finder__cta" data-action="addRoutine">Ajouter ma routine au panier</button>
+      <button type="button" class="nat-finder__ghost" data-action="restart">Refaire le test</button>
+    </div>
   </div>
-</div>
+
+</section>
 
 <!-- Composer une cure qui vous ressemble -->
 <div class="nat-wrap" style="padding-top:64px;padding-bottom:20px;">
@@ -81,7 +84,6 @@
   var root = document.getElementById('NatDiag-{{ section.id }}');
   if(!root) return;
 
-  // Catalogue produit (depuis la collection choisie). Virgule finale tolérée par JS.
   var PRODUCTS = [
     {%- for product in col.products -%}
       {%- assign vid = product.selected_or_first_available_variant.id | default: product.variants.first.id -%}
@@ -92,68 +94,79 @@
   ];
 
   var QUESTIONS = [
-    { key:'q1', q:'Quel est votre objectif principal ?', w:2, options:[
-      {label:'Renforcer mon immunité', objs:['Immunité']},
-      {label:'Mieux dormir', objs:['Sommeil']},
-      {label:'Réduire mon stress', objs:['Stress']},
-      {label:'Retrouver de l’énergie', objs:['Énergie']},
-      {label:'Beauté peau & cheveux', objs:['Beauté']},
-      {label:'Confort articulaire', objs:['Articulations']}
+    { key:'q1', name:'Objectif', q:'Quel est votre objectif principal ?', w:2, options:[
+      {label:'Renforcer mon immunité', icon:'🛡️', objs:['Immunité']},
+      {label:'Mieux dormir', icon:'🌙', objs:['Sommeil']},
+      {label:'Réduire mon stress', icon:'🧘', objs:['Stress']},
+      {label:'Retrouver de l’énergie', icon:'⚡', objs:['Énergie']},
+      {label:'Beauté peau & cheveux', icon:'✨', objs:['Beauté']},
+      {label:'Confort articulaire', icon:'🦴', objs:['Articulations']}
     ]},
-    { key:'q2', q:'Comment vous sentez-vous en ce moment ?', w:1, options:[
-      {label:'Fatigué·e', objs:['Énergie','Immunité']},
-      {label:'Stressé·e / anxieux·se', objs:['Stress']},
-      {label:'Sommeil agité', objs:['Sommeil']},
-      {label:'Peau terne', objs:['Beauté']},
-      {label:'Inconfort digestif', objs:['Digestion']},
-      {label:'Tensions articulaires', objs:['Articulations']}
+    { key:'q2', name:'Ressenti', q:'Comment vous sentez-vous en ce moment ?', w:1, options:[
+      {label:'Fatigué·e', icon:'🥱', objs:['Énergie','Immunité']},
+      {label:'Stressé·e / anxieux·se', icon:'😰', objs:['Stress']},
+      {label:'Sommeil agité', icon:'🌙', objs:['Sommeil']},
+      {label:'Peau terne', icon:'🌫️', objs:['Beauté']},
+      {label:'Inconfort digestif', icon:'🌿', objs:['Digestion']},
+      {label:'Tensions articulaires', icon:'🦵', objs:['Articulations']}
     ]},
-    { key:'q3', q:'Votre rythme de vie ?', w:1, options:[
-      {label:'Sportif·ve', objs:['Articulations','Énergie']},
-      {label:'Vie pro intense', objs:['Stress','Énergie']},
-      {label:'Beaucoup d’écrans', objs:['Sommeil']},
-      {label:'Plutôt sédentaire', objs:['Énergie']}
+    { key:'q3', name:'Mode de vie', q:'Votre rythme de vie ?', w:1, options:[
+      {label:'Sportif·ve', icon:'🏃', objs:['Articulations','Énergie']},
+      {label:'Vie pro intense', icon:'💼', objs:['Stress','Énergie']},
+      {label:'Beaucoup d’écrans', icon:'💻', objs:['Sommeil']},
+      {label:'Plutôt sédentaire', icon:'🛋️', objs:['Énergie']}
     ]}
   ];
 
   var step = 0, answers = {}, recVids = [];
   function $(s){ return root.querySelector(s); }
   function panel(name){ return root.querySelector('[data-step="'+name+'"]'); }
-  function show(name){ ['intro','question','result'].forEach(function(p){ panel(p).style.display = (p===name)?'':'none'; });
-    try{ root.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ window.scrollTo(0,0); } }
-
-  function renderDots(){
-    var d = $('[data-el="dots"]'); d.innerHTML='';
-    for(var i=0;i<QUESTIONS.length;i++){
-      var s = document.createElement('span');
-      s.style.cssText = 'height:6px;flex:1;border-radius:999px;background:'+((i<step)?'var(--olive)':'#E1E6D7')+';';
-      d.appendChild(s);
-    }
+  function show(name){
+    ['intro','question','result'].forEach(function(p){ panel(p).style.display = (p===name)?'':'none'; });
+    try{ root.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ window.scrollTo(0,0); }
   }
 
   function renderQuestion(){
     var q = QUESTIONS[step-1];
-    $('[data-el="progress"]').textContent = 'Question '+step+' / '+QUESTIONS.length;
-    $('[data-el="bar"]').style.width = Math.round((step-1)/QUESTIONS.length*100)+'%';
+    $('[data-el="stepname"]').textContent = q.name;
+    $('[data-el="bar"]').style.width = Math.round(step/QUESTIONS.length*100)+'%';
     $('[data-el="question"]').textContent = q.q;
-    renderDots();
+
     var box = $('[data-el="options"]'); box.innerHTML='';
+    box.setAttribute('data-count', q.options.length);
     q.options.forEach(function(o,i){
       var b = document.createElement('button');
-      b.type='button'; b.className='nat-diag__opt';
+      b.type='button'; b.className='nat-finder__opt';
       if(answers[q.key]===i) b.className += ' is-selected';
-      b.innerHTML = '<span class="bullet"></span>'+o.label;
+      b.innerHTML = '<span class="nat-finder__opt-icon">'+(o.icon||'')+'</span><span class="nat-finder__opt-label">'+o.label+'</span><span class="nat-finder__opt-check">✓</span>';
       b.addEventListener('click', function(){
         answers[q.key]=i;
         Array.prototype.forEach.call(box.children, function(c){ c.classList.remove('is-selected'); });
         b.classList.add('is-selected');
-        setTimeout(function(){ step++; (step>QUESTIONS.length) ? finish() : renderQuestion(); }, 240);
+        updateNav();
       });
       box.appendChild(b);
     });
-    $('[data-el="bar"]').style.width = Math.round(step/QUESTIONS.length*100)+'%';
-    root.querySelector('[data-action="back"]').style.display = (step>1) ? 'inline-block' : 'none';
+
+    updateNav();
     show('question');
+  }
+
+  function updateNav(){
+    var q = QUESTIONS[step-1];
+    var nextBtn = root.querySelector('[data-action="next"]');
+    var hasAnswer = answers[q.key] != null;
+    nextBtn.disabled = !hasAnswer;
+    var nextName = (step < QUESTIONS.length) ? QUESTIONS[step].name : 'Résultat';
+    $('[data-el="nextname"]').textContent = nextName;
+    root.querySelector('[data-action="back"]').style.visibility = (step>1) ? 'visible' : 'hidden';
+  }
+
+  function goNext(){
+    var q = QUESTIONS[step-1];
+    if(answers[q.key] == null) return;
+    step++;
+    if(step > QUESTIONS.length){ finish(); } else { renderQuestion(); }
   }
 
   function finish(){
@@ -162,7 +175,6 @@
     var ranked = Object.keys(score).sort(function(a,b){ return score[b]-score[a]; });
     var top = ranked.slice(0,2);
 
-    // produits réellement liés aux objectifs retenus, tri par pertinence
     var scored = PRODUCTS.map(function(p){
       var s = 0, why = '';
       p.objs.forEach(function(o){ if(score[o]){ s += score[o]; if(!why) why = o; } });
@@ -171,7 +183,6 @@
       .sort(function(a,b){ return b.s - a.s; });
 
     var chosen = scored.slice(0,4);
-    // complément si moins de 3 résultats liés
     if(chosen.length < 3){
       PRODUCTS.forEach(function(p){
         if(chosen.length < 3 && !chosen.some(function(x){ return x.p.vid===p.vid; })){ chosen.push({ p:p, s:0, why:'' }); }
@@ -218,6 +229,7 @@
     if(act==='start'){ step=1; answers={}; renderQuestion(); }
     else if(act==='restart'){ step=0; answers={}; show('intro'); }
     else if(act==='back'){ if(step>1){ step--; renderQuestion(); } }
+    else if(act==='next'){ goNext(); }
     else if(act==='addOne'){ addToCart([{id:parseInt(a.getAttribute('data-vid'),10), quantity:1}], false, a); }
     else if(act==='addRoutine'){ addToCart(recVids.map(function(v){ return {id:v, quantity:1}; }), true); }
   });
