@@ -6,11 +6,11 @@
         "collection": "selection-dautomne"
       },
       "blocks": {
-        "w1": { "type": "why", "settings": { "product": "vitamine-c-liposomale", "text": "À l'arrivée du froid, la Vitamine C liposomale soutient vos défenses et combat la fatigue : le réflexe immunité de la saison." } },
-        "w2": { "type": "why", "settings": { "product": "vitamine-d3", "text": "Avec moins de soleil, la Vitamine D3 devient essentielle pour l'immunité et la solidité osseuse, de l'automne à l'hiver." } },
-        "w3": { "type": "why", "settings": { "product": "zinc-bisglycinate", "text": "Le Zinc complète le duo immunité : un coup de pouce naturel pour traverser la saison des refroidissements." } },
-        "w4": { "type": "why", "settings": { "product": "probiotiques", "text": "Les Probiotiques renforcent la flore intestinale, première ligne de défense quand les microbes circulent." } },
-        "w5": { "type": "why", "settings": { "product": "magnesium-bisglycinate", "text": "Jours plus courts, sommeil perturbé : le Magnésium bisglycinate apaise et aide à récupérer pendant les soirées d'automne." } }
+        "w1": { "type": "why", "settings": { "product": "vitamine-c-liposomale", "text": "À l'arrivée du froid, la Vitamine C liposomale soutient vos défenses et combat la fatigue : le réflexe immunité de la saison.", "points": "Soutient les défenses immunitaires\nRéduit la fatigue passagère\nForme liposomale très assimilable" } },
+        "w2": { "type": "why", "settings": { "product": "vitamine-d3", "text": "Avec moins de soleil, la Vitamine D3 devient essentielle pour l'immunité et la solidité osseuse, de l'automne à l'hiver.", "points": "Essentielle quand l'ensoleillement baisse\nImmunité et solidité osseuse\nÀ prendre au repas du matin" } },
+        "w3": { "type": "why", "settings": { "product": "zinc-bisglycinate", "text": "Le Zinc complète le duo immunité : un coup de pouce naturel pour traverser la saison des refroidissements.", "points": "Complète l'action de la vitamine C\nContribue à un système immunitaire normal\nIdéal en cure courte de prévention" } },
+        "w4": { "type": "why", "settings": { "product": "probiotiques", "text": "Les Probiotiques renforcent la flore intestinale, première ligne de défense quand les microbes circulent.", "points": "Renforce l'équilibre de la flore\nPremière ligne de défense digestive\nEn relais après un coup de froid" } },
+        "w5": { "type": "why", "settings": { "product": "magnesium-bisglycinate", "text": "Jours plus courts, sommeil perturbé : le Magnésium bisglycinate apaise et aide à récupérer pendant les soirées d'automne.", "points": "Apaise la nervosité des soirées plus courtes\nFavorise un sommeil réparateur\nForme bisglycinate bien tolérée" } }
       },
       "block_order": ["w1", "w2", "w3", "w4", "w5"]
     }

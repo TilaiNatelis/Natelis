@@ -27,54 +27,32 @@
   </div>
 {%- endif -%}
 
-<!-- grille 3 par ligne : chaque produit + un espace texte éditable -->
-<div class="nat-wrap" style="padding-top:56px;padding-bottom:80px;">
+<!-- chaque produit + un panneau de texte éditable, indépendant du produit -->
+<div class="nat-wrap" style="padding-top:50px;padding-bottom:80px;">
   <div class="nat-section-head">
     <h2 class="nat-h2">{{ section.settings.grid_title | default: 'Tout juste arrivés' }}</h2>
     <a class="nat-link" href="{{ col.url | default: routes.all_products_collection_url }}">Tout voir →</a>
   </div>
 
-  {%- if section.blocks.size > 0 -%}
-    {%- comment -%} Cartes éditables : produit + texte « pourquoi cette nouveauté » {%- endcomment -%}
-    <div class="nat-grid-3" style="gap:34px 28px;margin-top:26px;">
+  <div style="display:flex;flex-direction:column;gap:34px;margin-top:28px;">
+    {%- if section.blocks.size > 0 -%}
       {%- for block in section.blocks -%}
         {%- assign p = block.settings.product -%}
         {%- if p == blank -%}{%- assign p = col.products[forloop.index0] -%}{%- endif -%}
+        {%- assign mod = forloop.index | modulo: 2 -%}
         {%- if p != blank -%}
-          <div class="nat-card" {{ block.shopify_attributes }}>
-            <a href="{{ p.url }}" class="nat-card__media">
-              {%- if p.featured_image -%}
-                <img class="nat-card__img nat-card__img--1" src="{{ p.featured_image | image_url: width: 600 }}" alt="{{ p.featured_image.alt | escape }}" loading="lazy">
-                {%- if p.images[1] -%}<img class="nat-card__img nat-card__img--2" src="{{ p.images[1] | image_url: width: 600 }}" alt="" loading="lazy">{%- endif -%}
-              {%- else -%}
-                <span class="nat-card__ph">{{ p.title }}</span>
-              {%- endif -%}
-            </a>
-            <a href="{{ p.url }}" class="nat-card__name">{{ block.settings.title | default: p.title }}</a>
-            {%- assign nsub = p.metafields.custom.subtitle.value | default: p.type -%}
-            {%- if nsub != blank -%}<div class="nat-card__sub">{{ nsub }}</div>{%- endif -%}
-            {%- if block.settings.text != blank -%}<p class="nat-card__note">{{ block.settings.text }}</p>{%- endif -%}
-            <div class="nat-card__row">
-              <span class="nat-card__price">{{ p.price | money }}{%- if p.compare_at_price > p.price -%}<s class="nat-card__compare">{{ p.compare_at_price | money }}</s>{%- endif -%}</span>
-              {%- form 'product', p -%}
-                <input type="hidden" name="id" value="{{ p.selected_or_first_available_variant.id }}">
-                <button type="submit" class="nat-card__add"{% unless p.available %} disabled{% endunless %}>{%- if p.available -%}Ajouter{%- else -%}Épuisé{%- endif -%}</button>
-              {%- endform -%}
-            </div>
-          </div>
+          {%- render 'automne-row', bp: p, heading: block.settings.title, text: block.settings.text, points: block.settings.points, rev: mod, attrs: block.shopify_attributes -%}
         {%- endif -%}
       {%- endfor -%}
-    </div>
-  {%- elsif col != blank and col.products.size > 0 -%}
-    {%- comment -%} Repli : aucune carte configurée -> collection sans texte {%- endcomment -%}
-    <div class="nat-grid-3" style="gap:34px 28px;margin-top:26px;">
+    {%- elsif col != blank and col.products.size > 0 -%}
       {%- for product in col.products limit: 12 -%}
-        {%- render 'product-card', product: product -%}
+        {%- assign mod = forloop.index | modulo: 2 -%}
+        {%- render 'automne-row', bp: product, rev: mod -%}
       {%- endfor -%}
-    </div>
-  {%- else -%}
-    <p style="color:var(--brown);margin-top:20px;">Les nouveautés arrivent très bientôt.</p>
-  {%- endif -%}
+    {%- else -%}
+      <p style="color:var(--brown);">Les nouveautés arrivent très bientôt.</p>
+    {%- endif -%}
+  </div>
 </div>
 
 {% schema %}
@@ -98,9 +76,12 @@
     {
       "type": "item", "name": "Produit + texte",
       "settings": [
-        { "type": "product", "id": "product", "label": "Produit" },
-        { "type": "text", "id": "title", "label": "Titre (optionnel)", "info": "Par défaut : le nom du produit." },
-        { "type": "textarea", "id": "text", "label": "Texte (sous le produit)", "info": "Pourquoi cette nouveauté, conseil d'utilisation…" }
+        { "type": "header", "content": "Produit" },
+        { "type": "product", "id": "product", "label": "Produit à mettre en avant" },
+        { "type": "header", "content": "Texte (indépendant du produit)" },
+        { "type": "text", "id": "title", "label": "Titre du panneau", "info": "Par défaut : le nom du produit." },
+        { "type": "textarea", "id": "text", "label": "Paragraphe", "info": "Pourquoi cette nouveauté, conseil d'utilisation…" },
+        { "type": "textarea", "id": "points", "label": "Points clés", "info": "Un point par ligne, affiché avec une puce ✦." }
       ]
     }
   ],

@@ -41,7 +41,7 @@
         {%- assign bp = block.settings.product -%}
         {%- if bp == blank -%}{%- assign bp = col.products[forloop.index0] -%}{%- endif -%}
         {%- assign mod = forloop.index | modulo: 2 -%}
-        {%- render 'automne-row', bp: bp, title: block.settings.title, text: block.settings.text, rev: mod, attrs: block.shopify_attributes -%}
+        {%- render 'automne-row', bp: bp, heading: block.settings.title, text: block.settings.text, points: block.settings.points, rev: mod, attrs: block.shopify_attributes -%}
       {%- endfor -%}
     {%- else -%}
       {%- for product in col.products limit: 12 -%}
@@ -71,11 +71,14 @@
   ],
   "blocks": [
     {
-      "type": "why", "name": "Produit + explication",
+      "type": "why", "name": "Produit + texte",
       "settings": [
-        { "type": "product", "id": "product", "label": "Produit" },
-        { "type": "text", "id": "title", "label": "Titre (optionnel)", "info": "Par défaut : le nom du produit." },
-        { "type": "textarea", "id": "text", "label": "Pourquoi ce produit cette saison" }
+        { "type": "header", "content": "Produit" },
+        { "type": "product", "id": "product", "label": "Produit à mettre en avant" },
+        { "type": "header", "content": "Texte (indépendant du produit)" },
+        { "type": "text", "id": "title", "label": "Titre du panneau", "info": "Par défaut : le nom du produit." },
+        { "type": "textarea", "id": "text", "label": "Paragraphe", "info": "Pourquoi ce produit pour cette saison." },
+        { "type": "textarea", "id": "points", "label": "Points clés", "info": "Un point par ligne, affiché avec une puce ✦." }
       ]
     }
   ],

@@ -7,35 +7,40 @@
           "type": "item",
           "settings": {
             "product": "bourrache-onagre",
-            "text": "Oméga 6 d'origine végétale : un duo précieux pour la souplesse et l'éclat de la peau."
+            "text": "Oméga 6 d'origine végétale : un duo précieux pour la souplesse et l'éclat de la peau.",
+            "points": "Oméga 6 végétaux (GLA)\nSouplesse et éclat de la peau\nConfort féminin au fil du cycle"
           }
         },
         "n2": {
           "type": "item",
           "settings": {
             "product": "curcuma-poivre-noir",
-            "text": "Curcumine hautement assimilable grâce à la pipérine, pour le confort articulaire au quotidien."
+            "text": "Curcumine hautement assimilable grâce à la pipérine, pour le confort articulaire au quotidien.",
+            "points": "Curcumine + pipérine = absorption optimale\nConfort articulaire\nPropriétés antioxydantes"
           }
         },
         "n3": {
           "type": "item",
           "settings": {
             "product": "probiotiques",
-            "text": "Des ferments sélectionnés pour soutenir l'équilibre de la flore intestinale et le confort digestif."
+            "text": "Des ferments sélectionnés pour soutenir l'équilibre de la flore intestinale et le confort digestif.",
+            "points": "Équilibre de la flore intestinale\nConfort digestif au quotidien\nEn cure de plusieurs semaines"
           }
         },
         "n4": {
           "type": "item",
           "settings": {
             "product": "complexe-stress",
-            "text": "Magnésium et plantes apaisantes pour traverser les périodes de tension avec sérénité."
+            "text": "Magnésium et plantes apaisantes pour traverser les périodes de tension avec sérénité.",
+            "points": "Magnésium + plantes apaisantes\nMoins de tension nerveuse\nSérénité jour après jour"
           }
         },
         "n5": {
           "type": "item",
           "settings": {
             "product": "melatonine",
-            "text": "Pour réduire le temps d'endormissement et retrouver des nuits réparatrices."
+            "text": "Pour réduire le temps d'endormissement et retrouver des nuits réparatrices.",
+            "points": "Réduit le temps d'endormissement\nNuits plus réparatrices\nÀ prendre 30 min avant le coucher"
           }
         }
       },

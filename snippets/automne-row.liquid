@@ -1,33 +1,49 @@
 {%- comment -%}
-  Une ligne de la sélection d'automne : un produit + un espace texte côte à côte.
+  Ligne « produit + panneau de texte » réutilisable (Sélection d'automne & Nouveautés).
+  Le produit et le texte sont totalement indépendants : modifier le texte ne touche pas au produit.
   Paramètres :
-    - bp     : produit (objet)
-    - title  : titre optionnel (sinon titre du produit)
-    - text   : texte « pourquoi ce produit » (sinon repli sur sous-titre / description)
-    - rev    : 0 = texte à gauche / produit à droite ; sinon produit à gauche / texte à droite
-    - attrs  : shopify_attributes du bloc (édition no-code)
+    - bp      : produit (objet)
+    - heading : titre du panneau (optionnel ; défaut = nom du produit)
+    - text    : paragraphe d'explication (optionnel)
+    - points  : points clés, un par ligne, rendus avec ✦ (optionnel)
+    - rev     : 0 = produit à droite / texte à gauche ; sinon produit à gauche / texte à droite
+    - attrs   : shopify_attributes du bloc (édition no-code)
 {%- endcomment -%}
-{%- assign row_title = title | default: bp.title -%}
-{%- assign row_text = text -%}
-{%- if row_text == blank -%}{%- assign row_text = bp.metafields.custom.subtitle.value -%}{%- endif -%}
-{%- if row_text == blank -%}{%- assign row_text = bp.description | strip_html | truncatewords: 40 -%}{%- endif -%}
-<div class="nat-why{% if rev == 0 %} nat-why--rev{% endif %}" {{ attrs }}>
-  <a href="{{ bp.url | default: '#' }}" class="nat-why__media">
-    {%- if bp.featured_image -%}
-      <img src="{{ bp.featured_image | image_url: width: 800 }}" alt="{{ bp.title | escape }}">
-    {%- else -%}
-      <span style="display:flex;align-items:center;justify-content:center;width:100%;height:100%;font-size:13px;color:#c5b596;padding:16px;text-align:center;">{{ bp.title }}</span>
-    {%- endif -%}
-  </a>
-  <div class="nat-why__body">
-    {%- if bp.type != blank -%}<span class="nat-why__eyebrow">{{ bp.type }}</span>{%- endif -%}
-    <a href="{{ bp.url | default: '#' }}" class="nat-why__name">{{ row_title }}</a>
-    <p class="nat-why__text">{{ row_text }}</p>
-    {%- if bp != blank -%}
-      {%- form 'product', bp -%}
-        <input type="hidden" name="id" value="{{ bp.selected_or_first_available_variant.id }}">
-        <button type="submit" class="nat-btn nat-btn--outline nat-btn--sm" style="margin-top:20px;">Ajouter · {{ bp.price | money }}</button>
-      {%- endform -%}
+{%- assign feat_heading = heading | default: bp.title -%}
+<div class="nat-feat{% if rev == 0 %} nat-feat--rev{% endif %}" {{ attrs }}>
+
+  <div class="nat-feat__product">
+    <a href="{{ bp.url | default: '#' }}" class="nat-feat__media">
+      {%- if bp.featured_image -%}
+        <img src="{{ bp.featured_image | image_url: width: 700 }}" alt="{{ bp.title | escape }}">
+      {%- else -%}
+        <span class="nat-feat__ph">{{ bp.title }}</span>
+      {%- endif -%}
+    </a>
+    <a href="{{ bp.url | default: '#' }}" class="nat-feat__name">{{ bp.title }}</a>
+    <div class="nat-feat__buy">
+      <span class="nat-feat__price">{{ bp.price | money }}</span>
+      {%- if bp != blank -%}
+        {%- form 'product', bp -%}
+          <input type="hidden" name="id" value="{{ bp.selected_or_first_available_variant.id }}">
+          <button type="submit" class="nat-btn nat-btn--outline nat-btn--sm"{% unless bp.available %} disabled{% endunless %}>{%- if bp.available -%}Ajouter{%- else -%}Épuisé{%- endif -%}</button>
+        {%- endform -%}
+      {%- endif -%}
+    </div>
+  </div>
+
+  <div class="nat-feat__panel">
+    <div class="nat-feat__heading nat-serif">{{ feat_heading }}</div>
+    {%- if text != blank -%}<p class="nat-feat__intro">{{ text }}</p>{%- endif -%}
+    {%- if points != blank -%}
+      {%- assign plist = points | newline_to_br | split: '<br />' -%}
+      <ul class="nat-feat__points">
+        {%- for pt in plist -%}
+          {%- assign ptc = pt | strip -%}
+          {%- if ptc != blank -%}<li><span>✦</span>{{ ptc }}</li>{%- endif -%}
+        {%- endfor -%}
+      </ul>
     {%- endif -%}
   </div>
+
 </div>
