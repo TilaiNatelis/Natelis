@@ -2,6 +2,44 @@
   "sections": {
     "main": {
       "type": "page-nouveautes",
+      "blocks": {
+        "n1": {
+          "type": "item",
+          "settings": {
+            "product": "bourrache-onagre",
+            "text": "Oméga 6 d'origine végétale : un duo précieux pour la souplesse et l'éclat de la peau."
+          }
+        },
+        "n2": {
+          "type": "item",
+          "settings": {
+            "product": "curcuma-poivre-noir",
+            "text": "Curcumine hautement assimilable grâce à la pipérine, pour le confort articulaire au quotidien."
+          }
+        },
+        "n3": {
+          "type": "item",
+          "settings": {
+            "product": "probiotiques",
+            "text": "Des ferments sélectionnés pour soutenir l'équilibre de la flore intestinale et le confort digestif."
+          }
+        },
+        "n4": {
+          "type": "item",
+          "settings": {
+            "product": "complexe-stress",
+            "text": "Magnésium et plantes apaisantes pour traverser les périodes de tension avec sérénité."
+          }
+        },
+        "n5": {
+          "type": "item",
+          "settings": {
+            "product": "melatonine",
+            "text": "Pour réduire le temps d'endormissement et retrouver des nuits réparatrices."
+          }
+        }
+      },
+      "block_order": ["n1", "n2", "n3", "n4", "n5"],
       "settings": {}
     }
   },
