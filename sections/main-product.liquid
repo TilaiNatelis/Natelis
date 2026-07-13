@@ -92,7 +92,17 @@
         {%- if composition != blank -%}<details class="nat-acc__item"><summary>Composition</summary><div class="nat-acc__body">{{ composition }}</div></details>{%- endif -%}
         {%- if usage != blank -%}<details class="nat-acc__item"><summary>Conseils d'utilisation</summary><div class="nat-acc__body">{{ usage }}</div></details>{%- endif -%}
         {%- if allergens != blank -%}<details class="nat-acc__item"><summary>Allergènes</summary><div class="nat-acc__body">{{ allergens }}</div></details>{%- endif -%}
-        {%- if faq != blank -%}<details class="nat-acc__item"><summary>Questions fréquentes</summary><div class="nat-acc__body">{{ faq }}</div></details>{%- endif -%}
+        {%- if faq != blank -%}
+          <details class="nat-acc__item"><summary>Questions fréquentes</summary><div class="nat-acc__body">{{ faq }}</div></details>
+        {%- else -%}
+          <details class="nat-acc__item"><summary>Questions fréquentes</summary><div class="nat-acc__body">
+            <p><strong>Comment prendre ce complément ?</strong><br>Reportez-vous à l'onglet « Conseils d'utilisation », avec un grand verre d'eau, sur une cure de 1 à 3 mois.</p>
+            <p><strong>En combien de temps voit-on les premiers effets ?</strong><br>Les bienfaits s'installent progressivement : comptez en général 2 à 4 semaines de prise régulière.</p>
+            <p><strong>Peut-on l'associer à d'autres compléments ?</strong><br>Oui : un actif principal et un ou deux de soutien suffisent. Notre diagnostic compose pour vous une routine équilibrée.</p>
+            <p><strong>Où sont fabriqués vos compléments ?</strong><br>Nos formules sont développées et fabriquées en France, à partir d'actifs d'origine naturelle et sans additifs controversés.</p>
+            <p><strong>À qui s'adressent-ils ?</strong><br>À toute personne adulte souhaitant soutenir son bien-être. Déconseillé aux femmes enceintes ou allaitantes sans avis médical ; en cas de traitement, demandez conseil à un professionnel de santé.</p>
+          </div></details>
+        {%- endif -%}
         <details class="nat-acc__item"><summary>Précautions d'emploi</summary><div class="nat-acc__body">
           <p>Complément alimentaire. Ne se substitue pas à une alimentation variée et équilibrée ni à un mode de vie sain. Ne pas dépasser la dose journalière recommandée. Tenir hors de portée des enfants. Déconseillé aux femmes enceintes ou allaitantes sans avis médical. En cas de traitement, demandez conseil à un professionnel de santé.</p>
         </div></details>
