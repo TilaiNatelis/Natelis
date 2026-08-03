@@ -159,7 +159,7 @@ a{color:inherit;text-decoration:none;}
 .nat-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
 .nat-grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;}
 .nat-univers{position:relative;display:block;cursor:pointer;}
-.nat-univers__img{position:relative;aspect-ratio:4/5;border-radius:0;overflow:hidden;
+.nat-univers__img{position:relative;aspect-ratio:1/1;border-radius:0;overflow:hidden;
   background-size:cover;background-position:center;transition:transform .55s ease;}
 .nat-univers:hover .nat-univers__img{transform:scale(1.015);}
 .nat-univers__card{position:relative;z-index:2;margin:-62px 22px 0;background:#fff;border:1px solid var(--border);
@@ -360,6 +360,39 @@ a{color:inherit;text-decoration:none;}
 .nat-automne-hero{position:relative;width:100%;overflow:hidden;
   border-top:5px solid var(--autumn);border-bottom:5px solid var(--autumn);}
 @media (max-width:768px){ .nat-automne-hero img{height:230px !important;} }
+
+/* ---------- bannière de saison (large et courte, texte centré) ---------- */
+.nat-season-banner{position:relative;overflow:hidden;min-height:236px;display:flex;
+  align-items:center;justify-content:center;text-align:center;padding:46px 40px;}
+.nat-season-banner__img{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;object-position:center 58%;display:block;}
+.nat-season-banner__veil{position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(46,58,34,.38),rgba(46,58,34,.60));}
+.nat-season-banner__body{position:relative;z-index:2;max-width:760px;color:#fff;}
+.nat-season-banner__title{font-family:var(--serif);font-weight:500;font-size:38px;line-height:1.12;
+  letter-spacing:.005em;margin:0;text-shadow:0 2px 22px rgba(12,17,14,.38);}
+.nat-season-banner__sub{font-size:15.5px;line-height:1.62;margin:14px 0 0;
+  text-shadow:0 1px 16px rgba(12,17,14,.34);}
+@media (max-width:768px){
+  .nat-season-banner{min-height:200px;padding:38px 24px;}
+  .nat-season-banner__title{font-size:28px;}
+  .nat-season-banner__sub{font-size:14.5px;}
+}
+
+/* ---------- sélection de saison : deux mises en avant par ligne ---------- */
+.nat-season-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:26px;align-items:stretch;}
+.nat-season-grid .nat-feat__product{width:44%;padding:26px 20px;gap:13px;}
+.nat-season-grid .nat-feat__media{max-width:190px;}
+.nat-season-grid .nat-feat__name{font-size:18px;}
+.nat-season-grid .nat-feat__price{font-size:15.5px;}
+.nat-season-grid .nat-feat__panel{padding:30px 30px;}
+.nat-season-grid .nat-feat__heading{font-size:23px;}
+.nat-season-grid .nat-feat__intro{font-size:14px;line-height:1.65;margin-top:11px;}
+.nat-season-grid .nat-feat__points{margin-top:15px;gap:10px;}
+.nat-season-grid .nat-feat__points li{font-size:13.5px;}
+@media (max-width:1100px){ .nat-season-grid{grid-template-columns:1fr;} }
+/* repasse en colonne sur mobile (spécificité supérieure à la règle générique) */
+@media (max-width:768px){ .nat-season-grid .nat-feat__product{width:100%;} }
 .nat-story-hero{position:relative;width:100%;overflow:hidden;}
 @media (max-width:768px){ .nat-story-hero img{height:220px !important;} }
 
