@@ -29,8 +29,8 @@
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;">
       <span style="font-size:13.5px;color:var(--brown);">{{ collection.products_count }} produits</span>
     </div>
-    {%- paginate collection.products by 16 -%}
-      <div class="nat-grid-4" style="gap:28px 24px;">
+    {%- paginate collection.products by 15 -%}
+      <div class="nat-grid-3 nat-grid--products" style="gap:34px 26px;">
         {%- for product in collection.products -%}
           {%- render 'product-card', product: product -%}
         {%- else -%}

@@ -8,16 +8,26 @@
   <!-- intro -->
   <div class="nat-finder__stage nat-finder__stage--intro" data-step="intro">
     <div class="nat-finder__introbox">
-      <div class="nat-finder__eyebrow">{{ section.settings.intro_eyebrow | default: 'Diagnostic personnalisé' }}</div>
-      <h1 class="nat-finder__title">{{ section.settings.intro_title | default: 'Trouvez votre cure idéale' }}</h1>
-      <p class="nat-finder__lede">{{ section.settings.intro_text | default: 'Répondez à 5 questions sur vos besoins, votre ressenti et votre mode de vie. Nous composons une routine de compléments sur-mesure, en quelques secondes.' }}</p>
+      <div class="nat-finder__eyebrow">{{ section.settings.intro_eyebrow }}</div>
+      <h1 class="nat-finder__title">{{ section.settings.intro_title }}</h1>
+      <p class="nat-finder__lede">{{ section.settings.intro_text }}</p>
+
       <div class="nat-finder__steps">
-        {%- assign labels = 'Objectif,Au quotidien,Rythme,Sommeil,Priorité' | split: ',' -%}
+        {%- assign labels = 'Objectif,Ressenti,Rythme,Nuits,Depuis quand,Priorité' | split: ',' -%}
         {%- for l in labels -%}
           <div class="nat-finder__stepchip"><span>{{ forloop.index }}</span>{{ l }}</div>
         {%- endfor -%}
       </div>
-      <button type="button" class="nat-finder__cta" data-action="start">{{ section.settings.start_label | default: 'Commencer le diagnostic' }}</button>
+
+      <div class="nat-finder__name">
+        <label for="NatDiagName-{{ section.id }}">Votre prénom (facultatif)</label>
+        <input type="text" id="NatDiagName-{{ section.id }}" data-el="name" autocomplete="given-name" placeholder="Pour personnaliser votre cure">
+      </div>
+
+      <div style="margin-top:28px;">
+        <button type="button" class="nat-finder__cta" data-action="start">{{ section.settings.start_label }}</button>
+      </div>
+      <p class="nat-finder__note">{{ section.settings.intro_note }}</p>
     </div>
   </div>
 
@@ -40,23 +50,55 @@
     </div>
   </div>
 
-  <!-- résultat -->
+  <!-- résultat : la cure -->
   <div class="nat-finder__stage nat-finder__stage--result" data-step="result" style="display:none;">
     <div class="nat-finder__result-head">
-      <div class="nat-finder__eyebrow">Votre routine sur-mesure</div>
-      <h1 class="nat-finder__title">Recommandé&nbsp;: <span data-el="recTitle"></span></h1>
-      <p class="nat-finder__lede">Voici les compléments les plus adaptés à vos réponses. Ajoutez-les à l'unité ou composez toute la routine en un clic.</p>
+      <div class="nat-finder__eyebrow">Votre cure sur-mesure</div>
+      <h1 class="nat-finder__title" data-el="recTitle"></h1>
+      <div class="nat-finder__prios" data-el="recPrios"></div>
+      <div class="nat-finder__recap" data-el="recRecap"></div>
     </div>
-    <div class="nat-finder__panel">
-      <div class="nat-grid-4" data-el="recProducts" style="gap:22px;"></div>
-      <div data-el="recEmpty" style="display:none;text-align:center;">
-        <a class="nat-btn" href="{{ routes.all_products_collection_url }}">Voir tous nos compléments</a>
+
+    <div class="nat-finder__blockhead">
+      <h2 class="nat-finder__blocktitle" data-el="cureTitle">Votre cure</h2>
+      <p class="nat-finder__blocksub" data-el="cureSub"></p>
+    </div>
+    <div class="nat-cure-list" data-el="recProducts"></div>
+    <div data-el="recEmpty" style="display:none;margin-top:24px;">
+      <a class="nat-btn" href="{{ routes.all_products_collection_url }}">Voir tous nos compléments</a>
+    </div>
+
+    <div class="nat-finder__blockhead">
+      <h2 class="nat-finder__blocktitle">Votre rituel au quotidien</h2>
+      <p class="nat-finder__blocksub">Quand prendre chaque complément pour en tirer le meilleur.</p>
+    </div>
+    <div class="nat-ritual">
+      <div class="nat-ritual__col">
+        <div class="nat-ritual__when">Le matin</div>
+        <div class="nat-ritual__title">Au petit-déjeuner</div>
+        <ul class="nat-ritual__list" data-el="ritualAm"></ul>
+        <p class="nat-ritual__empty" data-el="ritualAmEmpty" style="display:none;">Rien le matin dans votre cure.</p>
+      </div>
+      <div class="nat-ritual__col">
+        <div class="nat-ritual__when">Le soir</div>
+        <div class="nat-ritual__title">Au dîner ou au coucher</div>
+        <ul class="nat-ritual__list" data-el="ritualPm"></ul>
+        <p class="nat-ritual__empty" data-el="ritualPmEmpty" style="display:none;">Rien le soir dans votre cure.</p>
       </div>
     </div>
-    <div class="nat-finder__result-actions">
-      <button type="button" class="nat-finder__cta" data-action="addRoutine">Ajouter ma routine au panier</button>
-      <button type="button" class="nat-finder__ghost" data-action="restart">Refaire le test</button>
+
+    <div class="nat-finder__total">
+      <div class="nat-finder__total-label">
+        <span data-el="totalCount"></span>
+        <strong data-el="totalPrice"></strong>
+      </div>
+      <button type="button" class="nat-finder__cta" data-action="addRoutine">Ajouter ma cure au panier</button>
     </div>
+
+    <div class="nat-finder__result-actions">
+      <button type="button" class="nat-finder__ghost" data-action="restart">Refaire le diagnostic</button>
+    </div>
+    <p class="nat-finder__note">{{ section.settings.result_note }}</p>
   </div>
 
 </section>
@@ -70,65 +112,83 @@
     {%- for product in col.products -%}
       {%- assign vid = product.selected_or_first_available_variant.id | default: product.variants.first.id -%}
       {%- if vid != blank -%}
-      { vid: {{ vid }}, title: {{ product.title | json }}, url: {{ product.url | json }}, price: {{ product.price | money | json }}, img: {{ product.featured_image | image_url: width: 500 | json }}, sub: {{ product.metafields.custom.subtitle.value | default: '' | json }}, dosage: {{ product.metafields.custom.dosage_text.value | default: '' | json }}, objs: {{ product.tags | json }} },
+      { vid: {{ vid }}, title: {{ product.title | json }}, url: {{ product.url | json }},
+        price: {{ product.price | money | json }}, cents: {{ product.price | default: 0 }},
+        img: {{ product.featured_image | image_url: width: 500 | json }},
+        sub: {{ product.metafields.custom.subtitle.value | default: '' | json }},
+        dosage: {{ product.metafields.custom.dosage_text.value | default: '' | json }},
+        objs: {{ product.tags | json }} },
       {%- endif -%}
     {%- endfor -%}
   ];
 
-  // Diagnostic pondéré : chaque réponse alimente un ou plusieurs objectifs (objs),
-  // avec un poids (w) décroissant selon l'importance de la question.
+  // Chaque réponse alimente un ou plusieurs objectifs, avec un poids décroissant
+  // selon l'importance de la question. `phrase` sert à rédiger le récapitulatif.
   var QUESTIONS = [
     { key:'q1', name:'Objectif', q:'Quel est votre objectif principal ?', w:3, options:[
-      {label:'Renforcer mon immunité', icon:'🛡️', objs:['Immunité']},
-      {label:'Mieux dormir', icon:'🌙', objs:['Sommeil']},
-      {label:'Apaiser mon stress', icon:'🧘', objs:['Stress']},
-      {label:'Retrouver de l’énergie', icon:'⚡', objs:['Énergie']},
-      {label:'Beauté peau, cheveux & ongles', icon:'✨', objs:['Beauté']},
-      {label:'Confort articulaire', icon:'🦴', objs:['Articulations']},
-      {label:'Confort digestif', icon:'🌿', objs:['Digestion']}
+      {label:'Renforcer mon immunité', note:'Passer la saison sans faiblir', phrase:'renforcer votre immunité', objs:['Immunité']},
+      {label:'Mieux dormir', note:'Endormissement et nuits réparatrices', phrase:'retrouver un sommeil réparateur', objs:['Sommeil']},
+      {label:'Apaiser mon stress', note:'Tension nerveuse, irritabilité', phrase:'apaiser votre stress', objs:['Stress']},
+      {label:'Retrouver de l’énergie', note:'Coups de fatigue, baisse de tonus', phrase:'retrouver de l’énergie', objs:['Énergie']},
+      {label:'Peau, cheveux & ongles', note:'Éclat et fermeté', phrase:'prendre soin de votre peau et de vos cheveux', objs:['Beauté']},
+      {label:'Confort articulaire', note:'Souplesse et mobilité', phrase:'retrouver du confort articulaire', objs:['Articulations']},
+      {label:'Confort digestif', note:'Transit et équilibre de la flore', phrase:'retrouver un confort digestif', objs:['Digestion']}
     ]},
-    { key:'q2', name:'Au quotidien', q:'Qu’est-ce qui vous gêne le plus en ce moment ?', w:2, options:[
-      {label:'Coups de fatigue', icon:'🥱', objs:['Énergie','Immunité']},
-      {label:'Tension nerveuse, anxiété', icon:'😰', objs:['Stress']},
-      {label:'Nuits agitées, réveils nocturnes', icon:'🌙', objs:['Sommeil','Stress']},
-      {label:'Teint terne, cheveux fragiles', icon:'🪞', objs:['Beauté']},
-      {label:'Ballonnements, transit irrégulier', icon:'🌿', objs:['Digestion']},
-      {label:'Raideurs ou gênes articulaires', icon:'🦵', objs:['Articulations']},
-      {label:'Rhumes à répétition', icon:'🤧', objs:['Immunité']}
+    { key:'q2', name:'Ressenti', q:'Qu’est-ce qui vous gêne le plus en ce moment ?', w:2, options:[
+      {label:'Des coups de fatigue', note:'Surtout en fin de journée', phrase:'Ce sont surtout les coups de fatigue qui pèsent', objs:['Énergie','Immunité']},
+      {label:'De la tension nerveuse', note:'Difficile de redescendre', phrase:'La tension nerveuse est ce qui vous gêne le plus', objs:['Stress']},
+      {label:'Des nuits agitées', note:'Réveils nocturnes fréquents', phrase:'Vos nuits sont agitées et peu réparatrices', objs:['Sommeil','Stress']},
+      {label:'Un teint terne', note:'Cheveux et ongles fragiles', phrase:'Votre teint et vos cheveux manquent d’éclat', objs:['Beauté']},
+      {label:'Des ballonnements', note:'Transit irrégulier', phrase:'Votre digestion manque de confort', objs:['Digestion']},
+      {label:'Des raideurs articulaires', note:'Au réveil ou après l’effort', phrase:'Les raideurs articulaires vous limitent au quotidien', objs:['Articulations']},
+      {label:'Des rhumes à répétition', note:'Défenses en berne', phrase:'Vos défenses immunitaires semblent à plat', objs:['Immunité']}
     ]},
     { key:'q3', name:'Rythme', q:'Quel est votre rythme de vie ?', w:1, options:[
-      {label:'Sportif·ve régulier·e', icon:'🏃', objs:['Articulations','Énergie']},
-      {label:'Vie pro intense', icon:'💼', objs:['Stress','Énergie']},
-      {label:'Beaucoup d’écrans', icon:'💻', objs:['Sommeil','Stress']},
-      {label:'Plutôt sédentaire', icon:'🛋️', objs:['Énergie','Digestion']},
-      {label:'Rythme équilibré', icon:'🌳', objs:['Énergie']}
+      {label:'Sportif·ve régulier·e', note:'Plusieurs séances par semaine', phrase:'dans un rythme sportif soutenu', objs:['Articulations','Énergie']},
+      {label:'Vie professionnelle intense', note:'Charge mentale élevée', phrase:'dans un quotidien professionnel intense', objs:['Stress','Énergie']},
+      {label:'Beaucoup d’écrans', note:'Journées devant un écran', phrase:'avec beaucoup de temps passé devant les écrans', objs:['Sommeil','Stress']},
+      {label:'Plutôt sédentaire', note:'Peu d’activité physique', phrase:'dans un quotidien plutôt sédentaire', objs:['Énergie','Digestion']},
+      {label:'Un rythme équilibré', note:'Activité modérée et régulière', phrase:'dans un rythme globalement équilibré', objs:['Énergie']}
     ]},
-    { key:'q4', name:'Sommeil', q:'Comment sont vos nuits ?', w:2, options:[
-      {label:'Difficile de m’endormir', icon:'🛌', objs:['Sommeil','Stress']},
-      {label:'Je me réveille fatigué·e', icon:'😴', objs:['Énergie','Sommeil']},
-      {label:'Correct, mais perfectible', icon:'🌗', objs:['Sommeil']},
-      {label:'Je dors très bien', icon:'🌟', objs:[]}
+    { key:'q4', name:'Nuits', q:'Comment sont vos nuits ?', w:2, options:[
+      {label:'J’ai du mal à m’endormir', note:'Plus de 30 minutes', phrase:'l’endormissement reste difficile', objs:['Sommeil','Stress']},
+      {label:'Je me réveille fatigué·e', note:'Sommeil peu réparateur', phrase:'les réveils sont difficiles', objs:['Énergie','Sommeil']},
+      {label:'Correctes, mais perfectibles', note:'Quelques nuits courtes', phrase:'vos nuits sont correctes sans être optimales', objs:['Sommeil']},
+      {label:'Je dors très bien', note:'Sommeil régulier et réparateur', phrase:'votre sommeil est déjà un point fort', objs:[]}
     ]},
-    { key:'q5', name:'Priorité', q:'Votre priorité pour les prochaines semaines ?', w:1, options:[
-      {label:'Passer l’hiver sans tomber malade', icon:'❄️', objs:['Immunité']},
-      {label:'Retrouver de l’éclat', icon:'💆', objs:['Beauté']},
-      {label:'Plus de calme et de sérénité', icon:'☮️', objs:['Stress','Sommeil']},
-      {label:'Un vrai regain de vitalité', icon:'🔆', objs:['Énergie']},
-      {label:'Un système digestif léger', icon:'🍃', objs:['Digestion']}
+    { key:'q5', name:'Depuis quand', q:'Depuis combien de temps ressentez-vous cela ?', w:1, options:[
+      {label:'Quelques jours', note:'C’est récent', phrase:'depuis quelques jours seulement', dur:1, objs:[]},
+      {label:'Quelques semaines', note:'Cela s’installe', phrase:'depuis plusieurs semaines', dur:2, objs:[]},
+      {label:'Plusieurs mois', note:'C’est durable', phrase:'depuis plusieurs mois', dur:3, objs:[]},
+      {label:'C’est récurrent', note:'Cela revient chaque année', phrase:'de façon récurrente', dur:3, objs:[]}
+    ]},
+    { key:'q6', name:'Priorité', q:'Votre priorité pour les prochaines semaines ?', w:1, options:[
+      {label:'Passer l’hiver en forme', note:'Sans tomber malade', phrase:'passer la saison en pleine forme', objs:['Immunité']},
+      {label:'Retrouver de l’éclat', note:'Peau, cheveux, ongles', phrase:'retrouver de l’éclat', objs:['Beauté']},
+      {label:'Plus de calme', note:'Sérénité et détente', phrase:'gagner en calme et en sérénité', objs:['Stress','Sommeil']},
+      {label:'Un regain de vitalité', note:'Du tonus au quotidien', phrase:'retrouver un vrai regain de vitalité', objs:['Énergie']},
+      {label:'Une digestion légère', note:'Confort au quotidien', phrase:'retrouver une digestion légère', objs:['Digestion']}
     ]}
   ];
 
-  var step = 0, answers = {}, recVids = [];
+  // Objectifs pris plutôt le soir ; les autres se prennent le matin.
+  var EVENING = ['Sommeil','Stress'];
+  // Objectifs dont les effets s'installent lentement : cure plus longue.
+  var SLOW = ['Beauté','Articulations'];
+
+  var step = 0, answers = {}, recVids = [], firstName = '';
+
   function $(s){ return root.querySelector(s); }
-  function panel(name){ return root.querySelector('[data-step="'+name+'"]'); }
-  function show(name){
-    ['intro','question','result'].forEach(function(p){ panel(p).style.display = (p===name)?'':'none'; });
+  function panel(n){ return root.querySelector('[data-step="'+n+'"]'); }
+  function show(n){
+    ['intro','question','result'].forEach(function(p){ panel(p).style.display = (p===n)?'':'none'; });
     try{ root.scrollIntoView({behavior:'smooth', block:'start'}); }catch(e){ window.scrollTo(0,0); }
   }
+  function esc(s){ var d=document.createElement('div'); d.textContent = s==null?'':String(s); return d.innerHTML; }
 
   function renderQuestion(){
     var q = QUESTIONS[step-1];
-    $('[data-el="stepname"]').textContent = q.name;
+    $('[data-el="stepname"]').textContent = 'Étape ' + step + ' sur ' + QUESTIONS.length + ' · ' + q.name;
     $('[data-el="bar"]').style.width = Math.round(step/QUESTIONS.length*100)+'%';
     $('[data-el="question"]').textContent = q.q;
 
@@ -136,9 +196,10 @@
     box.setAttribute('data-count', q.options.length);
     q.options.forEach(function(o,i){
       var b = document.createElement('button');
-      b.type='button'; b.className='nat-finder__opt';
-      if(answers[q.key]===i) b.className += ' is-selected';
-      b.innerHTML = '<span class="nat-finder__opt-icon">'+(o.icon||'')+'</span><span class="nat-finder__opt-label">'+o.label+'</span><span class="nat-finder__opt-check">✓</span>';
+      b.type='button'; b.className='nat-finder__opt' + (answers[q.key]===i ? ' is-selected' : '');
+      b.innerHTML = '<span class="nat-finder__opt-label">'+esc(o.label)+'</span>'+
+                    (o.note ? '<span class="nat-finder__opt-note">'+esc(o.note)+'</span>' : '')+
+                    '<span class="nat-finder__opt-check">✓</span>';
       b.addEventListener('click', function(){
         answers[q.key]=i;
         Array.prototype.forEach.call(box.children, function(c){ c.classList.remove('is-selected'); });
@@ -147,7 +208,6 @@
       });
       box.appendChild(b);
     });
-
     updateNav();
     show('question');
   }
@@ -155,29 +215,44 @@
   function updateNav(){
     var q = QUESTIONS[step-1];
     var nextBtn = root.querySelector('[data-action="next"]');
-    var hasAnswer = answers[q.key] != null;
-    nextBtn.disabled = !hasAnswer;
-    var nextName = (step < QUESTIONS.length) ? QUESTIONS[step].name : 'Résultat';
-    $('[data-el="nextname"]').textContent = nextName;
+    nextBtn.disabled = answers[q.key] == null;
+    $('[data-el="nextname"]').textContent = (step < QUESTIONS.length) ? QUESTIONS[step].name : 'Ma cure';
     root.querySelector('[data-action="back"]').style.visibility = (step>1) ? 'visible' : 'hidden';
   }
 
   function goNext(){
-    var q = QUESTIONS[step-1];
-    if(answers[q.key] == null) return;
+    if(answers[QUESTIONS[step-1].key] == null) return;
     step++;
     if(step > QUESTIONS.length){ finish(); } else { renderQuestion(); }
   }
 
+  function pick(qi){ var q=QUESTIONS[qi]; var a=answers[q.key]; return (a!=null) ? q.options[a] : null; }
+
+  function money(cents){
+    try{ return (cents/100).toLocaleString('fr-FR',{minimumFractionDigits:2,maximumFractionDigits:2}) + ' €'; }
+    catch(e){ return (cents/100).toFixed(2) + ' €'; }
+  }
+
   function finish(){
+    // 1. score des objectifs
     var score = {};
-    QUESTIONS.forEach(function(q){ var ai=answers[q.key]; if(ai!=null && q.options[ai]){ q.options[ai].objs.forEach(function(o){ score[o]=(score[o]||0)+q.w; }); } });
+    QUESTIONS.forEach(function(q){
+      var ai = answers[q.key];
+      if(ai!=null && q.options[ai]){ q.options[ai].objs.forEach(function(o){ score[o]=(score[o]||0)+q.w; }); }
+    });
     var ranked = Object.keys(score).sort(function(a,b){ return score[b]-score[a]; });
     var top = ranked.slice(0,2);
 
+    // 2. durée de cure : ancienneté du besoin, allongée si objectif lent
+    var durOpt = pick(4);
+    var months = durOpt && durOpt.dur ? durOpt.dur : 2;
+    if(top.some(function(o){ return SLOW.indexOf(o) > -1; })) months = Math.max(months, 3);
+    if(months < 1) months = 1;
+
+    // 3. sélection des produits
     var scored = PRODUCTS.map(function(p){
       var s = 0, why = '';
-      p.objs.forEach(function(o){ if(score[o]){ s += score[o]; if(!why) why = o; } });
+      p.objs.forEach(function(o){ if(score[o]){ s += score[o]; if(!why || score[o] > score[why]) why = o; } });
       return { p:p, s:s, why:why };
     }).filter(function(x){ return x.s > 0; })
       .sort(function(a,b){ return b.s - a.s; });
@@ -185,33 +260,89 @@
     var chosen = scored.slice(0,4);
     if(chosen.length < 3){
       PRODUCTS.forEach(function(p){
-        if(chosen.length < 3 && !chosen.some(function(x){ return x.p.vid===p.vid; })){ chosen.push({ p:p, s:0, why:'' }); }
+        if(chosen.length < 3 && !chosen.some(function(x){ return x.p.vid===p.vid; })){ chosen.push({ p:p, s:0, why:top[0]||'' }); }
       });
     }
     recVids = chosen.map(function(x){ return x.p.vid; });
-    $('[data-el="recTitle"]').textContent = top.length ? top.join(' & ') : 'Vitalité';
 
-    var grid = $('[data-el="recProducts"]'); grid.innerHTML='';
+    // 4. titre personnalisé + priorités
+    var hi = firstName ? ('Votre cure, ' + firstName) : 'Votre cure sur-mesure';
+    $('[data-el="recTitle"]').textContent = hi;
+
+    var prios = $('[data-el="recPrios"]'); prios.innerHTML='';
+    (top.length ? top : ['Vitalité']).forEach(function(o,i){
+      var s=document.createElement('span');
+      s.className = 'nat-finder__prio' + (i>0 ? ' nat-finder__prio--alt' : '');
+      s.textContent = (i===0 ? 'Priorité : ' : 'Puis : ') + o;
+      prios.appendChild(s);
+    });
+
+    // 5. récapitulatif rédigé à partir des réponses
+    var o1=pick(0), o2=pick(1), o3=pick(2), o4=pick(3), o5=pick(4), o6=pick(5);
+    var who = firstName ? (firstName + ', vous') : 'Vous';
+    var txt = who + ' souhaitez avant tout ' + (o1?o1.phrase:'prendre soin de vous') +
+              (o5 ? ', et cela dure ' + o5.phrase : '') + '. ' +
+              (o2 ? o2.phrase : '') + (o3 ? ', ' + o3.phrase : '') + '. ' +
+              (o4 ? 'Côté nuits, ' + o4.phrase + '. ' : '') +
+              (o6 ? 'Pour les prochaines semaines, votre priorité est de ' + o6.phrase + '.' : '');
+    $('[data-el="recRecap"]').textContent = txt.replace(/\s+([.,])/g, '$1').replace(/\.\s*\./g, '.');
+
+    // 6. la cure, produit par produit
+    $('[data-el="cureTitle"]').textContent = 'Votre cure en ' + chosen.length + ' compléments';
+    $('[data-el="cureSub"]').textContent = 'À suivre sur ' + months + ' mois' +
+      (months >= 3 ? ' — les effets sur ce type d’objectif s’installent progressivement.' : ', puis à réévaluer.');
+
+    var list = $('[data-el="recProducts"]'); list.innerHTML='';
     if(chosen.length===0){
-      grid.style.display='none';
-      $('[data-el="recEmpty"]').style.display='block';
+      list.style.display='none'; $('[data-el="recEmpty"]').style.display='block';
     } else {
-      grid.style.display=''; $('[data-el="recEmpty"]').style.display='none';
-      chosen.forEach(function(x){
-        var p = x.p;
-        var card = document.createElement('div'); card.className='nat-card nat-card--reco';
-        var media = p.img
-          ? '<img class="nat-card__img nat-card__img--1" src="'+p.img+'" alt="">'
-          : '<span class="nat-card__ph">'+p.title+'</span>';
-        card.innerHTML =
-          '<a href="'+p.url+'" class="nat-card__media">'+(x.why ? '<span class="nat-card__reco">✓ '+x.why+'</span>' : '')+media+'</a>'+
-          '<a href="'+p.url+'" class="nat-card__name">'+p.title+'</a>'+
-          (p.dosage ? '<div class="nat-card__sub">'+p.dosage+'</div>' : (p.sub ? '<div class="nat-card__sub">'+p.sub+'</div>' : ''))+
-          '<div class="nat-card__row"><span class="nat-card__price">'+p.price+'</span>'+
-          '<button type="button" class="nat-card__add" data-action="addOne" data-vid="'+p.vid+'">Ajouter</button></div>';
-        grid.appendChild(card);
+      list.style.display=''; $('[data-el="recEmpty"]').style.display='none';
+      chosen.forEach(function(x,i){
+        var p=x.p;
+        var evening = p.objs.some(function(o){ return EVENING.indexOf(o) > -1; });
+        var moment = evening ? 'Le soir' : 'Le matin';
+        var why = x.why ? ('Retenu pour votre objectif ' + x.why.toLowerCase() + '.') : 'Complément de fond pour équilibrer la cure.';
+        if(p.sub) why += ' ' + p.sub + (/[.!?…]$/.test(p.sub) ? '' : '.');
+
+        var el=document.createElement('div'); el.className='nat-cure-item';
+        el.innerHTML =
+          '<a class="nat-cure-item__media" href="'+p.url+'">'+(p.img?'<img src="'+p.img+'" alt="">':'')+'</a>'+
+          '<div class="nat-cure-item__body">'+
+            '<div class="nat-cure-item__rank">Étape '+(i+1)+' de votre cure</div>'+
+            '<a class="nat-cure-item__name" href="'+p.url+'">'+esc(p.title)+'</a>'+
+            '<p class="nat-cure-item__why">'+esc(why)+'</p>'+
+            '<div class="nat-cure-item__specs">'+
+              '<span class="nat-cure-item__spec">'+moment+'</span>'+
+              '<span class="nat-cure-item__spec">Cure de '+months+' mois</span>'+
+              (p.dosage ? '<span class="nat-cure-item__spec">'+esc(p.dosage)+'</span>' : '')+
+            '</div>'+
+          '</div>'+
+          '<div class="nat-cure-item__buy">'+
+            '<span class="nat-cure-item__price">'+esc(p.price)+'</span>'+
+            '<button type="button" class="nat-card__add" data-action="addOne" data-vid="'+p.vid+'">Ajouter</button>'+
+          '</div>';
+        list.appendChild(el);
       });
     }
+
+    // 7. rituel matin / soir
+    var am=$('[data-el="ritualAm"]'), pm=$('[data-el="ritualPm"]');
+    am.innerHTML=''; pm.innerHTML='';
+    chosen.forEach(function(x){
+      var p=x.p;
+      var evening = p.objs.some(function(o){ return EVENING.indexOf(o) > -1; });
+      var li=document.createElement('li');
+      li.innerHTML = '<span>✦</span>' + esc(p.title) + (p.dosage ? ' — ' + esc(p.dosage) : '');
+      (evening ? pm : am).appendChild(li);
+    });
+    $('[data-el="ritualAmEmpty"]').style.display = am.children.length ? 'none' : '';
+    $('[data-el="ritualPmEmpty"]').style.display = pm.children.length ? 'none' : '';
+
+    // 8. total
+    var total = chosen.reduce(function(s,x){ return s + (x.p.cents||0); }, 0);
+    $('[data-el="totalCount"]').textContent = chosen.length + ' compléments · cure de ' + months + ' mois';
+    $('[data-el="totalPrice"]').textContent = money(total) + ' le premier mois';
+
     show('result');
   }
 
@@ -226,13 +357,25 @@
   root.addEventListener('click', function(e){
     var a = e.target.closest('[data-action]'); if(!a) return;
     var act = a.getAttribute('data-action');
-    if(act==='start'){ step=1; answers={}; renderQuestion(); }
+    if(act==='start'){
+      var f = root.querySelector('[data-el="name"]');
+      firstName = f && f.value ? f.value.trim().slice(0,24) : '';
+      step=1; answers={}; renderQuestion();
+    }
     else if(act==='restart'){ step=0; answers={}; show('intro'); }
     else if(act==='back'){ if(step>1){ step--; renderQuestion(); } }
     else if(act==='next'){ goNext(); }
     else if(act==='addOne'){ addToCart([{id:parseInt(a.getAttribute('data-vid'),10), quantity:1}], false, a); }
     else if(act==='addRoutine'){ addToCart(recVids.map(function(v){ return {id:v, quantity:1}; }), true); }
   });
+
+  // Entrée dans le champ prénom = démarrer
+  var nameInput = root.querySelector('[data-el="name"]');
+  if(nameInput){
+    nameInput.addEventListener('keydown', function(e){
+      if(e.key==='Enter'){ e.preventDefault(); root.querySelector('[data-action="start"]').click(); }
+    });
+  }
 })();
 </script>
 
@@ -246,9 +389,12 @@
     ,
     { "type": "header", "content": "Introduction" },
     { "type": "text", "id": "intro_eyebrow", "label": "Sur-titre", "default": "Diagnostic personnalisé" },
-    { "type": "text", "id": "intro_title", "label": "Titre", "default": "Trouvez votre cure idéale" },
-    { "type": "textarea", "id": "intro_text", "label": "Texte d'intro", "default": "Répondez à 5 questions sur vos besoins, votre ressenti et votre mode de vie. Nous composons une routine de compléments alimentaires sur-mesure, en quelques secondes." },
+    { "type": "text", "id": "intro_title", "label": "Titre", "default": "Composons votre cure ensemble" },
+    { "type": "textarea", "id": "intro_text", "label": "Texte d'intro", "default": "Six questions sur votre objectif, votre ressenti et votre rythme de vie. Nous en tirons une cure précise : quels compléments, à quel moment de la journée, et pour combien de temps." },
     { "type": "text", "id": "start_label", "label": "Bouton de démarrage", "default": "Commencer le diagnostic" },
+    { "type": "textarea", "id": "intro_note", "label": "Mention sous le bouton", "default": "Environ 1 minute. Aucune donnée n'est enregistrée : votre cure est calculée directement dans votre navigateur." },
+    { "type": "header", "content": "Résultat" },
+    { "type": "textarea", "id": "result_note", "label": "Mention sous le résultat", "default": "Cette recommandation est établie à partir de vos réponses et ne remplace pas un avis médical. En cas de grossesse, d'allaitement, de traitement en cours ou de doute, demandez conseil à un professionnel de santé." },
     { "type": "header", "content": "Réglages" },
     { "type": "collection", "id": "collection", "label": "Collection source (produits recommandés)", "info": "Par défaut « Tous nos compléments ». Les tags des produits servent d'objectifs." }
   ],

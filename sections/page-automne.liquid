@@ -17,21 +17,12 @@
   </div>
 </div>
 
-<!-- Sélection de saison : deux produits par ligne, chacun avec son explication -->
-<div class="nat-wrap" style="padding-top:58px;padding-bottom:16px;">
-  <div class="nat-section-head">
-    <h2 class="nat-h2">{{ section.settings.why_title | default: 'Notre sélection de saison' }}</h2>
-    <a class="nat-link" href="{{ col.url | default: routes.all_products_collection_url }}">Tout voir →</a>
-  </div>
-  <p style="font-size:14.5px;color:var(--brown);margin:10px 0 0;max-width:600px;">{{ section.settings.why_intro | default: 'Le bon actif, au bon moment de la saison — découvrez pourquoi chaque cure compte cet automne.' }}</p>
-</div>
-
 {%- comment -%}
-  Chaque produit de la sélection est présenté avec un espace texte à côté, deux par ligne.
+  Les produits suivent directement la bannière, deux par ligne.
   Les textes « pourquoi ce produit » se règlent en no-code via les blocs (produit + texte),
   appariés par produit. À défaut de bloc, on déroule simplement la collection.
 {%- endcomment -%}
-<div class="nat-wrap" style="padding-top:34px;padding-bottom:80px;">
+<div class="nat-wrap" style="padding-top:26px;padding-bottom:80px;">
   {%- comment -%} deux mises en avant par ligne : orientation identique pour toutes {%- endcomment -%}
   <div class="nat-season-grid">
     {%- if section.blocks.size > 0 -%}
