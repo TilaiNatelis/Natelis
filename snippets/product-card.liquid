@@ -5,18 +5,35 @@
     - custom.subtitle (single_line_text)  → sous-titre
     - custom.rating (number)              → note (ex. 4.8)
     - custom.rating_count (number)        → nb d'avis
-  Badge : déduit des tags "Best-seller" / "Nouveau".
+  Pastille (en haut à gauche), par ordre de priorité :
+    1. promotion  → prix barré présent
+    2. nouveauté  → tag "Nouveau"
+    3. best-seller → tag "Best-seller"
 {%- endcomment -%}
 {%- assign sub = product.metafields.custom.subtitle | default: product.type -%}
 {%- assign rating = product.metafields.custom.rating -%}
 {%- assign rating_count = product.metafields.custom.rating_count -%}
 {%- assign badge = '' -%}
-{%- if product.tags contains 'Best-seller' -%}{%- assign badge = 'Best-seller' -%}
-{%- elsif product.tags contains 'Nouveau' -%}{%- assign badge = 'Nouveau' -%}{%- endif -%}
+{%- assign badge_kind = '' -%}
+{%- if product.compare_at_price_max > product.price_min -%}
+  {%- assign badge = 'Offre spéciale' -%}{%- assign badge_kind = 'promo' -%}
+{%- elsif product.tags contains 'Nouveau' or product.tags contains 'Nouveauté' -%}
+  {%- assign badge = 'Nouveau' -%}{%- assign badge_kind = 'new' -%}
+{%- elsif product.tags contains 'Best-seller' -%}
+  {%- assign badge = 'Best-seller' -%}{%- assign badge_kind = 'best' -%}
+{%- endif -%}
+{%- comment -%} les tags déjà repris dans la pastille ne sont pas répétés sous le visuel {%- endcomment -%}
+{%- assign objtags = '' -%}
+{%- for t in product.tags -%}
+  {%- unless t == 'Best-seller' or t == 'Nouveau' or t == 'Nouveauté' -%}
+    {%- if objtags != '' -%}{%- assign objtags = objtags | append: ' · ' -%}{%- endif -%}
+    {%- assign objtags = objtags | append: t -%}
+  {%- endunless -%}
+{%- endfor -%}
 
 <div class="nat-card">
   <a href="{{ product.url }}" class="nat-card__media">
-    {%- if badge != blank -%}<span class="nat-card__badge">{{ badge }}</span>{%- endif -%}
+    {%- if badge != blank -%}<span class="nat-card__badge nat-card__badge--{{ badge_kind }}">{{ badge }}</span>{%- endif -%}
     {%- if product.featured_image -%}
       <img class="nat-card__img nat-card__img--1" src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | escape }}" loading="lazy">
       {%- if product.images[1] -%}
@@ -27,8 +44,8 @@
     {%- endif -%}
   </a>
 
-  {%- if product.tags.size > 0 -%}
-    <a href="{{ product.url }}" class="nat-card__obj">{{ product.tags | join: ' · ' }}</a>
+  {%- if objtags != blank -%}
+    <a href="{{ product.url }}" class="nat-card__obj">{{ objtags }}</a>
   {%- endif -%}
   <a href="{{ product.url }}" class="nat-card__name">{{ product.title }}</a>
   {%- if sub != blank -%}<div class="nat-card__sub">{{ sub }}</div>{%- endif -%}

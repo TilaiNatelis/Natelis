@@ -2,11 +2,6 @@
 {%- assign col = section.settings.collection -%}
 {%- if col == blank or col.products.size == 0 -%}{%- assign col = collections['selection-dautomne'] -%}{%- endif -%}
 {%- if col == blank or col.products.size == 0 -%}{%- assign col = collections['tous-nos-complements'] -%}{%- endif -%}
-{%- comment -%} bandeau promo (masqué si le champ est vide) {%- endcomment -%}
-{%- if section.settings.banner != blank -%}
-  <div class="nat-automne-banner">{{ section.settings.banner }}</div>
-{%- endif -%}
-
 {%- comment -%} bannière de saison : large, courte, titre + sous-titre centrés {%- endcomment -%}
 {%- if section.settings.image != blank -%}{%- assign aut_img = section.settings.image | image_url: width: 2400 -%}{%- else -%}{%- assign aut_img = 'automne.webp' | asset_url -%}{%- endif -%}
 <div class="nat-wrap" style="padding-top:20px;">
@@ -61,9 +56,8 @@
       { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
       { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
     ,
-    { "type": "text", "id": "banner", "label": "Bannière", "default": "L'automne en Provence · Renforcez vos défenses naturellement" },
-    { "type": "image_picker", "id": "image", "label": "Visuel" },
-    { "type": "text", "id": "title", "label": "Titre", "default": "Les cures essentielles de la saison" },
+    { "type": "image_picker", "id": "image", "label": "Visuel de la bannière" },
+    { "type": "text", "id": "title", "label": "Titre sur la bannière", "default": "L'automne en Provence · Renforcez vos défenses naturellement" },
     { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Quand les jours raccourcissent, le corps a besoin de soutien. Immunité, énergie, sérénité — notre sélection pour traverser l'automne en pleine forme." },
     { "type": "collection", "id": "collection", "label": "Collection « Sélection d'automne »", "info": "Sert de repli si un bloc n'a pas de produit défini." },
     { "type": "header", "content": "Titre de la sélection" },

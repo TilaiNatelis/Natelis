@@ -13,9 +13,13 @@
 <div class="nat-feat{% if rev == 0 %} nat-feat--rev{% endif %}" {{ attrs }}>
 
   <div class="nat-feat__product">
-    <a href="{{ bp.url | default: '#' }}" class="nat-feat__media">
+    {%- comment -%} 2e visuel affiché au survol quand le produit en a un {%- endcomment -%}
+    <a href="{{ bp.url | default: '#' }}" class="nat-feat__media{% if bp.images[1] %} nat-feat__media--swap{% endif %}">
       {%- if bp.featured_image -%}
-        <img src="{{ bp.featured_image | image_url: width: 700 }}" alt="{{ bp.title | escape }}">
+        <img class="nat-feat__img nat-feat__img--1" src="{{ bp.featured_image | image_url: width: 700 }}" alt="{{ bp.title | escape }}" loading="lazy">
+        {%- if bp.images[1] -%}
+          <img class="nat-feat__img nat-feat__img--2" src="{{ bp.images[1] | image_url: width: 700 }}" alt="" loading="lazy">
+        {%- endif -%}
       {%- else -%}
         <span class="nat-feat__ph">{{ bp.title }}</span>
       {%- endif -%}
