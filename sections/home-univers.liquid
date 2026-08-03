@@ -1,7 +1,10 @@
 {% render 'section-fonts', section: section %}
-<div class="nat-wrap" style="padding-top:60px;padding-bottom:8px;">
-  <div class="nat-section-head" style="margin-bottom:26px;">
-    <h2 class="nat-h2">{{ section.settings.title }}</h2>
+<div class="nat-wrap" style="padding-top:88px;padding-bottom:8px;">
+  <div class="nat-section-head" style="margin-bottom:38px;">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}<p class="nat-section-head__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="nat-h2">{{ section.settings.title }}</h2>
+    </div>
     <a class="nat-link" href="{{ routes.all_products_collection_url }}">Tous les produits →</a>
   </div>
   {%- assign univers_defaults = 'prov-vignes.jpg,prov-lavande.jpg,prov-calanque.jpg' | split: ',' -%}
@@ -12,11 +15,10 @@
         {%- assign img = block.settings.image | default: col.featured_image -%}
         {%- if img != blank -%}{%- assign img_src = img | image_url: width: 800 -%}{%- else -%}{%- assign def = univers_defaults[forloop.index0] | default: univers_defaults.first -%}{%- assign img_src = def | asset_url -%}{%- endif -%}
         <div class="nat-univers__img" style="background-image:url('{{ img_src }}');"></div>
-        <div class="nat-univers__veil"></div>
-        <div class="nat-univers__body">
+        <div class="nat-univers__card">
           <div class="nat-univers__title">{{ block.settings.title | default: col.title }}</div>
-          <div class="nat-univers__sub">{{ block.settings.subtitle }}</div>
-          <div class="nat-univers__more">Découvrir →</div>
+          {%- if block.settings.subtitle != blank -%}<div class="nat-univers__sub">{{ block.settings.subtitle }}</div>{%- endif -%}
+          <span class="nat-univers__btn">Découvrir</span>
         </div>
       </a>
     {%- endfor -%}
@@ -32,6 +34,7 @@
       { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
       { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
     ,
+    { "type": "text", "id": "eyebrow", "label": "Sur-titre", "default": "Nos univers bien-être" },
     { "type": "text", "id": "title", "label": "Titre", "default": "Explorez par univers" }
   ],
   "blocks": [

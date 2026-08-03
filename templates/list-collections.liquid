@@ -4,10 +4,9 @@
     {%- for collection in collections -%}
       <a class="nat-univers" href="{{ collection.url }}">
         <div class="nat-univers__img" style="background-image:url('{{ collection.image | image_url: width: 800 }}');{% if collection.image == blank %}background:var(--beige-gold);{% endif %}"></div>
-        <div class="nat-univers__veil"></div>
-        <div class="nat-univers__body">
+        <div class="nat-univers__card">
           <div class="nat-univers__title">{{ collection.title }}</div>
-          <div class="nat-univers__more">Découvrir →</div>
+          <span class="nat-univers__btn">Découvrir</span>
         </div>
       </a>
     {%- endfor -%}
