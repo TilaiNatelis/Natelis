@@ -36,7 +36,7 @@ a{color:inherit;text-decoration:none;}
 
 /* ---------- boutons ---------- */
 .nat-btn{display:inline-block;border:none;background:var(--green-deep);color:var(--cream);
-  font-size:14px;font-weight:700;letter-spacing:.05em;padding:16px 40px;border-radius:999px;
+  font-size:14px;font-weight:700;letter-spacing:.05em;padding:16px 40px;border-radius:0;
   cursor:pointer;font-family:var(--sans);transition:background .2s;}
 .nat-btn:hover{background:var(--olive);}
 .nat-btn--outline{background:transparent;border:1.5px solid var(--green-deep);color:var(--green-deep);}
@@ -61,7 +61,7 @@ a{color:inherit;text-decoration:none;}
 .nat-header{display:flex;align-items:center;padding:26px 48px;background:var(--cream);}
 .nat-header__logo{height:66px;width:auto;display:block;flex:none;cursor:pointer;}
 .nat-search{flex:none;width:340px;margin-left:44px;display:flex;align-items:center;gap:11px;
-  background:var(--soft);border:1px solid var(--border);border-radius:6px;padding:12px 18px;
+  background:var(--soft);border:1px solid var(--border);border-radius:0;padding:12px 18px;
   color:#9a8b6c;cursor:text;font-size:13.5px;}
 .nat-header__icons{display:flex;align-items:center;gap:26px;color:var(--green-deep);}
 .nat-header__icons svg{cursor:pointer;}
@@ -83,22 +83,22 @@ a{color:inherit;text-decoration:none;}
 .nat-nav__parent:hover .nat-nav__item--has-mega::after{opacity:1;transform:rotate(-135deg);margin-top:1px;}
 /* pastilles douces (sélection saison / diagnostic) façon Caudalie */
 .nat-nav__item--automne{background:var(--beige-gold);color:var(--autumn-deep);font-weight:600;
-  padding:0 20px;margin:9px 0;border-radius:7px;letter-spacing:.05em;box-shadow:none;}
+  padding:0 20px;margin:9px 0;border-radius:0;letter-spacing:.05em;box-shadow:none;}
 .nat-nav__item--automne:hover,.nat-nav__item--automne.is-active{background:#dccdb2;color:var(--autumn-deep);box-shadow:none;}
 .nat-nav__item--diag{background:var(--soft);color:var(--green-deep);font-weight:600;padding:0 20px;margin:9px 0;
-  border-radius:7px;border:1px solid var(--border);letter-spacing:.05em;box-shadow:none;}
+  border-radius:0;border:1px solid var(--border);letter-spacing:.05em;box-shadow:none;}
 .nat-nav__item--diag:hover,.nat-nav__item--diag.is-active{background:var(--pale);color:var(--green-deep);box-shadow:none;}
 
 /* parent avec sous-menu (méga-menu à vignettes) */
 .nat-nav__parent{position:relative;}
 .nat-mega{position:absolute;left:50%;top:100%;transform:translateX(-50%) translateY(12px);
-  background:#fff;border:1px solid var(--border);border-radius:4px;box-shadow:0 30px 70px rgba(12,17,14,.15);
+  background:#fff;border:1px solid var(--border);border-radius:0;box-shadow:0 30px 70px rgba(12,17,14,.15);
   padding:34px 36px 30px;opacity:0;visibility:hidden;pointer-events:none;transition:opacity .22s ease,transform .22s ease;z-index:60;width:max-content;max-width:800px;}
 .nat-nav__parent:hover .nat-mega{opacity:1;visibility:visible;pointer-events:auto;transform:translateX(-50%) translateY(0);}
 .nat-mega::before{content:"";position:absolute;left:0;right:0;top:-16px;height:16px;}
 .nat-mega__cards{display:grid;grid-template-columns:repeat(4,152px);gap:26px 22px;}
 .nat-mega__card{display:block;text-align:left;}
-.nat-mega__thumb{display:block;width:152px;height:106px;border-radius:3px;background-size:cover;background-position:center;
+.nat-mega__thumb{display:block;width:152px;height:106px;border-radius:0;background-size:cover;background-position:center;
   background-color:var(--soft);transition:transform .3s ease;}
 .nat-mega__card:hover .nat-mega__thumb{transform:translateY(-3px);}
 .nat-mega__cardlabel{display:block;margin-top:12px;font-size:13px;font-weight:500;letter-spacing:.02em;
@@ -117,10 +117,18 @@ a{color:inherit;text-decoration:none;}
 .nat-section-head__eyebrow{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--olive-light);font-weight:700;margin:0 0 12px;}
 .nat-link{font-size:12px;color:var(--olive-light);font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
 
-/* ---------- hero accueil ---------- */
-.nat-hero{position:relative;height:620px;overflow:hidden;background:var(--pale);}
-.nat-hero__slide{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;opacity:0;transition:opacity .9s ease;}
-.nat-hero__slide.is-active{opacity:1;}
+/* ---------- hero accueil (carrousel glissant) ---------- */
+/* Hauteur = écran − (bandeau + en-tête + nav) − un léger débord.
+   --nat-chrome est mesuré en JS (il dépend de la taille du logo) ;
+   --nat-peek = ce qu'on laisse dépasser de la section suivante. */
+.nat-hero{--nat-chrome:215px;--nat-peek:78px;
+  position:relative;height:calc(100vh - var(--nat-chrome) - var(--nat-peek));
+  height:calc(100svh - var(--nat-chrome) - var(--nat-peek));
+  min-height:360px;max-height:820px;overflow:hidden;background:var(--pale);}
+.nat-hero__track{display:flex;height:100%;width:100%;will-change:transform;
+  transition:transform .85s cubic-bezier(.62,.05,.31,1);}
+.nat-hero__slide{position:relative;flex:0 0 100%;width:100%;height:100%;overflow:hidden;}
+.nat-hero__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center;display:block;}
 .nat-hero__scrim{position:absolute;inset:0;pointer-events:none;z-index:1;}
 .nat-hero__scrim--left{background:linear-gradient(90deg,rgba(20,26,16,.42),rgba(20,26,16,.10) 42%,rgba(20,26,16,0) 62%);}
 .nat-hero__scrim--right{background:linear-gradient(270deg,rgba(20,26,16,.42),rgba(20,26,16,.10) 42%,rgba(20,26,16,0) 62%);}
@@ -137,7 +145,7 @@ a{color:inherit;text-decoration:none;}
   letter-spacing:.005em;margin:0 0 32px;}
 .nat-hero__btn{display:inline-block;pointer-events:auto;background:rgba(255,255,255,.94);color:var(--green-deep);
   font-family:var(--sans);font-size:12.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
-  padding:16px 42px;border-radius:2px;box-shadow:0 8px 24px rgba(12,17,14,.16);transition:background .2s,color .2s;}
+  padding:16px 42px;border-radius:0;box-shadow:0 8px 24px rgba(12,17,14,.16);transition:background .2s,color .2s;}
 .nat-hero__btn:hover{background:var(--green-deep);color:#fff;}
 .nat-hero__overlay--light .nat-hero__eyebrow,.nat-hero__overlay--light .nat-hero__title{color:#fff;text-shadow:0 2px 26px rgba(20,26,16,.34);}
 .nat-hero__overlay--dark .nat-hero__eyebrow,.nat-hero__overlay--dark .nat-hero__title{color:var(--green-deep);}
@@ -151,28 +159,28 @@ a{color:inherit;text-decoration:none;}
 .nat-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
 .nat-grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;}
 .nat-univers{position:relative;display:block;cursor:pointer;}
-.nat-univers__img{position:relative;aspect-ratio:4/5;border-radius:4px;overflow:hidden;
+.nat-univers__img{position:relative;aspect-ratio:4/5;border-radius:0;overflow:hidden;
   background-size:cover;background-position:center;transition:transform .55s ease;}
 .nat-univers:hover .nat-univers__img{transform:scale(1.015);}
 .nat-univers__card{position:relative;z-index:2;margin:-62px 22px 0;background:#fff;border:1px solid var(--border);
-  border-radius:4px;padding:26px 28px 30px;box-shadow:0 16px 42px rgba(12,17,14,.10);transition:box-shadow .25s,transform .25s;}
+  border-radius:0;padding:26px 28px 30px;box-shadow:0 16px 42px rgba(12,17,14,.10);transition:box-shadow .25s,transform .25s;}
 .nat-univers:hover .nat-univers__card{box-shadow:0 22px 54px rgba(12,17,14,.15);transform:translateY(-2px);}
 .nat-univers__title{font-family:var(--serif);font-weight:500;font-size:27px;line-height:1.12;color:var(--green-deep);}
 .nat-univers__sub{font-size:13.5px;line-height:1.6;color:var(--brown-dark);margin-top:11px;}
 .nat-univers__btn{display:inline-block;margin-top:22px;border:1.5px solid var(--green-deep);color:var(--green-deep);
-  font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:12px 32px;border-radius:2px;
+  font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;padding:12px 32px;border-radius:0;
   transition:background .22s,color .22s;}
 .nat-univers:hover .nat-univers__btn{background:var(--green-deep);color:#fff;}
 
 /* ---------- onglets ---------- */
 .nat-tabs{display:flex;gap:12px;margin:22px 0 34px;}
-.nat-tab{font-size:13px;font-weight:700;letter-spacing:.04em;padding:9px 22px;border-radius:999px;
+.nat-tab{font-size:13px;font-weight:700;letter-spacing:.04em;padding:9px 22px;border-radius:0;
   cursor:pointer;background:transparent;color:var(--green-deep);border:1.5px solid #DCE2D0;}
 .nat-tab.is-active{background:var(--green-deep);color:var(--cream);border-color:var(--green-deep);}
 
 /* ---------- carte produit ---------- */
 .nat-card{display:block;cursor:pointer;}
-.nat-card__media{position:relative;aspect-ratio:1/1;border-radius:3px;overflow:hidden;
+.nat-card__media{position:relative;aspect-ratio:1/1;border-radius:0;overflow:hidden;
   background:repeating-linear-gradient(135deg,#fff 0 16px,var(--beige) 16px 32px);
   display:flex;align-items:center;justify-content:center;}
 .nat-card__media img{width:100%;height:100%;object-fit:cover;}
@@ -584,7 +592,7 @@ a{transition:color .15s;}
   .nat-grid-3,.nat-grid-4,.nat-grid-5,.nat-pdp,.nat-split,.nat-footer{grid-template-columns:1fr;}
   .nat-h2{font-size:28px;}
   .nat-split__body{padding:48px 28px;}
-  .nat-hero{height:auto;min-height:74vw;max-height:none;}
+  .nat-hero{--nat-peek:64px;min-height:320px;max-height:none;}
   .nat-hero__overlay{padding:0 26px;justify-content:center;text-align:center;}
   .nat-hero__overlay .nat-hero__text{max-width:560px;}
   .nat-hero__eyebrow{font-size:13.5px;margin-bottom:14px;}
@@ -605,3 +613,27 @@ a{transition:color .15s;}
   .nat-grid-4,.nat-grid-3{grid-template-columns:1fr;}
   .nat-recos{grid-template-columns:repeat(2,1fr);}
 }
+
+/* ============================================================
+   Angles carrés — surcharge globale
+   Boutons, visuels, cartes et champs sans arrondi (style Caudalie).
+   Le !important est nécessaire pour neutraliser les styles en ligne
+   présents dans certains gabarits (panier, compte, contact…).
+   ============================================================ */
+.nat-btn,.nat-tab,.nat-hero__btn,.nat-univers__btn,.nat-univers__card,.nat-univers__img,
+.nat-mega,.nat-mega__thumb,.nat-nav__item--automne,.nat-nav__item--diag,
+.nat-card__media,.nat-card__badge,.nat-card__tag,.nat-exp__media,.nat-post__media,
+.nat-postmini__media,.nat-rprod__media,.nat-cure,.nat-cure__media,.nat-mini__media,
+.nat-dline__media,.nat-feat,.nat-feat__media,.nat-pop,.nat-pop__code,.nat-toast,
+.nat-finder__opt,.nat-finder__panel,.nat-finder__cta,.nat-finder__ghost,.nat-finder__stepchip,
+.nat-automne-frame,.nat-qty,.nat-dqty,.nat-search,.nat-news__form,
+.nat-news__form input,.nat-news__form button,
+img,input[type="text"],input[type="email"],input[type="password"],input[type="search"],
+input[type="tel"],textarea,select{border-radius:0 !important;}
+
+/* exceptions : pastilles, jauges et boutons-icônes ronds */
+.nat-dot,.nat-cart-count,.nat-rprod__add,.nat-slider-arrow,.nat-finder__next-arrow,
+.nat-finder__opt-check,.nat-finder__stepchip span,.nat-finder__progress,
+.nat-finder__progress > span,.nat-drawer__bar,.nat-drawer__bar > span,
+.nat-cure__bar,.nat-cure__bar > span{border-radius:999px !important;}
+.nat-dot.is-active{border-radius:999px !important;}

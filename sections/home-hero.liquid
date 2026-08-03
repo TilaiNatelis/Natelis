@@ -3,42 +3,61 @@
 {%- if section.blocks.size > 0 -%}{%- assign slide_count = section.blocks.size -%}{%- else -%}{%- assign slide_count = 3 -%}{%- endif -%}
 
 <div class="nat-hero" id="NatHero-{{ section.id }}">
-  {%- if section.blocks.size > 0 -%}
-    {%- for block in section.blocks -%}
-      {%- if block.settings.image != blank -%}
-        {%- assign src = block.settings.image | image_url: width: 2000 -%}
-      {%- else -%}
-        {%- assign def = hero_defaults[forloop.index0] | default: hero_defaults.first -%}
-        {%- assign src = def | asset_url -%}
-      {%- endif -%}
-      <img class="nat-hero__slide{% if forloop.first %} is-active{% endif %}" src="{{ src }}" alt="Natélis en Provence" {{ block.shopify_attributes }}>
-    {%- endfor -%}
-  {%- else -%}
-    {%- for def in hero_defaults -%}
-      <img class="nat-hero__slide{% if forloop.first %} is-active{% endif %}" src="{{ def | asset_url }}" alt="Natélis en Provence — complément alimentaire naturel">
-    {%- endfor -%}
-  {%- endif -%}
-
-  {%- assign pos = section.settings.text_position | default: 'left' -%}
-  {%- assign theme = section.settings.text_theme | default: 'light' -%}
-  {%- if theme == 'light' -%}
-    <div class="nat-hero__scrim nat-hero__scrim--{{ pos }}"></div>
-  {%- endif -%}
-
-  <div class="nat-hero__overlay nat-hero__overlay--{{ pos }} nat-hero__overlay--{{ theme }}">
-    <div class="nat-hero__text">
-      {%- if section.settings.eyebrow != blank -%}<p class="nat-hero__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
-      {%- if section.settings.title != blank -%}<h1 class="nat-hero__title">{{ section.settings.title }}</h1>{%- endif -%}
-      {%- if section.settings.cta_label != blank -%}
-        <a class="nat-hero__btn" href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}">{{ section.settings.cta_label }}</a>
-      {%- endif -%}
-    </div>
+  <div class="nat-hero__track">
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        {%- if block.settings.image != blank -%}
+          {%- assign src = block.settings.image | image_url: width: 2000 -%}
+        {%- else -%}
+          {%- assign def = hero_defaults[forloop.index0] | default: hero_defaults.first -%}
+          {%- assign src = def | asset_url -%}
+        {%- endif -%}
+        {%- comment -%} chaque visuel porte son propre texte ; repli sur les réglages de la section {%- endcomment -%}
+        {%- assign pos = block.settings.text_position | default: section.settings.text_position | default: 'left' -%}
+        {%- assign theme = block.settings.text_theme | default: section.settings.text_theme | default: 'light' -%}
+        {%- assign s_eyebrow = block.settings.eyebrow | default: section.settings.eyebrow -%}
+        {%- assign s_title = block.settings.title | default: section.settings.title -%}
+        {%- assign s_cta = block.settings.cta_label | default: section.settings.cta_label -%}
+        {%- assign s_url = block.settings.cta_url | default: section.settings.cta_url -%}
+        <div class="nat-hero__slide" {{ block.shopify_attributes }}>
+          <img class="nat-hero__img" src="{{ src }}" alt="{{ s_title | default: 'Natélis en Provence' | strip_html | escape }}"{% unless forloop.first %} loading="lazy"{% endunless %}>
+          {%- if theme == 'light' -%}<div class="nat-hero__scrim nat-hero__scrim--{{ pos }}"></div>{%- endif -%}
+          <div class="nat-hero__overlay nat-hero__overlay--{{ pos }} nat-hero__overlay--{{ theme }}">
+            <div class="nat-hero__text">
+              {%- if s_eyebrow != blank -%}<p class="nat-hero__eyebrow">{{ s_eyebrow }}</p>{%- endif -%}
+              {%- if s_title != blank -%}<h2 class="nat-hero__title">{{ s_title }}</h2>{%- endif -%}
+              {%- if s_cta != blank -%}
+                <a class="nat-hero__btn" href="{{ s_url | default: routes.all_products_collection_url }}">{{ s_cta }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      {%- assign pos = section.settings.text_position | default: 'left' -%}
+      {%- assign theme = section.settings.text_theme | default: 'light' -%}
+      {%- for def in hero_defaults -%}
+        <div class="nat-hero__slide">
+          <img class="nat-hero__img" src="{{ def | asset_url }}" alt="Natélis en Provence — complément alimentaire naturel">
+          {%- if theme == 'light' -%}<div class="nat-hero__scrim nat-hero__scrim--{{ pos }}"></div>{%- endif -%}
+          <div class="nat-hero__overlay nat-hero__overlay--{{ pos }} nat-hero__overlay--{{ theme }}">
+            <div class="nat-hero__text">
+              {%- if section.settings.eyebrow != blank -%}<p class="nat-hero__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+              {%- if section.settings.title != blank -%}<h2 class="nat-hero__title">{{ section.settings.title }}</h2>{%- endif -%}
+              {%- if section.settings.cta_label != blank -%}
+                <a class="nat-hero__btn" href="{{ section.settings.cta_url | default: routes.all_products_collection_url }}">{{ section.settings.cta_label }}</a>
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
   </div>
 
   {%- if slide_count > 1 -%}
     <div class="nat-hero__dots">
       {%- for i in (1..slide_count) -%}
-        <span class="nat-dot{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}"></span>
+        <span class="nat-dot{% if forloop.first %} is-active{% endif %}" data-index="{{ forloop.index0 }}" role="button" tabindex="0" aria-label="Visuel {{ forloop.index }}"></span>
       {%- endfor -%}
     </div>
   {%- endif -%}
@@ -48,15 +67,64 @@
   (function(){
     var root = document.getElementById('NatHero-{{ section.id }}');
     if(!root) return;
-    var slides = root.querySelectorAll('.nat-hero__slide');
-    var dots = root.querySelectorAll('.nat-dot');
-    var i = 0, n = slides.length;
-    function show(k){ i = (k+n)%n;
-      slides.forEach(function(s,j){ s.classList.toggle('is-active', j===i); });
-      dots.forEach(function(d,j){ d.classList.toggle('is-active', j===i); });
+
+    // hauteur réelle du bandeau + en-tête + navigation (dépend du logo choisi),
+    // pour que le haut de la section suivante dépasse juste sous la ligne de flottaison
+    function fitHero(){
+      var top = root.getBoundingClientRect().top + (window.pageYOffset || document.documentElement.scrollTop);
+      root.style.setProperty('--nat-chrome', Math.round(top) + 'px');
     }
-    dots.forEach(function(d){ d.addEventListener('click', function(){ show(+d.dataset.index); }); });
-    if(n>1) setInterval(function(){ show(i+1); }, 5500);
+    fitHero();
+    window.addEventListener('resize', fitHero);
+    window.addEventListener('load', fitHero);
+
+    var track = root.querySelector('.nat-hero__track');
+    if(!track) return;
+    var dots = Array.prototype.slice.call(root.querySelectorAll('.nat-dot'));
+    var n = track.children.length;
+    if(n < 2) return;
+
+    // clone du 1er visuel en fin de piste : le retour au début reste un glissement
+    track.appendChild(track.children[0].cloneNode(true));
+
+    var i = 0, busy = false, timer = null;
+    var DELAY = 6000;
+
+    function place(animate){
+      track.style.transition = animate ? '' : 'none';
+      track.style.transform  = 'translate3d(' + (-i * 100) + '%,0,0)';
+      if(!animate) track.offsetHeight; // force le recalcul avant la prochaine anim
+    }
+    function syncDots(){
+      var k = i % n;
+      dots.forEach(function(d, j){ d.classList.toggle('is-active', j === k); });
+    }
+    function go(k){
+      if(busy) return;
+      busy = true; i = k; place(true); syncDots();
+    }
+    function next(){ go(i + 1); }
+
+    track.addEventListener('transitionend', function(e){
+      if(e.target !== track || e.propertyName !== 'transform') return;
+      busy = false;
+      if(i >= n){ i = 0; place(false); syncDots(); } // saut invisible sur le clone
+    });
+
+    dots.forEach(function(d){
+      function pick(){
+        if(i >= n){ i = 0; place(false); }   // repart de la vraie position
+        if(+d.dataset.index !== i % n) go(+d.dataset.index);
+      }
+      d.addEventListener('click', pick);
+      d.addEventListener('keydown', function(e){ if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); pick(); } });
+    });
+
+    function start(){ stop(); timer = setInterval(next, DELAY); }
+    function stop(){ if(timer) clearInterval(timer); timer = null; }
+    root.addEventListener('mouseenter', stop);
+    root.addEventListener('mouseleave', start);
+    if(!window.matchMedia('(prefers-reduced-motion: reduce)').matches) start();
   })();
 </script>
 
@@ -69,7 +137,7 @@
       { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
       { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
     ,
-    { "type": "header", "content": "Texte superposé" },
+    { "type": "header", "content": "Texte par défaut", "info": "Utilisé pour les visuels qui n'ont pas leur propre texte." },
     { "type": "text", "id": "eyebrow", "label": "Sur-titre", "default": "Puisé en Provence" },
     { "type": "textarea", "id": "title", "label": "Titre", "default": "La nature, à sa juste mesure" },
     { "type": "select", "id": "text_position", "label": "Position du texte", "default": "left", "options": [ {"value":"left","label":"Gauche"}, {"value":"center","label":"Centre"}, {"value":"right","label":"Droite"} ] },
@@ -78,7 +146,19 @@
     { "type": "url", "id": "cta_url", "label": "Lien du bouton" }
   ],
   "blocks": [
-    { "type": "slide", "name": "Visuel", "settings": [ { "type": "image_picker", "id": "image", "label": "Image" } ] }
+    {
+      "type": "slide", "name": "Visuel",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "header", "content": "Texte de ce visuel", "info": "Laisser vide pour reprendre le texte par défaut de la section." },
+        { "type": "text", "id": "eyebrow", "label": "Sur-titre" },
+        { "type": "textarea", "id": "title", "label": "Titre" },
+        { "type": "text", "id": "cta_label", "label": "Bouton" },
+        { "type": "url", "id": "cta_url", "label": "Lien du bouton" },
+        { "type": "select", "id": "text_position", "label": "Position du texte", "default": "", "options": [ {"value":"","label":"Comme la section"}, {"value":"left","label":"Gauche"}, {"value":"center","label":"Centre"}, {"value":"right","label":"Droite"} ] },
+        { "type": "select", "id": "text_theme", "label": "Couleur du texte", "default": "", "options": [ {"value":"","label":"Comme la section"}, {"value":"light","label":"Clair (sur image foncée)"}, {"value":"dark","label":"Foncé (sur image claire)"} ] }
+      ]
+    }
   ],
   "presets": [
     { "name": "Hero accueil", "blocks": [ { "type": "slide" }, { "type": "slide" }, { "type": "slide" } ] }

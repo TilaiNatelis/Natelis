@@ -15,19 +15,37 @@
         "slide_GVRzrt": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_26.png"
+            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_26.png",
+            "eyebrow": "Puisé en Provence",
+            "title": "La nature, à sa juste mesure",
+            "cta_label": "Découvrir nos cures",
+            "cta_url": "",
+            "text_position": "left",
+            "text_theme": "light"
           }
         },
         "s1": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_30.png"
+            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_30.png",
+            "eyebrow": "Formules courtes, actifs dosés",
+            "title": "Des compléments que l'on comprend",
+            "cta_label": "Voir nos formules",
+            "cta_url": "",
+            "text_position": "left",
+            "text_theme": "light"
           }
         },
         "s2": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_40.png"
+            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_40.png",
+            "eyebrow": "Un besoin, une routine",
+            "title": "Trouvez la cure qui vous ressemble",
+            "cta_label": "Faire le diagnostic",
+            "cta_url": "",
+            "text_position": "left",
+            "text_theme": "light"
           }
         }
       },
