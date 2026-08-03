@@ -1,0 +1,68 @@
+{%- comment -%}
+  Rayon de conseils : titre + sous-titre + filtres en pastilles + carrousel d'articles.
+  Paramètres :
+    - rail_blog   : objet blog (obligatoire)
+    - rail_tag    : ne garder que les articles portant ce tag (vide = tous)
+    - rail_title  : titre du rayon
+    - rail_sub    : sous-titre (facultatif)
+    - rail_limit  : nombre d'articles max (défaut 12)
+    - rail_chips  : 'true' pour afficher les pastilles de filtre (tags du blog)
+    - rail_id     : identifiant unique (pour le JS des flèches)
+    - rail_attrs  : shopify_attributes du bloc
+{%- endcomment -%}
+{%- assign rl_limit = rail_limit | default: 12 -%}
+
+<section class="nat-rail" {{ rail_attrs }}>
+  <div class="nat-rail__head">
+    <h2 class="nat-rail__title">{{ rail_title }}</h2>
+    {%- if rail_sub != blank -%}<p class="nat-rail__sub">{{ rail_sub }}</p>{%- endif -%}
+  </div>
+
+  {%- if rail_chips == 'true' and rail_blog.all_tags.size > 0 -%}
+    <div class="nat-rail__chips">
+      {%- for t in rail_blog.all_tags -%}
+        <a class="nat-chip{% if t == rail_tag %} is-active{% endif %}" href="{{ rail_blog.url }}/tagged/{{ t | handleize }}">{{ t }}</a>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  {%- comment -%} on compte d'abord les articles retenus pour savoir s'il faut afficher la piste {%- endcomment -%}
+  {%- assign rl_count = 0 -%}
+  {%- for a in rail_blog.articles -%}
+    {%- if rail_tag == blank or a.tags contains rail_tag -%}{%- assign rl_count = rl_count | plus: 1 -%}{%- endif -%}
+  {%- endfor -%}
+
+  {%- if rl_count == 0 -%}
+    <p class="nat-rail__empty">Aucun article pour le moment dans cette thématique.</p>
+  {%- else -%}
+    <div class="nat-rail__viewport">
+      <button type="button" class="nat-rail__arrow nat-rail__arrow--prev" data-rail="{{ rail_id }}" data-dir="-1" aria-label="Précédent" disabled>‹</button>
+      <div class="nat-rail__track" id="NatRail-{{ rail_id }}">
+        {%- assign rl_shown = 0 -%}
+        {%- for article in rail_blog.articles -%}
+          {%- if rail_tag == blank or article.tags contains rail_tag -%}
+            {%- if rl_shown < rl_limit -%}
+              {%- assign rl_shown = rl_shown | plus: 1 -%}
+              <a class="nat-pcard" href="{{ article.url }}">
+                {%- if article.image -%}
+                  <img class="nat-pcard__img" src="{{ article.image | image_url: width: 700 }}" alt="{{ article.image.alt | default: article.title | escape }}" loading="lazy">
+                {%- endif -%}
+                <span class="nat-pcard__veil"></span>
+                {%- assign rl_label = rail_tag | default: article.tags.first -%}
+                {%- if rl_label != blank -%}<span class="nat-pcard__tag">{{ rl_label }}</span>{%- endif -%}
+                <span class="nat-pcard__body">
+                  <span class="nat-pcard__title">{{ article.title }}</span>
+                  <span class="nat-pcard__foot">
+                    <span class="nat-pcard__more">Lire l'article</span>
+                    <span class="nat-pcard__date">{{ article.published_at | date: '%d/%m/%Y' }}</span>
+                  </span>
+                </span>
+              </a>
+            {%- endif -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+      <button type="button" class="nat-rail__arrow nat-rail__arrow--next" data-rail="{{ rail_id }}" data-dir="1" aria-label="Suivant">›</button>
+    </div>
+  {%- endif -%}
+</section>

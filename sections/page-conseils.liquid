@@ -1,22 +1,43 @@
 {% render 'section-fonts', section: section %}
-<!-- héros -->
+{%- assign cblog = blogs[section.settings.blog] -%}
+{%- if cblog == blank or cblog.articles_count == 0 -%}{%- assign cblog = blogs['carnet-de-la-vigne'] -%}{%- endif -%}
+
+<!-- en-tête -->
 <div style="background:var(--pale);">
-  <div style="max-width:920px;margin:0 auto;padding:74px 48px 66px;text-align:center;">
-    <div class="nat-eyebrow" style="letter-spacing:.28em;">{{ section.settings.hero_eyebrow | default: 'Le guide Natélis' }}</div>
-    <h1 class="nat-serif" style="font-size:58px;line-height:1.03;margin:18px 0 0;">{{ section.settings.hero_title | default: 'Bien choisir ses compléments alimentaires' }}</h1>
-    <p style="font-size:16.5px;line-height:1.7;color:var(--green-text);margin:18px auto 0;max-width:600px;">{{ section.settings.hero_text | default: "Pas besoin d'accumuler les compléments. Partez d'un objectif, choisissez les bons actifs, installez un rituel — on vous explique tout, depuis la Provence." }}</p>
+  <div style="max-width:920px;margin:0 auto;padding:64px 48px 56px;text-align:center;">
+    <div class="nat-eyebrow" style="letter-spacing:.28em;">{{ section.settings.hero_eyebrow }}</div>
+    <h1 class="nat-serif" style="font-size:54px;line-height:1.05;margin:16px 0 0;">{{ section.settings.hero_title }}</h1>
+    <p style="font-size:16.5px;line-height:1.7;color:var(--green-text);margin:16px auto 0;max-width:620px;">{{ section.settings.hero_text }}</p>
   </div>
 </div>
 
-<!-- texte immersif éditable (admin > Pages > contenu) -->
+<!-- texte libre éventuel (Admin > Pages > contenu) -->
 {%- if page.content != blank -%}
-  <div class="nat-wrap nat-rte" style="max-width:760px;padding-top:54px;padding-bottom:6px;font-size:17px;line-height:1.85;color:var(--brown-dark);">
+  <div class="nat-wrap nat-rte" style="max-width:760px;padding-top:46px;padding-bottom:0;font-size:17px;line-height:1.85;color:var(--brown-dark);">
     {{ page.content }}
   </div>
 {%- endif -%}
 
-<!-- 3 étapes -->
-<div class="nat-wrap" style="padding-top:74px;padding-bottom:4px;">
+<!-- rayons de conseils, un par thématique -->
+<div class="nat-wrap" style="padding-bottom:16px;">
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'rail' -%}
+      {%- render 'conseil-rail',
+            rail_blog: cblog,
+            rail_tag: block.settings.tag,
+            rail_title: block.settings.title,
+            rail_sub: block.settings.subtitle,
+            rail_limit: block.settings.limit,
+            rail_chips: block.settings.show_chips,
+            rail_id: block.id,
+            rail_attrs: block.shopify_attributes -%}
+    {%- endif -%}
+  {%- endfor -%}
+</div>
+
+<!-- la méthode en 3 étapes -->
+<div class="nat-wrap" style="padding-top:70px;padding-bottom:8px;">
+  <h2 class="nat-h2" style="font-size:32px;margin:0 0 26px;">{{ section.settings.method_title }}</h2>
   <div class="nat-grid-3" style="gap:36px;">
     {%- assign steps_n = '01,02,03' | split: ',' -%}
     {%- assign steps_t = 'Cibler votre besoin,Choisir les bons actifs,Installer le rituel' | split: ',' -%}
@@ -31,48 +52,28 @@
   </div>
 </div>
 
-<!-- routine idéale -->
-<div class="nat-wrap" style="padding-top:60px;padding-bottom:60px;">
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-radius:4px;overflow:hidden;box-shadow:0 1px 16px rgba(12,17,14,.07);">
+<!-- composer sa routine + diagnostic -->
+<div class="nat-wrap" style="padding-top:56px;padding-bottom:56px;">
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;box-shadow:0 1px 16px rgba(12,17,14,.07);">
     {%- if section.settings.image != blank -%}{%- assign cons_img = section.settings.image | image_url: width: 1000 -%}{%- else -%}{%- assign cons_img = 'prov-lavande.jpg' | asset_url -%}{%- endif -%}
-    <div style="background-image:url('{{ cons_img }}');background-size:cover;background-position:center;min-height:460px;"></div>
-    <div style="background:#fff;padding:58px 56px;display:flex;flex-direction:column;justify-content:center;">
+    <div style="background-image:url('{{ cons_img }}');background-size:cover;background-position:center;min-height:440px;"></div>
+    <div style="background:#fff;padding:54px 52px;display:flex;flex-direction:column;justify-content:center;">
       <div class="nat-eyebrow" style="letter-spacing:.22em;">La routine idéale</div>
-      <h2 class="nat-serif" style="font-size:38px;line-height:1.08;margin:14px 0 24px;">Composer une cure qui vous ressemble</h2>
+      <h2 class="nat-serif" style="font-size:36px;line-height:1.08;margin:14px 0 22px;">Composer une cure qui vous ressemble</h2>
       <div style="display:flex;flex-direction:column;gap:15px;">
         {%- assign checks = "Une cure ciblée sur 1 à 3 mois, plutôt qu'une prise ponctuelle|Le matin pour l'énergie, le soir pour la détente et le sommeil|Trois à quatre compléments complémentaires au maximum|Une pause d'une à deux semaines entre deux cures intensives" | split: '|' -%}
         {%- for c in checks -%}
           <div style="display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--olive);">✦</span><span style="font-size:14.5px;color:var(--green-text);line-height:1.5;">{{ c }}</span></div>
         {%- endfor -%}
       </div>
-      <a class="nat-btn" style="align-self:flex-start;margin-top:32px;" href="{{ section.settings.diag_url | default: '/pages/diagnostic' }}">Faire mon diagnostic →</a>
+      <a class="nat-btn" style="align-self:flex-start;margin-top:30px;" href="{{ section.settings.diag_url | default: '/pages/diagnostic' }}">Faire mon diagnostic →</a>
     </div>
   </div>
 </div>
 
-<!-- conseils par univers -->
-<div class="nat-wrap" style="padding-top:4px;padding-bottom:12px;">
-  <h2 class="nat-h2" style="font-size:34px;margin:0 0 8px;">Nos conseils par univers</h2>
-  <p style="font-size:14.5px;color:var(--brown);margin:0 0 28px;">Trois grandes familles d'objectifs pour vous orienter.</p>
-  <div class="nat-grid-3">
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'univers' -%}
-        <a href="{{ block.settings.collection.url | default: '#' }}" style="background:#fff;border:1px solid var(--border);border-radius:4px;overflow:hidden;display:block;" {{ block.shopify_attributes }}>
-          <div style="aspect-ratio:16/10;background-image:url('{{ block.settings.image | image_url: width: 700 }}');{% if block.settings.image == blank %}background:var(--pale);{% endif %}background-size:cover;background-position:center;"></div>
-          <div style="padding:24px 26px 28px;">
-            <div class="nat-serif" style="font-size:26px;">{{ block.settings.title }}</div>
-            <p style="font-size:13.5px;line-height:1.6;color:var(--brown);margin:10px 0 0;">{{ block.settings.text }}</p>
-            <div style="font-size:12.5px;font-weight:700;color:var(--olive);margin-top:16px;">Voir les produits →</div>
-          </div>
-        </a>
-      {%- endif -%}
-    {%- endfor -%}
-  </div>
-</div>
-
 <!-- FAQ -->
-<div style="max-width:900px;margin:0 auto;padding:66px 48px 12px;">
-  <h2 class="nat-h2" style="font-size:34px;margin:0 0 24px;text-align:center;">Questions fréquentes</h2>
+<div style="max-width:900px;margin:0 auto;padding:10px 48px 80px;">
+  <h2 class="nat-h2" style="font-size:32px;margin:0 0 24px;text-align:center;">Questions fréquentes</h2>
   {%- for block in section.blocks -%}
     {%- if block.type == 'faq' -%}
       <details style="border-top:1px solid var(--border);" {{ block.shopify_attributes }}>
@@ -84,52 +85,36 @@
   <div style="border-top:1px solid var(--border);"></div>
 </div>
 
-<!-- Le journal Natélis -->
-{%- assign cblog = blogs['carnet-de-la-vigne'] -%}
-{%- if cblog != blank and cblog.articles_count > 0 -%}
-<div style="background:var(--pale);margin-top:60px;">
-  <div class="nat-wrap" style="padding-top:64px;padding-bottom:70px;">
-    <div class="nat-section-head">
-      <div>
-        <div class="nat-eyebrow">Le journal Natélis</div>
-        <h2 class="nat-h2" style="margin-top:8px;">À lire pour aller plus loin</h2>
-      </div>
-      <a class="nat-link" href="{{ cblog.url }}">Tous les articles →</a>
-    </div>
-    <div class="nat-grid-3" style="margin-top:30px;">
-      {%- for article in cblog.articles limit: 3 -%}
-        <a class="nat-post" href="{{ article.url }}">
-          <div class="nat-post__media" style="background-image:url('{{ article.image | image_url: width: 800 }}');{% if article.image == blank %}background:var(--beige-gold);{% endif %}"></div>
-          <div class="nat-post__meta">{{ article.tags.first | default: 'Journal' }}</div>
-          <div class="nat-post__title">{{ article.title }}</div>
-          <div class="nat-post__excerpt">{{ article.excerpt_or_content | strip_html | truncatewords: 18 }}</div>
-          <div class="nat-post__more">Lire l'article →</div>
-        </a>
-      {%- endfor -%}
-    </div>
-  </div>
-</div>
-{%- endif -%}
+<script>
+  (function(){
+    // flèches de défilement : une paire par rayon, désactivées en bout de piste
+    document.querySelectorAll('.nat-rail__viewport').forEach(function(vp){
+      var track = vp.querySelector('.nat-rail__track');
+      var prev  = vp.querySelector('.nat-rail__arrow--prev');
+      var next  = vp.querySelector('.nat-rail__arrow--next');
+      if(!track || !prev || !next) return;
 
-<!-- La gamme en bref (format compact, proche du texte) -->
-{%- assign gamme = collections['tous-nos-complements'] -%}
-{%- if gamme != blank and gamme.products.size > 0 -%}
-<div class="nat-wrap" style="max-width:760px;padding-top:40px;padding-bottom:80px;">
-  <h2 class="nat-serif" style="font-size:24px;margin:0 0 6px;">La gamme Natélis en bref</h2>
-  <p style="font-size:14px;color:var(--brown);margin:0 0 18px;">Tous nos compléments, à composer selon votre objectif.</p>
-  <div style="border-top:1px solid var(--border);">
-    {%- for product in gamme.products -%}
-      <a href="{{ product.url }}" class="nat-mini">
-        <span class="nat-mini__media">{%- if product.featured_image -%}<img src="{{ product.featured_image | image_url: width: 80 }}" alt="">{%- endif -%}</span>
-        <span class="nat-mini__name">{{ product.title }}</span>
-        <span class="nat-mini__sub">{{ product.metafields.custom.subtitle.value }}</span>
-        <span class="nat-mini__price">{{ product.price | money }}</span>
-      </a>
-    {%- endfor -%}
-  </div>
-  <a class="nat-link" style="display:inline-block;margin-top:18px;" href="{{ gamme.url }}">Voir tous les produits →</a>
-</div>
-{%- endif -%}
+      function step(){
+        var card = track.querySelector('.nat-pcard');
+        var gap  = parseFloat(getComputedStyle(track).columnGap || getComputedStyle(track).gap) || 18;
+        return card ? card.getBoundingClientRect().width + gap : track.clientWidth * 0.8;
+      }
+      function refresh(){
+        var max = track.scrollWidth - track.clientWidth - 2;
+        prev.disabled = track.scrollLeft <= 2;
+        next.disabled = max <= 0 || track.scrollLeft >= max;
+      }
+      [prev, next].forEach(function(btn){
+        btn.addEventListener('click', function(){
+          track.scrollBy({ left: step() * parseInt(btn.dataset.dir, 10), behavior: 'smooth' });
+        });
+      });
+      track.addEventListener('scroll', refresh, { passive: true });
+      window.addEventListener('resize', refresh);
+      refresh();
+    });
+  })();
+</script>
 
 {% schema %}
 {
@@ -142,19 +127,24 @@
     { "type": "header", "content": "En-tête" },
     { "type": "text", "id": "hero_eyebrow", "label": "Sur-titre", "default": "Le guide Natélis" },
     { "type": "text", "id": "hero_title", "label": "Titre", "default": "Bien choisir ses compléments alimentaires" },
-    { "type": "textarea", "id": "hero_text", "label": "Texte", "default": "Pas besoin d'accumuler les compléments. Partez d'un objectif, choisissez les bons actifs, installez un rituel." },
+    { "type": "textarea", "id": "hero_text", "label": "Texte", "default": "Pas besoin d'accumuler les compléments. Partez d'un objectif, choisissez les bons actifs, installez un rituel — on vous explique tout, depuis la Provence." },
+    { "type": "header", "content": "Source des articles" },
+    { "type": "blog", "id": "blog", "label": "Blog des conseils", "info": "Chaque rayon puise ses articles dans ce blog, filtré par thématique." },
+    { "type": "header", "content": "La méthode" },
+    { "type": "text", "id": "method_title", "label": "Titre", "default": "La méthode Natélis en 3 étapes" },
     { "type": "header", "content": "Bloc routine" },
     { "type": "image_picker", "id": "image", "label": "Image routine" },
     { "type": "url", "id": "diag_url", "label": "Lien diagnostic" }
   ],
   "blocks": [
     {
-      "type": "univers", "name": "Carte univers",
+      "type": "rail", "name": "Rayon de conseils",
       "settings": [
-        { "type": "collection", "id": "collection", "label": "Collection" },
-        { "type": "image_picker", "id": "image", "label": "Image" },
-        { "type": "text", "id": "title", "label": "Titre" },
-        { "type": "textarea", "id": "text", "label": "Texte" }
+        { "type": "text", "id": "title", "label": "Titre du rayon", "default": "Nos conseils" },
+        { "type": "text", "id": "subtitle", "label": "Sous-titre" },
+        { "type": "text", "id": "tag", "label": "Thématique (tag d'article)", "info": "Laisser vide pour afficher tous les articles du blog." },
+        { "type": "range", "id": "limit", "label": "Articles affichés", "min": 3, "max": 20, "step": 1, "default": 12 },
+        { "type": "select", "id": "show_chips", "label": "Afficher les filtres par thématique", "default": "false", "options": [ {"value":"true","label":"Oui"}, {"value":"false","label":"Non"} ] }
       ]
     },
     {
@@ -167,9 +157,13 @@
   ],
   "presets": [
     { "name": "Page Conseils", "blocks": [
-      { "type": "univers", "settings": { "title": "Vitalité & immunité", "text": "Vitamine C, D3 et Zinc — le socle pour traverser l'hiver en pleine forme." } },
-      { "type": "univers", "settings": { "title": "Beauté & sommeil", "text": "Collagène, magnésium et mélatonine pour l'éclat et des nuits sereines." } },
-      { "type": "univers", "settings": { "title": "Sport & bien-être", "text": "Oméga 3, curcuma et multivitamines pour la récupération et l'équilibre." } },
+      { "type": "rail", "settings": { "title": "Le guide des actifs", "subtitle": "Tout comprendre pour mieux choisir.", "tag": "", "show_chips": "true" } },
+      { "type": "rail", "settings": { "title": "Bien-être au quotidien", "subtitle": "Sommeil, digestion, équilibre.", "tag": "Bien-être" } },
+      { "type": "rail", "settings": { "title": "Beauté", "subtitle": "Peau, cheveux et ongles.", "tag": "Beauté" } },
+      { "type": "rail", "settings": { "title": "Énergie", "subtitle": "Retrouver du tonus, durablement.", "tag": "Énergie" } },
+      { "type": "rail", "settings": { "title": "Au fil des saisons", "subtitle": "Adapter sa cure au moment de l'année.", "tag": "Saison" } },
+      { "type": "rail", "settings": { "title": "Nos conseils d'experts", "subtitle": "Posologie, associations, bonnes pratiques.", "tag": "Conseils" } },
+      { "type": "rail", "settings": { "title": "Terroir & savoir-faire", "subtitle": "D'où viennent nos actifs.", "tag": "Terroir" } },
       { "type": "faq", "settings": { "q": "Combien de temps dure une cure ?", "a": "La plupart de nos cures se prennent sur 1 à 3 mois. Les effets s'installent progressivement : comptez 2 à 4 semaines pour les premiers ressentis." } },
       { "type": "faq", "settings": { "q": "Peut-on associer plusieurs compléments ?", "a": "Oui, à condition de rester cohérent. Un actif principal et un ou deux compléments de soutien suffisent. Notre diagnostic compose pour vous une routine équilibrée." } },
       { "type": "faq", "settings": { "q": "Faut-il les prendre le matin ou le soir ?", "a": "Les actifs toniques (vitamine C, multivitamines, oméga 3) se prennent plutôt le matin. Magnésium, mélatonine et adaptogènes trouvent leur place le soir." } },
