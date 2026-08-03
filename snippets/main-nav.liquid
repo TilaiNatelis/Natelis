@@ -20,6 +20,14 @@
           <div class="nat-mega">
             <div class="nat-mega__cards">
               {%- for child in link.links -%}
+                {%- comment -%}
+                  On saute la vignette « Tous les produits / Tous nos conseils » :
+                  le lien est déjà repris en pied de méga-menu.
+                {%- endcomment -%}
+                {%- assign child_t = child.title | downcase -%}
+                {%- if child.url == link.url or child_t contains 'tous les produits' or child_t contains 'tous nos conseils' or child_t contains 'tout voir' -%}
+                  {%- continue -%}
+                {%- endif -%}
                 {%- assign seg = child.url | split: '/' | last -%}
                 {%- assign cc = blank -%}
                 {%- assign blogthumb = blank -%}

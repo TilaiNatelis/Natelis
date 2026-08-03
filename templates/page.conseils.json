@@ -10,7 +10,7 @@
         "method_title": "La méthode Natélis en 3 étapes"
       },
       "blocks": {
-        "r_guide": { "type": "rail", "settings": { "title": "Le guide des actifs", "subtitle": "Tout comprendre pour mieux choisir.", "tag": "", "limit": 12, "show_chips": "true" } },
+        "r_guide": { "type": "rail", "settings": { "title": "Comprendre les actifs", "subtitle": "Tout comprendre pour mieux choisir : cherchez un actif ou filtrez par thématique.", "tag": "", "limit": 12, "show_chips": "true" } },
         "r_bienetre": { "type": "rail", "settings": { "title": "Bien-être au quotidien", "subtitle": "Sommeil, digestion, équilibre.", "tag": "Bien-être", "limit": 12, "show_chips": "false" } },
         "r_beaute": { "type": "rail", "settings": { "title": "Beauté", "subtitle": "Peau, cheveux et ongles.", "tag": "Beauté", "limit": 12, "show_chips": "false" } },
         "r_energie": { "type": "rail", "settings": { "title": "Énergie", "subtitle": "Retrouver du tonus, durablement.", "tag": "Énergie", "limit": 12, "show_chips": "false" } },

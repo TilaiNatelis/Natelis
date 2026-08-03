@@ -18,8 +18,13 @@
     {%- if rail_sub != blank -%}<p class="nat-rail__sub">{{ rail_sub }}</p>{%- endif -%}
   </div>
 
-  {%- if rail_chips == 'true' and rail_blog.all_tags.size > 0 -%}
+  {%- if rail_chips == 'true' -%}
     <div class="nat-rail__chips">
+      {%- comment -%} recherche : filtre les articles du rayon à la volée {%- endcomment -%}
+      <div class="nat-rail__search">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" placeholder="Rechercher un conseil, un actif…" aria-label="Rechercher un conseil" data-rail-search="{{ rail_id }}">
+      </div>
       {%- for t in rail_blog.all_tags -%}
         <a class="nat-chip{% if t == rail_tag %} is-active{% endif %}" href="{{ rail_blog.url }}/tagged/{{ t | handleize }}">{{ t }}</a>
       {%- endfor -%}
@@ -43,7 +48,8 @@
           {%- if rail_tag == blank or article.tags contains rail_tag -%}
             {%- if rl_shown < rl_limit -%}
               {%- assign rl_shown = rl_shown | plus: 1 -%}
-              <a class="nat-pcard" href="{{ article.url }}">
+              {%- assign rl_search = article.title | append: ' ' | append: article.tags | join: ' ' | downcase | strip_html | escape -%}
+              <a class="nat-pcard" href="{{ article.url }}" data-search="{{ rl_search }}">
                 {%- if article.image -%}
                   <img class="nat-pcard__img" src="{{ article.image | image_url: width: 700 }}" alt="{{ article.image.alt | default: article.title | escape }}" loading="lazy">
                 {%- endif -%}
@@ -64,5 +70,6 @@
       </div>
       <button type="button" class="nat-rail__arrow nat-rail__arrow--next" data-rail="{{ rail_id }}" data-dir="1" aria-label="Suivant">›</button>
     </div>
+    <p class="nat-rail__noresult" data-rail-empty="{{ rail_id }}" style="display:none;">Aucun conseil ne correspond à votre recherche.</p>
   {%- endif -%}
 </section>

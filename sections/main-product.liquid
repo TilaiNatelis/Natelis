@@ -53,8 +53,12 @@
           <div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--green-deep);font-weight:700;margin-top:30px;">Format</div>
           <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
             {%- for variant in p.variants -%}
-              <label style="font-size:13px;font-weight:600;padding:11px 18px;border-radius:999px;cursor:pointer;border:1.5px solid #DCE2D0;{% if variant == p.selected_or_first_available_variant %}background:var(--green-deep);color:var(--cream);border-color:var(--green-deep);{% endif %}">
-                <input type="radio" name="id" value="{{ variant.id }}" style="display:none;" {% if variant == p.selected_or_first_available_variant %}checked{% endif %} onchange="this.form.submit()">
+              {%- comment -%}
+                Choisir un format sélectionne la variante (rechargement sur son URL)
+                et ne déclenche surtout pas l'ajout au panier.
+              {%- endcomment -%}
+              <label style="font-size:13px;font-weight:600;padding:11px 18px;border-radius:0;cursor:pointer;border:1.5px solid #DCE2D0;{% if variant == p.selected_or_first_available_variant %}background:var(--green-deep);color:var(--cream);border-color:var(--green-deep);{% endif %}">
+                <input type="radio" name="id" value="{{ variant.id }}" style="display:none;" {% if variant == p.selected_or_first_available_variant %}checked{% endif %} data-variant-url="{{ p.url }}?variant={{ variant.id }}">
                 {{ variant.title }}
               </label>
             {%- endfor -%}
@@ -91,6 +95,29 @@
         {%- assign faq = p.metafields.custom.faq -%}
         {%- if composition != blank -%}<details class="nat-acc__item"><summary>Composition</summary><div class="nat-acc__body">{{ composition }}</div></details>{%- endif -%}
         {%- if usage != blank -%}<details class="nat-acc__item"><summary>Conseils d'utilisation</summary><div class="nat-acc__body">{{ usage }}</div></details>{%- endif -%}
+
+        {%- comment -%}
+          Provenance : circuit d'approvisionnement, origine des matières premières,
+          lieu de fabrication et certifications. Tout est piloté par métachamps
+          (Admin > Produits > Métachamps) ; la rubrique n'apparaît que si au moins
+          un champ est renseigné — on n'affiche jamais d'allégation par défaut.
+        {%- endcomment -%}
+        {%- assign pv_circuit = p.metafields.custom.provenance_circuit -%}
+        {%- assign pv_origin = p.metafields.custom.provenance_origine -%}
+        {%- assign pv_made = p.metafields.custom.provenance_fabrication -%}
+        {%- assign pv_certif = p.metafields.custom.provenance_certifications -%}
+        {%- assign pv_text = p.metafields.custom.provenance_texte -%}
+        {%- if pv_circuit != blank or pv_origin != blank or pv_made != blank or pv_certif != blank or pv_text != blank -%}
+          <details class="nat-acc__item"><summary>Provenance</summary><div class="nat-acc__body">
+            <dl class="nat-prov">
+              {%- if pv_circuit != blank -%}<dt>Circuit</dt><dd>{{ pv_circuit }}</dd>{%- endif -%}
+              {%- if pv_origin != blank -%}<dt>Matières premières</dt><dd>{{ pv_origin }}</dd>{%- endif -%}
+              {%- if pv_made != blank -%}<dt>Fabrication</dt><dd>{{ pv_made }}</dd>{%- endif -%}
+              {%- if pv_certif != blank -%}<dt>Certifications</dt><dd>{{ pv_certif }}</dd>{%- endif -%}
+            </dl>
+            {%- if pv_text != blank -%}<p style="margin-top:12px;">{{ pv_text }}</p>{%- endif -%}
+          </div></details>
+        {%- endif -%}
         {%- if allergens != blank -%}<details class="nat-acc__item"><summary>Allergènes</summary><div class="nat-acc__body">{{ allergens }}</div></details>{%- endif -%}
         {%- if faq != blank -%}
           <details class="nat-acc__item"><summary>Questions fréquentes</summary><div class="nat-acc__body">{{ faq }}</div></details>
@@ -119,6 +146,17 @@
     </div>
   {%- endif -%}
 </div>
+
+<script>
+  (function(){
+    // Choisir un format change de variante (et met à jour le prix) sans rien ajouter au panier.
+    document.querySelectorAll('input[name="id"][data-variant-url]').forEach(function(input){
+      input.addEventListener('change', function(){
+        if(input.checked){ window.location.href = input.dataset.variantUrl; }
+      });
+    });
+  })();
+</script>
 
 {% schema %}
 { "name": "Produit", "settings": [

@@ -601,6 +601,15 @@ a{color:inherit;text-decoration:none;}
 .nat-acc__item[open] summary::after{content:"–";}
 .nat-acc__body{font-size:13.5px;line-height:1.7;color:var(--brown-dark);padding:0 2px 18px;}
 .nat-acc__body p{margin:0;}
+/* rubrique provenance (fiche produit) */
+.nat-prov{display:grid;grid-template-columns:auto 1fr;gap:9px 18px;margin:0;}
+.nat-prov dt{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;
+  color:var(--olive-light);white-space:nowrap;padding-top:2px;}
+.nat-prov dd{margin:0;font-size:13.5px;line-height:1.6;color:var(--green-text);}
+@media (max-width:520px){
+  .nat-prov{grid-template-columns:1fr;gap:3px 0;}
+  .nat-prov dd{margin-bottom:10px;}
+}
 
 /* ---------- mini-panier (drawer) ---------- */
 .nat-drawer-overlay{position:fixed;inset:0;background:rgba(20,26,16,.5);opacity:0;visibility:hidden;transition:opacity .3s;z-index:9990;}
@@ -735,6 +744,17 @@ a{transition:color .15s;}
   transition:background .18s,border-color .18s,color .18s;}
 .nat-chip:hover{background:var(--pale);border-color:var(--sage);color:var(--olive);}
 .nat-chip.is-active{background:var(--green-deep);border-color:var(--green-deep);color:#fff;}
+/* champ de recherche du rayon */
+.nat-rail__search{display:inline-flex;align-items:center;gap:9px;background:var(--soft);
+  border:1px solid var(--border);padding:0 16px;min-width:270px;color:var(--olive-light);
+  transition:border-color .18s,background .18s;}
+.nat-rail__search:focus-within{border-color:var(--sage);background:#fff;}
+.nat-rail__search svg{flex:none;}
+.nat-rail__search input{flex:1;border:none;background:transparent;outline:none;padding:10px 0;
+  font-family:var(--sans);font-size:13.5px;color:var(--green-deep);min-width:0;}
+.nat-rail__search input::-webkit-search-cancel-button{cursor:pointer;}
+.nat-rail__noresult{font-size:14px;color:var(--brown);padding:20px 0 4px;margin:0;}
+@media (max-width:768px){ .nat-rail__search{min-width:0;width:100%;} }
 
 /* piste horizontale */
 .nat-rail__viewport{position:relative;margin-top:22px;}
