@@ -4,8 +4,20 @@
   </button>
   <a href="{{ routes.root_url }}" class="nat-logo-link">
     {%- assign lh = section.settings.logo_height | default: 72 -%}
-    {%- if section.settings.logo != blank -%}
-      <img class="nat-header__logo" src="{{ section.settings.logo | image_url: height: 400 }}" alt="{{ shop.name }}" style="height:{{ lh }}px;width:auto;">
+    {%- comment -%}
+      Priorité au logo vectoriel : déposer le fichier dans assets/logo.svg
+      suffit à l'activer partout, sans perte de qualité quelle que soit la taille.
+      À défaut, on utilise l'image choisie dans l'éditeur (servie en 2x pour les
+      écrans à haute densité), puis le mot-symbole typographique.
+    {%- endcomment -%}
+    {%- assign logo_svg = 'logo.svg' | asset_url -%}
+    {%- if section.settings.use_svg and logo_svg != blank -%}
+      <img class="nat-header__logo" src="{{ logo_svg }}" alt="{{ shop.name }}" style="height:{{ lh }}px;width:auto;">
+    {%- elsif section.settings.logo != blank -%}
+      {%- comment -%} servi large (≈4x) pour rester net sur écrans haute densité {%- endcomment -%}
+      {%- assign lh4 = lh | times: 4 -%}
+      {%- if lh4 < 400 -%}{%- assign lh4 = 400 -%}{%- endif -%}
+      <img class="nat-header__logo" src="{{ section.settings.logo | image_url: height: lh4 }}" alt="{{ shop.name }}" style="height:{{ lh }}px;width:auto;">
     {%- else -%}
       <span class="nat-logo-text" style="font-size:{{ lh | times: 0.7 | round }}px;">Natélis</span>
     {%- endif -%}
@@ -35,7 +47,8 @@
 {
   "name": "En-tête",
   "settings": [
-    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "checkbox", "id": "use_svg", "label": "Utiliser le logo vectoriel (assets/logo.svg)", "info": "À activer une fois le fichier logo.svg déposé dans les fichiers du thème. Qualité parfaite à toutes les tailles.", "default": false },
+    { "type": "image_picker", "id": "logo", "label": "Logo (image)" },
     { "type": "range", "id": "logo_height", "label": "Hauteur du logo (px)", "min": 32, "max": 140, "step": 2, "unit": "px", "default": 72 }
   ]
 }

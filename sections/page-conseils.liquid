@@ -35,23 +35,6 @@
   {%- endfor -%}
 </div>
 
-<!-- la méthode en 3 étapes -->
-<div class="nat-wrap" style="padding-top:70px;padding-bottom:8px;">
-  <h2 class="nat-h2" style="font-size:32px;margin:0 0 26px;">{{ section.settings.method_title }}</h2>
-  <div class="nat-grid-3" style="gap:36px;">
-    {%- assign steps_n = '01,02,03' | split: ',' -%}
-    {%- assign steps_t = 'Cibler votre besoin,Choisir les bons actifs,Installer le rituel' | split: ',' -%}
-    {%- assign steps_d = "Immunité, sommeil, stress, beauté… Partez d'un objectif clair plutôt que d'accumuler les compléments.|Privilégiez des formes assimilables et bien dosées. Un actif principal, un ou deux en soutien suffisent.|Une cure se vit sur 1 à 3 mois. Associez la prise à un moment fixe de la journée pour ne rien oublier." | split: '|' -%}
-    {%- for n in steps_n -%}
-      <div style="border-top:2px solid var(--green-deep);padding-top:22px;">
-        <div class="nat-serif" style="font-size:42px;color:var(--sage);line-height:1;">{{ n }}</div>
-        <div style="font-size:20px;font-weight:700;color:var(--green-deep);margin-top:14px;">{{ steps_t[forloop.index0] }}</div>
-        <p style="font-size:14px;line-height:1.65;color:var(--brown);margin:10px 0 0;">{{ steps_d[forloop.index0] }}</p>
-      </div>
-    {%- endfor -%}
-  </div>
-</div>
-
 <!-- composer sa routine + diagnostic -->
 <div class="nat-wrap" style="padding-top:56px;padding-bottom:56px;">
   <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;overflow:hidden;box-shadow:0 1px 16px rgba(12,17,14,.07);">
@@ -69,20 +52,6 @@
       <a class="nat-btn" style="align-self:flex-start;margin-top:30px;" href="{{ section.settings.diag_url | default: '/pages/diagnostic' }}">Faire mon diagnostic →</a>
     </div>
   </div>
-</div>
-
-<!-- FAQ -->
-<div style="max-width:900px;margin:0 auto;padding:10px 48px 80px;">
-  <h2 class="nat-h2" style="font-size:32px;margin:0 0 24px;text-align:center;">Questions fréquentes</h2>
-  {%- for block in section.blocks -%}
-    {%- if block.type == 'faq' -%}
-      <details style="border-top:1px solid var(--border);" {{ block.shopify_attributes }}>
-        <summary style="display:flex;align-items:center;justify-content:space-between;gap:20px;padding:22px 4px;cursor:pointer;list-style:none;font-size:17px;font-weight:700;color:var(--green-deep);">{{ block.settings.q }}<span style="font-size:24px;color:var(--olive-light);">+</span></summary>
-        <p style="font-size:14.5px;line-height:1.7;color:var(--brown);margin:0;padding:0 4px 24px;max-width:700px;">{{ block.settings.a }}</p>
-      </details>
-    {%- endif -%}
-  {%- endfor -%}
-  <div style="border-top:1px solid var(--border);"></div>
 </div>
 
 <script>
@@ -158,8 +127,6 @@
     { "type": "textarea", "id": "hero_text", "label": "Texte", "default": "Pas besoin d'accumuler les compléments. Partez d'un objectif, choisissez les bons actifs, installez un rituel — on vous explique tout, depuis la Provence." },
     { "type": "header", "content": "Source des articles" },
     { "type": "blog", "id": "blog", "label": "Blog des conseils", "info": "Chaque rayon puise ses articles dans ce blog, filtré par thématique." },
-    { "type": "header", "content": "La méthode" },
-    { "type": "text", "id": "method_title", "label": "Titre", "default": "La méthode Natélis en 3 étapes" },
     { "type": "header", "content": "Bloc routine" },
     { "type": "image_picker", "id": "image", "label": "Image routine" },
     { "type": "url", "id": "diag_url", "label": "Lien diagnostic" }
@@ -174,13 +141,6 @@
         { "type": "range", "id": "limit", "label": "Articles affichés", "min": 3, "max": 20, "step": 1, "default": 12 },
         { "type": "select", "id": "show_chips", "label": "Afficher les filtres par thématique", "default": "false", "options": [ {"value":"true","label":"Oui"}, {"value":"false","label":"Non"} ] }
       ]
-    },
-    {
-      "type": "faq", "name": "Question FAQ",
-      "settings": [
-        { "type": "text", "id": "q", "label": "Question" },
-        { "type": "textarea", "id": "a", "label": "Réponse" }
-      ]
     }
   ],
   "presets": [
@@ -191,11 +151,7 @@
       { "type": "rail", "settings": { "title": "Énergie", "subtitle": "Retrouver du tonus, durablement.", "tag": "Énergie" } },
       { "type": "rail", "settings": { "title": "Au fil des saisons", "subtitle": "Adapter sa cure au moment de l'année.", "tag": "Saison" } },
       { "type": "rail", "settings": { "title": "Nos conseils d'experts", "subtitle": "Posologie, associations, bonnes pratiques.", "tag": "Conseils" } },
-      { "type": "rail", "settings": { "title": "Terroir & savoir-faire", "subtitle": "D'où viennent nos actifs.", "tag": "Terroir" } },
-      { "type": "faq", "settings": { "q": "Combien de temps dure une cure ?", "a": "La plupart de nos cures se prennent sur 1 à 3 mois. Les effets s'installent progressivement : comptez 2 à 4 semaines pour les premiers ressentis." } },
-      { "type": "faq", "settings": { "q": "Peut-on associer plusieurs compléments ?", "a": "Oui, à condition de rester cohérent. Un actif principal et un ou deux compléments de soutien suffisent. Notre diagnostic compose pour vous une routine équilibrée." } },
-      { "type": "faq", "settings": { "q": "Faut-il les prendre le matin ou le soir ?", "a": "Les actifs toniques (vitamine C, multivitamines, oméga 3) se prennent plutôt le matin. Magnésium, mélatonine et adaptogènes trouvent leur place le soir." } },
-      { "type": "faq", "settings": { "q": "Vos compléments conviennent-ils à tout le monde ?", "a": "Nos formules sont d'origine naturelle et sans additifs controversés. En cas de grossesse, de traitement médical ou de doute, demandez conseil à un professionnel de santé." } }
+      { "type": "rail", "settings": { "title": "Terroir & savoir-faire", "subtitle": "D'où viennent nos actifs.", "tag": "Terroir" } }
     ] }
   ]
 }
