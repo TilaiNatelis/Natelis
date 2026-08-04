@@ -1,0 +1,79 @@
+{% render 'section-fonts', section: section %}
+{%- comment -%}
+  Nos valeurs : quatre tuiles. Chaque bloc affiche soit un chiffre, soit une icône
+  choisie d'après le libellé, avec un intitulé et une précision.
+{%- endcomment -%}
+{%- if section.blocks.size > 0 -%}
+<div class="nat-wrap" style="padding-top:76px;padding-bottom:20px;">
+  <div class="nat-section-head">
+    <div>
+      {%- if section.settings.eyebrow != blank -%}<p class="nat-section-head__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
+      <h2 class="nat-h2">{{ section.settings.title }}</h2>
+    </div>
+    {%- if section.settings.cta != blank -%}
+      <a class="nat-link" href="{{ section.settings.link | default: '/pages/nos-engagements' }}">{{ section.settings.cta }} →</a>
+    {%- endif -%}
+  </div>
+
+  <div class="nat-valeurs">
+    {%- for block in section.blocks -%}
+      {%- assign vk = block.settings.label | downcase -%}
+      <div class="nat-valeur" {{ block.shopify_attributes }}>
+        {%- if block.settings.figure != blank -%}
+          <div class="nat-valeur__fig">{{ block.settings.figure }}</div>
+        {%- else -%}
+          <span class="nat-valeur__icon">
+            {%- if vk contains 'emballage' or vk contains 'recycl' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" width="52" height="52"><path d="M3 8.5 12 4l9 4.5v7L12 20l-9-4.5v-7Z"/><path d="M3 8.5 12 13l9-4.5M12 13v7"/></svg>
+            {%- elsif vk contains 'france' or vk contains 'provence' or vk contains 'fabri' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" width="52" height="52"><path d="M12 2.5 20 7v10l-8 4.5L4 17V7l8-4.5Z"/><path d="M12 11.5v6M9 14h6"/></svg>
+            {%- elsif vk contains 'sans' or vk contains 'additif' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" width="52" height="52"><circle cx="12" cy="12" r="9"/><path d="m6 18 12-12"/></svg>
+            {%- elsif vk contains 'test' or vk contains 'contrôl' or vk contains 'analys' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" width="52" height="52"><path d="M9 3v7L4.5 18A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.8-3L15 10V3"/><path d="M8 3h8"/></svg>
+            {%- else -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round" width="52" height="52"><path d="M20 4c0 8-5 13-13 13H4c0-8 5-13 13-13h3Z"/><path d="M4 20c2-5 5.5-8.5 10-10.5"/></svg>
+            {%- endif -%}
+          </span>
+        {%- endif -%}
+        <div class="nat-valeur__label">{{ block.settings.label }}</div>
+        {%- if block.settings.sub != blank -%}<div class="nat-valeur__sub">{{ block.settings.sub }}</div>{%- endif -%}
+      </div>
+    {%- endfor -%}
+  </div>
+</div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Nos valeurs",
+  "max_blocks": 8,
+  "settings": [
+      { "type": "header", "content": "Polices (cette section)" },
+      { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
+      { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] },
+    { "type": "text", "id": "eyebrow", "label": "Sur-titre", "default": "Ce en quoi nous croyons" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Nos valeurs" },
+    { "type": "text", "id": "cta", "label": "Lien", "default": "Découvrir nos engagements" },
+    { "type": "url", "id": "link", "label": "Cible du lien" }
+  ],
+  "blocks": [
+    {
+      "type": "valeur", "name": "Valeur",
+      "settings": [
+        { "type": "text", "id": "figure", "label": "Chiffre (facultatif)", "info": "S'affiche à la place de l'icône." },
+        { "type": "text", "id": "label", "label": "Intitulé" },
+        { "type": "text", "id": "sub", "label": "Précision" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Nos valeurs", "blocks": [
+      { "type": "valeur", "settings": { "label": "Actifs d'origine naturelle", "sub": "Sélectionnés pour leur assimilation" } },
+      { "type": "valeur", "settings": { "label": "Sans additifs controversés", "sub": "Formules courtes et lisibles" } },
+      { "type": "valeur", "settings": { "label": "Fabriqué en France", "sub": "Formulé en Provence" } },
+      { "type": "valeur", "settings": { "label": "Emballage 100% naturel", "sub": "Carton et verre recyclables" } }
+    ] }
+  ]
+}
+{% endschema %}

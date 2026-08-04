@@ -1,0 +1,62 @@
+{% render 'section-fonts', section: section %}
+{%- comment -%}
+  Duo d'offres : deux panneaux visuels, chacun avec sa carte blanche posée en bas.
+  Un bloc = une offre. Prévu pour deux, tient jusqu'à quatre (deux par ligne).
+{%- endcomment -%}
+{%- if section.blocks.size > 0 -%}
+  <div class="nat-offres">
+    {%- assign offre_defaults = 'prov-lavande.jpg,prov-vignes.jpg,prov-calanque.jpg,prov-calanque2.jpg' | split: ',' -%}
+    {%- for block in section.blocks -%}
+      {%- if block.settings.image != blank -%}
+        {%- assign off_img = block.settings.image | image_url: width: 1400 -%}
+      {%- else -%}
+        {%- assign def = offre_defaults[forloop.index0] | default: offre_defaults.first -%}
+        {%- assign off_img = def | asset_url -%}
+      {%- endif -%}
+      <div class="nat-offre" style="background-image:url('{{ off_img }}');" {{ block.shopify_attributes }}>
+        <div class="nat-offre__card">
+          <h3 class="nat-offre__title">{{ block.settings.title }}</h3>
+          {%- if block.settings.text != blank -%}
+            <p class="nat-offre__text">{{ block.settings.text }}
+              {%- if block.settings.code != blank -%}<br>Code : <span class="nat-offre__code">{{ block.settings.code }}</span>{%- endif -%}
+            </p>
+          {%- endif -%}
+          {%- if block.settings.cta != blank -%}
+            <a class="nat-offre__btn" href="{{ block.settings.link | default: routes.all_products_collection_url }}">{{ block.settings.cta }}</a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Duo d'offres",
+  "max_blocks": 4,
+  "settings": [
+      { "type": "header", "content": "Polices (cette section)" },
+      { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
+      { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
+  ],
+  "blocks": [
+    {
+      "type": "offre", "name": "Offre",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Visuel" },
+        { "type": "text", "id": "title", "label": "Titre", "default": "Votre offre" },
+        { "type": "textarea", "id": "text", "label": "Texte" },
+        { "type": "text", "id": "code", "label": "Code promo (facultatif)" },
+        { "type": "text", "id": "cta", "label": "Bouton", "default": "En profiter" },
+        { "type": "url", "id": "link", "label": "Lien" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Duo d'offres", "blocks": [
+      { "type": "offre", "settings": { "title": "Cure découverte", "text": "-15% sur votre première commande.", "code": "BIENVENUE", "cta": "En profiter" } },
+      { "type": "offre", "settings": { "title": "Livraison offerte", "text": "Dès 49€ d'achat, en France métropolitaine.", "cta": "Découvrir la gamme" } }
+    ] }
+  ]
+}
+{% endschema %}

@@ -177,14 +177,145 @@
         "title": "À lire en ce moment",
         "blog": "carnet-de-la-vigne"
       }
+    },
+    "offres": {
+      "type": "home-offres",
+      "blocks": {
+        "o1": {
+          "type": "offre",
+          "settings": {
+            "title": "Cure découverte",
+            "text": "-15% sur votre première commande, sur toute la gamme.",
+            "code": "BIENVENUE",
+            "cta": "En profiter",
+            "link": "/collections/tous-nos-complements"
+          }
+        },
+        "o2": {
+          "type": "offre",
+          "settings": {
+            "title": "Livraison offerte",
+            "text": "Dès 49€ d'achat, en France métropolitaine.",
+            "cta": "Composer ma cure",
+            "link": "/pages/diagnostic"
+          }
+        }
+      },
+      "block_order": [
+        "o1",
+        "o2"
+      ],
+      "settings": {}
+    },
+    "valeurs": {
+      "type": "home-valeurs",
+      "blocks": {
+        "v1": {
+          "type": "valeur",
+          "settings": {
+            "label": "Actifs d'origine naturelle",
+            "sub": "Choisis pour leur assimilation"
+          }
+        },
+        "v2": {
+          "type": "valeur",
+          "settings": {
+            "label": "Sans additifs controversés",
+            "sub": "Des formules courtes et lisibles"
+          }
+        },
+        "v3": {
+          "type": "valeur",
+          "settings": {
+            "label": "Fabriqué en France",
+            "sub": "Formulé en Provence"
+          }
+        },
+        "v4": {
+          "type": "valeur",
+          "settings": {
+            "label": "Emballage 100% naturel",
+            "sub": "Carton et verre recyclables"
+          }
+        }
+      },
+      "block_order": [
+        "v1",
+        "v2",
+        "v3",
+        "v4"
+      ],
+      "settings": {
+        "eyebrow": "Ce en quoi nous croyons",
+        "title": "Nos valeurs",
+        "cta": "Découvrir nos engagements",
+        "link": "/pages/nos-engagements"
+      }
+    },
+    "social": {
+      "type": "home-social",
+      "settings": {
+        "eyebrow": "La vie Natélis",
+        "title": "Suivez-nous",
+        "handle": "Voir sur Instagram",
+        "link": ""
+      }
+    },
+    "reassurance": {
+      "type": "reassurance",
+      "blocks": {
+        "r1": {
+          "type": "item",
+          "settings": {
+            "icon": "✦",
+            "title": "Livraison offerte",
+            "text": "Dès 49€ d'achat"
+          }
+        },
+        "r2": {
+          "type": "item",
+          "settings": {
+            "icon": "✦",
+            "title": "Fabriqué en France",
+            "text": "Formulé en Provence"
+          }
+        },
+        "r3": {
+          "type": "item",
+          "settings": {
+            "icon": "✦",
+            "title": "Paiement sécurisé",
+            "text": "CB · Apple Pay · PayPal"
+          }
+        },
+        "r4": {
+          "type": "item",
+          "settings": {
+            "icon": "✦",
+            "title": "Satisfait ou remboursé",
+            "text": "30 jours"
+          }
+        }
+      },
+      "block_order": [
+        "r1",
+        "r2",
+        "r3",
+        "r4"
+      ],
+      "settings": {}
     }
   },
   "order": [
     "hero",
-    "univers",
     "selection",
-    "editorial",
+    "offres",
+    "univers",
     "experience",
-    "journal"
+    "editorial",
+    "journal",
+    "valeurs",
+    "social",
+    "reassurance"
   ]
 }

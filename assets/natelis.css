@@ -181,6 +181,55 @@ a{color:inherit;text-decoration:none;}
   transition:background .22s,color .22s;}
 .nat-univers:hover .nat-univers__btn{background:var(--green-deep);color:#fff;}
 
+/* ============================================================
+   Accueil — blocs éditoriaux
+   ============================================================ */
+
+/* duo d'offres : visuel + carte blanche posée en bas */
+.nat-offres{display:grid;grid-template-columns:1fr 1fr;gap:0;}
+.nat-offre{position:relative;min-height:520px;display:flex;align-items:flex-end;
+  background-size:cover;background-position:center;padding:34px;}
+.nat-offre__card{background:#fff;padding:32px 34px 34px;width:100%;max-width:560px;}
+.nat-offre__title{font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.1;
+  color:var(--green-deep);margin:0;}
+.nat-offre__text{font-size:14.5px;line-height:1.65;color:var(--brown-dark);margin:12px 0 0;}
+.nat-offre__code{font-weight:700;color:var(--green-deep);letter-spacing:.06em;}
+.nat-offre__btn{display:inline-block;margin-top:20px;border:1.5px solid var(--green-deep);
+  color:var(--green-deep);font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  padding:13px 30px;transition:background .2s,color .2s;}
+.nat-offre__btn:hover{background:var(--green-deep);color:#fff;}
+
+/* nos valeurs : tuiles sur fond clair */
+.nat-valeurs{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:32px;}
+.nat-valeur{background:var(--soft);border:1px solid var(--border);aspect-ratio:1/1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:16px;padding:30px 24px;text-align:center;transition:border-color .2s;}
+.nat-valeur:hover{border-color:var(--sage);}
+.nat-valeur__icon{width:52px;height:52px;color:var(--olive);}
+.nat-valeur__fig{font-family:var(--serif);font-weight:500;font-size:38px;line-height:1;color:var(--green-deep);}
+.nat-valeur__label{font-size:13px;font-weight:600;line-height:1.4;color:var(--green-deep);letter-spacing:.02em;}
+.nat-valeur__sub{font-size:12.5px;line-height:1.5;color:var(--brown);}
+
+/* suivez-nous */
+.nat-social{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:30px;}
+.nat-social__item{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--soft);display:block;}
+.nat-social__item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
+.nat-social__item:hover img{transform:scale(1.05);}
+
+@media (max-width:900px){
+  .nat-offres{grid-template-columns:1fr;}
+  .nat-offre{min-height:380px;padding:22px;}
+  .nat-valeurs{grid-template-columns:repeat(2,1fr);}
+  .nat-social{grid-template-columns:repeat(3,1fr);gap:10px;}
+}
+@media (max-width:560px){
+  .nat-offre__card{padding:24px 22px 26px;}
+  .nat-offre__title{font-size:25px;}
+  .nat-valeur{padding:22px 16px;gap:12px;}
+  .nat-valeur__icon{width:42px;height:42px;}
+  .nat-valeur__fig{font-size:30px;}
+}
+
 /* ---------- onglets ---------- */
 .nat-tabs{display:flex;gap:12px;margin:22px 0 34px;}
 .nat-tab{font-size:13px;font-weight:700;letter-spacing:.04em;padding:9px 22px;border-radius:0;
