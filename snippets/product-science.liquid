@@ -1,0 +1,35 @@
+{%- comment -%}
+  « Ce que disent les études » — une ligne par donnée, au format :
+      chiffre | libellé | phrase explicative | lien vers l'étude (facultatif)
+  Exemple :
+      +40 % | d'assimilation | Mesuré sur 24 h contre la forme standard. | https://…
+  Rien ne s'affiche tant que le métachamp custom.etudes n'est pas renseigné :
+  aucune donnée chiffrée n'est inventée par le thème.
+  Paramètres : sci_product, sci_title, sci_note
+{%- endcomment -%}
+{%- assign sci_raw = sci_product.metafields.custom.etudes -%}
+{%- if sci_raw != blank -%}
+  {%- assign sci_lines = sci_raw | newline_to_br | split: '<br />' -%}
+  <section class="nat-sci">
+    <h2 class="nat-h2">{{ sci_title | default: 'Ce que disent les études' }}</h2>
+    {%- for line in sci_lines -%}
+      {%- assign l = line | strip -%}
+      {%- if l != blank -%}
+        {%- assign parts = l | split: '|' -%}
+        <div class="nat-sci__row">
+          <div>
+            <div class="nat-sci__fig">{{ parts[0] | strip }}</div>
+            {%- if parts[1] != blank -%}<span class="nat-sci__unit">{{ parts[1] | strip }}</span>{%- endif -%}
+          </div>
+          <p class="nat-sci__text">{{ parts[2] | strip }}</p>
+          {%- if parts[3] != blank -%}
+            <a class="nat-sci__link" href="{{ parts[3] | strip }}" target="_blank" rel="noopener">Lire l'étude</a>
+          {%- else -%}
+            <span></span>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+    <p class="nat-note">{{ sci_note }}</p>
+  </section>
+{%- endif -%}

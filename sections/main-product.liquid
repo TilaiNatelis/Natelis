@@ -12,50 +12,30 @@
 
   <div class="nat-pdp">
 
-    {%- comment -%} ---------- galerie : vignettes verticales + grand visuel ---------- {%- endcomment -%}
-    <div class="nat-gal" id="NatGal-{{ section.id }}">
-      {%- if p.images.size > 1 -%}
-        <div class="nat-gal__thumbs">
-          <button type="button" class="nat-gal__nav nat-gal__nav--up" aria-label="Visuels précédents">▲</button>
-          <div class="nat-gal__thumblist">
-            {%- for image in p.images -%}
-              <button type="button" class="nat-gal__thumb{% if forloop.first %} is-active{% endif %}" data-i="{{ forloop.index0 }}" aria-label="Visuel {{ forloop.index }}">
-                <img src="{{ image | image_url: width: 200 }}" alt="" loading="lazy">
-              </button>
-            {%- endfor -%}
-          </div>
-          <button type="button" class="nat-gal__nav nat-gal__nav--down" aria-label="Visuels suivants">▼</button>
-        </div>
+    {%- comment -%} ---------- galerie : mosaïque, tous les visuels visibles ---------- {%- endcomment -%}
+    <div class="nat-gal">
+      {%- if p.images.size > 0 -%}
+        {%- for image in p.images -%}
+          <a class="nat-gal__cell{% if p.images.size == 1 %} nat-gal__cell--wide{% endif %}" href="{{ image | image_url: width: 1600 }}" target="_blank" rel="noopener">
+            {%- if forloop.first -%}
+              {%- if p.compare_at_price_max > p.price_min -%}
+                <span class="nat-gal__badge nat-gal__badge--promo">Offre spéciale</span>
+              {%- elsif p.tags contains 'Nouveau' -%}
+                <span class="nat-gal__badge nat-gal__badge--new">Nouveau</span>
+              {%- elsif p.tags contains 'Best-seller' -%}
+                <span class="nat-gal__badge">Best-seller</span>
+              {%- endif -%}
+            {%- endif -%}
+            <img src="{{ image | image_url: width: 1000 }}" alt="{{ image.alt | default: p.title | escape }}"{% unless forloop.first %} loading="lazy"{% endunless %}>
+          </a>
+        {%- endfor -%}
+      {%- else -%}
+        <div class="nat-gal__cell nat-gal__cell--wide"><span class="nat-card__ph" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">{{ p.title }}</span></div>
       {%- endif -%}
-
-      <div class="nat-gal__main">
-        {%- comment -%} pastille d'état, même logique que sur les cartes produit {%- endcomment -%}
-        {%- if p.compare_at_price_max > p.price_min -%}
-          <span class="nat-gal__badge nat-gal__badge--promo">Offre spéciale</span>
-        {%- elsif p.tags contains 'Nouveau' -%}
-          <span class="nat-gal__badge nat-gal__badge--new">Nouveau</span>
-        {%- elsif p.tags contains 'Best-seller' -%}
-          <span class="nat-gal__badge">Best-seller</span>
-        {%- endif -%}
-
-        {%- if p.images.size > 0 -%}
-          {%- for image in p.images -%}
-            <img class="nat-gal__img{% if forloop.first %} is-active{% endif %}" data-i="{{ forloop.index0 }}"
-                 src="{{ image | image_url: width: 1200 }}" alt="{{ image.alt | default: p.title | escape }}"
-                 {% unless forloop.first %}loading="lazy"{% endunless %}>
-          {%- endfor -%}
-          {%- if p.images.size > 1 -%}
-            <button type="button" class="nat-gal__arrow nat-gal__arrow--prev" aria-label="Visuel précédent">‹</button>
-            <button type="button" class="nat-gal__arrow nat-gal__arrow--next" aria-label="Visuel suivant">›</button>
-          {%- endif -%}
-        {%- else -%}
-          <span class="nat-card__ph" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">{{ p.title }}</span>
-        {%- endif -%}
-      </div>
     </div>
 
-    {%- comment -%} ---------- panneau d'achat ---------- {%- endcomment -%}
-    <div>
+    {%- comment -%} ---------- panneau d'achat (suit le défilement) ---------- {%- endcomment -%}
+    <div class="nat-pdp__buy">
       {%- comment -%} note Judge.me (se remplit dès les premiers avis) {%- endcomment -%}
       <div style="clear:both"></div>
       <div class="jdgm-widget jdgm-preview-badge" data-id="{{ p.id }}" data-template="product"></div>
@@ -71,6 +51,7 @@
       <p class="nat-pdp__desc">{{ p.description | strip_html | default: 'Une formule pure et concentrée, pensée pour s’intégrer simplement à votre rituel quotidien. Actifs d’origine naturelle, dosés avec exigence et sans additifs controversés.' }}</p>
 
       {%- form 'product', p -%}
+        <span id="NatBuy-{{ section.id }}"></span>
         {%- unless p.has_only_default_variant -%}
           {%- comment -%}
             Choisir un format sélectionne la variante (rechargement sur son URL)
@@ -170,6 +151,27 @@
     </div>
   </div>
 
+  {%- comment -%} ---------- ce que disent les études (piloté par métachamp) ---------- {%- endcomment -%}
+  {%- render 'product-science', sci_product: p,
+        sci_title: section.settings.sci_title,
+        sci_note: section.settings.sci_note -%}
+
+  {%- comment -%} ---------- rythme de la cure ---------- {%- endcomment -%}
+  {%- render 'product-steps', steps_product: p,
+        steps_title: section.settings.steps_title,
+        steps_fallback: section.settings.steps_default,
+        steps_note: section.settings.steps_note -%}
+
+  {%- comment -%} ---------- rappel d'achat ---------- {%- endcomment -%}
+  {%- if p.available -%}
+    <div class="nat-recall">
+      <div class="nat-recall__box">
+        <a class="nat-btn" href="#NatBuy-{{ section.id }}">Ajouter au panier · {{ p.price | money }}</a>
+        <p class="nat-recall__note">Livraison offerte dès 49€ · Cure de 1 à 3 mois</p>
+      </div>
+    </div>
+  {%- endif -%}
+
   {%- comment -%} ---------- avis clients (Judge.me) ---------- {%- endcomment -%}
   <div class="nat-reviews">
     <div class="nat-reviews__head">
@@ -193,8 +195,6 @@
 
 <script>
   (function(){
-    var root = document.getElementById('NatGal-{{ section.id }}');
-
     // Choisir un format change de variante (et met à jour le prix) sans rien ajouter au panier.
     document.querySelectorAll('input[name="id"][data-variant-url]').forEach(function(input){
       input.addEventListener('change', function(){
@@ -202,48 +202,6 @@
       });
     });
 
-    if(!root) return;
-    var imgs   = root.querySelectorAll('.nat-gal__img');
-    var thumbs = root.querySelectorAll('.nat-gal__thumb');
-    var list   = root.querySelector('.nat-gal__thumblist');
-    if(imgs.length < 2) return;
-
-    var i = 0;
-    function show(k){
-      i = (k + imgs.length) % imgs.length;
-      imgs.forEach(function(im, j){ im.classList.toggle('is-active', j === i); });
-      thumbs.forEach(function(tb, j){ tb.classList.toggle('is-active', j === i); });
-      if(thumbs[i] && list){ thumbs[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
-    }
-    thumbs.forEach(function(tb){
-      tb.addEventListener('click', function(){ show(parseInt(tb.dataset.i, 10)); });
-      tb.addEventListener('mouseenter', function(){ show(parseInt(tb.dataset.i, 10)); });
-    });
-    var prev = root.querySelector('.nat-gal__arrow--prev');
-    var next = root.querySelector('.nat-gal__arrow--next');
-    if(prev) prev.addEventListener('click', function(){ show(i - 1); });
-    if(next) next.addEventListener('click', function(){ show(i + 1); });
-
-    // défilement de la colonne de vignettes
-    var up = root.querySelector('.nat-gal__nav--up');
-    var dn = root.querySelector('.nat-gal__nav--down');
-    function scrollThumbs(dir){
-      if(!list) return;
-      var t = list.querySelector('.nat-gal__thumb');
-      var step = t ? t.getBoundingClientRect().height + 10 : 98;
-      list.scrollBy({ top: step * 2 * dir, behavior: 'smooth' });
-    }
-    function refreshNav(){
-      if(!list || !up || !dn) return;
-      var over = list.scrollHeight - list.clientHeight > 2;
-      up.disabled = !over || list.scrollTop <= 2;
-      dn.disabled = !over || list.scrollTop >= list.scrollHeight - list.clientHeight - 2;
-    }
-    if(up) up.addEventListener('click', function(){ scrollThumbs(-1); });
-    if(dn) dn.addEventListener('click', function(){ scrollThumbs(1); });
-    if(list){ list.addEventListener('scroll', refreshNav, { passive: true }); }
-    window.addEventListener('resize', refreshNav);
-    refreshNav();
   })();
 </script>
 
@@ -254,6 +212,13 @@
       { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] },
       { "type": "header", "content": "Engagements", "info": "Affichés sous le bouton d'achat. Un engagement par ligne. Un produit peut surcharger cette liste via son métachamp « engagements »." },
       { "type": "textarea", "id": "engagements", "label": "Engagements par défaut", "default": "Emballage 100% naturel" },
+      { "type": "header", "content": "Ce que disent les études", "info": "Le contenu se saisit produit par produit, dans le métachamp « Études ». Une ligne par donnée : chiffre | libellé | phrase | lien." },
+      { "type": "text", "id": "sci_title", "label": "Titre", "default": "Ce que disent les études" },
+      { "type": "textarea", "id": "sci_note", "label": "Mention légale", "default": "Données issues d'études publiées portant sur l'actif principal de la formule, présentées à titre documentaire. Elles ne préjugent pas des effets individuels et ne constituent pas une allégation de santé propre au produit." },
+      { "type": "header", "content": "Rythme de la cure", "info": "Une étape par ligne : titre | délai | phrase. Un produit peut définir son propre rythme via le métachamp « Rythme »." },
+      { "type": "text", "id": "steps_title", "label": "Titre", "default": "Le rythme de votre cure" },
+      { "type": "textarea", "id": "steps_default", "label": "Étapes par défaut", "default": "Les premiers jours | Semaine 1 | La cure s'installe. C'est la régularité de la prise, à heure fixe, qui compte le plus à ce stade.\nLes premiers ressentis | Semaines 2 à 4 | C'est en général la période où les premiers effets se font sentir, progressivement et variablement selon les personnes.\nLa cure complète | 1 à 3 mois | La durée que nous recommandons pour l'ensemble de nos cures, avant de faire le point sur vos besoins." },
+      { "type": "textarea", "id": "steps_note", "label": "Mention sous les étapes", "default": "Ces repères décrivent le déroulé d'une cure et non un effet garanti : les ressentis varient d'une personne à l'autre." },
       { "type": "header", "content": "Avis clients" },
       { "type": "text", "id": "reviews_title", "label": "Titre du bloc avis", "default": "Les avis de nos clients" }
   ] }

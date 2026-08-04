@@ -1,0 +1,31 @@
+{%- comment -%}
+  « Le rythme de la cure » — une étape par ligne, au format :
+      titre | délai | phrase explicative
+  Le produit peut définir ses propres étapes via le métachamp custom.rythme ;
+  sinon on retombe sur le rythme de cure générique de la marque (paramètre
+  steps_fallback), qui ne comporte aucune allégation propre au produit.
+  Paramètres : steps_product, steps_title, steps_fallback, steps_note
+{%- endcomment -%}
+{%- assign st_raw = steps_product.metafields.custom.rythme | default: steps_fallback -%}
+{%- if st_raw != blank -%}
+  {%- assign st_lines = st_raw | newline_to_br | split: '<br />' -%}
+  <section class="nat-steps">
+    <h2 class="nat-h2">{{ steps_title | default: 'Le rythme de votre cure' }}</h2>
+    <div class="nat-steps__grid">
+      {%- for line in st_lines -%}
+        {%- assign l = line | strip -%}
+        {%- if l != blank -%}
+          {%- assign parts = l | split: '|' -%}
+          <div class="nat-steps__item">
+            <svg class="nat-steps__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+            <div class="nat-steps__name">{{ parts[0] | strip }}</div>
+            {%- if parts[1] != blank -%}<span class="nat-steps__when">{{ parts[1] | strip }}</span>{%- endif -%}
+            <p class="nat-steps__text">{{ parts[2] | strip }}</p>
+            <div class="nat-steps__line"></div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+    {%- if steps_note != blank -%}<p class="nat-note">{{ steps_note }}</p>{%- endif -%}
+  </section>
+{%- endif -%}
