@@ -48,12 +48,11 @@
   </div>
 </div>
 
-<!-- texte libre éventuel (Admin > Pages > contenu) -->
-{%- if page.content != blank -%}
-  <div class="nat-wrap nat-rte" style="max-width:760px;padding-top:46px;padding-bottom:0;font-size:17px;line-height:1.85;color:var(--brown-dark);">
-    {{ page.content }}
-  </div>
-{%- endif -%}
+{%- comment -%}
+  Le corps de page (Admin > Pages > contenu) n'est volontairement pas affiché :
+  ces pages se limitent aux deux rayons, aux produits de la rubrique et aux
+  deux renvois. Le texte reste conservé dans l'admin.
+{%- endcomment -%}
 
 <!-- deux rayons de conseils : généraux, puis liés aux produits -->
 <div class="nat-wrap" style="padding-bottom:16px;">
