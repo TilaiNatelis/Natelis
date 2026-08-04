@@ -8,7 +8,7 @@
 {%- if col_nouv == blank or col_nouv.products.size == 0 -%}{%- assign col_nouv = collections['tous-nos-complements'] -%}{%- endif -%}
 {%- if col_nouv == blank or col_nouv.products.size == 0 -%}{%- assign col_nouv = collections.all -%}{%- endif -%}
 
-<div class="nat-wrap" style="padding-top:64px;padding-bottom:12px;" id="NatSel-{{ section.id }}">
+<div class="nat-wrap" style="padding-top:48px;padding-bottom:10px;" id="NatSel-{{ section.id }}">
   <div class="nat-section-head">
     <h2 class="nat-h2">{{ section.settings.title }}</h2>
     <a class="nat-link" href="{{ routes.all_products_collection_url }}">Tout voir →</a>

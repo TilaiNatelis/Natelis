@@ -31,7 +31,7 @@ body{margin:0;background:var(--cream);font-family:var(--sans);color:var(--green-
 img{max-width:100%;}
 a{color:inherit;text-decoration:none;}
 
-.nat-wrap{max-width:1440px;margin:0 auto;padding-left:48px;padding-right:48px;}
+.nat-wrap{max-width:1760px;margin:0 auto;padding-left:24px;padding-right:24px;}
 .nat-serif{font-family:var(--serif);font-weight:500;}
 
 /* ---------- boutons ---------- */
@@ -121,9 +121,9 @@ a{color:inherit;text-decoration:none;}
 
 /* ---------- sur-titres / sections ---------- */
 .nat-eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--olive-light);font-weight:700;}
-.nat-h2{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.08;letter-spacing:.005em;color:var(--green-deep);margin:0;}
-.nat-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;}
-.nat-section-head__eyebrow{font-size:11.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--olive-light);font-weight:700;margin:0 0 12px;}
+.nat-h2{font-family:var(--serif);font-weight:500;font-size:29px;line-height:1.12;letter-spacing:.005em;color:var(--green-deep);margin:0;}
+.nat-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:20px;}
+.nat-section-head__eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--olive-light);font-weight:700;margin:0 0 7px;}
 .nat-link{font-size:12px;color:var(--olive-light);font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
 
 /* ---------- hero accueil (carrousel glissant) ---------- */
@@ -164,9 +164,9 @@ a{color:inherit;text-decoration:none;}
 .nat-dot.is-active{width:26px;background:var(--cream);}
 
 /* ---------- grille univers (cartes flottantes) ---------- */
-.nat-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px;}
-.nat-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;}
-.nat-grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:24px;}
+.nat-grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.nat-grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+.nat-grid-5{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;}
 .nat-univers{position:relative;display:block;cursor:pointer;}
 .nat-univers__img{position:relative;aspect-ratio:1/1;border-radius:0;overflow:hidden;
   background-size:cover;background-position:center;transition:transform .55s ease;}
@@ -200,8 +200,8 @@ a{color:inherit;text-decoration:none;}
 .nat-offre__btn:hover{background:var(--green-deep);color:#fff;}
 
 /* nos valeurs : tuiles sur fond clair */
-.nat-valeurs{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:32px;}
-.nat-valeur{background:var(--soft);border:1px solid var(--border);aspect-ratio:1/1;
+.nat-valeurs{display:grid;grid-template-columns:repeat(4,1fr);gap:30px;margin-top:4px;}
+.nat-valeur{background:var(--soft);border:1px solid var(--border);aspect-ratio:16/11;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   gap:16px;padding:30px 24px;text-align:center;transition:border-color .2s;}
 .nat-valeur:hover{border-color:var(--sage);}
@@ -211,7 +211,7 @@ a{color:inherit;text-decoration:none;}
 .nat-valeur__sub{font-size:12.5px;line-height:1.5;color:var(--brown);}
 
 /* suivez-nous */
-.nat-social{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:30px;}
+.nat-social{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-top:4px;}
 .nat-social__item{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--soft);display:block;}
 .nat-social__item img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;}
 .nat-social__item:hover img{transform:scale(1.05);}
@@ -231,7 +231,7 @@ a{color:inherit;text-decoration:none;}
 }
 
 /* ---------- onglets ---------- */
-.nat-tabs{display:flex;gap:12px;margin:22px 0 34px;}
+.nat-tabs{display:flex;gap:8px;margin:0 0 18px;}
 .nat-tab{font-size:13px;font-weight:700;letter-spacing:.04em;padding:9px 22px;border-radius:0;
   cursor:pointer;background:transparent;color:var(--green-deep);border:1.5px solid #DCE2D0;}
 .nat-tab.is-active{background:var(--green-deep);color:var(--cream);border-color:var(--green-deep);}
@@ -256,18 +256,20 @@ a{color:inherit;text-decoration:none;}
   font-size:11px;letter-spacing:.04em;font-weight:700;padding:5px 11px;border-radius:999px;}
 .nat-card--reco .nat-card__media{background:linear-gradient(160deg,var(--pale),var(--soft));}
 .nat-card__ph{color:#c5b596;font-family:monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:0 8px;}
-.nat-card__obj{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--olive-light);font-weight:700;margin-top:14px;}
+.nat-card__obj{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--olive-light);font-weight:700;margin-top:12px;}
 .nat-card__name{display:block;font-size:15px;font-weight:700;color:var(--green-deep);margin-top:4px;line-height:1.25;}
 .nat-card__sub{font-size:12.5px;color:var(--brown);margin-top:3px;}
 .nat-card__note{font-size:13px;line-height:1.55;color:var(--brown-dark);margin:10px 0 0;
   padding-left:11px;border-left:2px solid var(--olive-light);}
-.nat-card__row{display:flex;align-items:center;justify-content:space-between;margin-top:12px;}
+.nat-card__row{display:block;margin-top:10px;}
 .nat-card__price{font-size:18.5px;font-weight:700;color:var(--green-deep);}
 .nat-card__compare{font-size:13px;color:#9a8b6c;text-decoration:line-through;margin-left:6px;font-weight:500;}
-.nat-card__add{border:1.5px solid var(--green-deep);background:transparent;color:var(--green-deep);
-  font-size:12px;font-weight:700;padding:8px 16px;border-radius:999px;cursor:pointer;font-family:var(--sans);transition:all .2s;}
+/* bouton d'achat pleine largeur sous la carte (cible plus large, plus lisible) */
+.nat-card__add{display:block;width:100%;border:1px solid #DCE2D0;background:transparent;color:var(--green-deep);
+  font-size:13px;font-weight:600;letter-spacing:.04em;padding:13px 16px;margin-top:11px;border-radius:0;
+  cursor:pointer;font-family:var(--sans);transition:all .2s;}
 .nat-card__add:hover{background:var(--green-deep);color:var(--cream);}
-.nat-card__rating{font-size:15px;color:var(--sage);margin-top:9px;letter-spacing:.06em;}
+.nat-card__rating{font-size:14px;color:var(--sage);margin-top:7px;letter-spacing:.06em;}
 .nat-card__rating span{color:var(--brown);font-size:12.5px;letter-spacing:0;}
 
 /* ---------- bloc éditorial split ---------- */
@@ -870,9 +872,13 @@ a{transition:color .15s;}
 .nat-mnav__sub--all{font-weight:700;color:var(--olive);}
 
 /* ---------- responsive ---------- */
+/* échelle de grilles : on descend une colonne à la fois, jamais d'un coup à 1 */
+@media (max-width:1280px){
+  .nat-grid-5{grid-template-columns:repeat(4,1fr);}
+}
 @media (max-width:1024px){
   .nat-grid-5{grid-template-columns:repeat(3,1fr);}
-  .nat-grid-4{grid-template-columns:repeat(2,1fr);}
+  .nat-grid-4{grid-template-columns:repeat(3,1fr);}
   .nat-cat-grid{grid-template-columns:1fr;}
 }
 @media (max-width:900px){
@@ -884,8 +890,9 @@ a{transition:color .15s;}
   .nat-search{display:none;}
 }
 @media (max-width:768px){
-  .nat-wrap,.nat-news,.nat-footer{padding-left:20px;padding-right:20px;}
-  .nat-grid-3,.nat-grid-4,.nat-grid-5,.nat-pdp,.nat-split,.nat-footer{grid-template-columns:1fr;}
+  .nat-wrap,.nat-news,.nat-footer{padding-left:16px;padding-right:16px;}
+  .nat-pdp,.nat-split,.nat-footer{grid-template-columns:1fr;}
+  .nat-grid-3,.nat-grid-4,.nat-grid-5{grid-template-columns:repeat(2,1fr);}
   .nat-h2{font-size:28px;}
   .nat-split__body{padding:48px 28px;}
   .nat-hero{--nat-peek:64px;min-height:320px;max-height:none;}
@@ -906,7 +913,8 @@ a{transition:color .15s;}
   .nat-univers__title{font-size:24px;}
 }
 @media (max-width:480px){
-  .nat-grid-4,.nat-grid-3{grid-template-columns:1fr;}
+  .nat-grid-3{grid-template-columns:1fr;}      /* cartes univers : trop de texte pour 2 */
+  .nat-grid-4,.nat-grid-5{grid-template-columns:repeat(2,1fr);}
   .nat-recos{grid-template-columns:repeat(2,1fr);}
 }
 /* grille de produits : 3 par ligne, mais jamais 1 seule colonne sur mobile */
@@ -916,15 +924,15 @@ a{transition:color .15s;}
 /* ============================================================
    Page Conseils — rayons thématiques (titre + filtres + carrousel)
    ============================================================ */
-.nat-rail{padding-top:56px;}
-.nat-rail__head{margin-bottom:18px;}
+.nat-rail{padding-top:46px;}
+.nat-rail__head{margin-bottom:14px;}
 .nat-rail__title{font-family:var(--serif);font-weight:500;font-size:34px;line-height:1.1;
   color:var(--green-deep);margin:0;}
 .nat-rail__sub{font-size:16px;font-weight:700;color:var(--green-deep);margin:10px 0 0;}
 .nat-rail__count{font-size:13px;color:var(--brown);margin:6px 0 0;}
 
 /* filtres en pastilles */
-.nat-rail__chips{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 4px;}
+.nat-rail__chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
 .nat-chip{display:inline-flex;align-items:center;background:var(--soft);border:1px solid var(--border);
   color:var(--green-deep);font-size:13.5px;font-weight:500;padding:9px 18px;white-space:nowrap;
   transition:background .18s,border-color .18s,color .18s;}
@@ -953,8 +961,8 @@ a{transition:color .15s;}
 @media (max-width:768px){ .nat-rail__search{min-width:0;width:100%;} }
 
 /* piste horizontale */
-.nat-rail__viewport{position:relative;margin-top:22px;}
-.nat-rail__track{display:flex;gap:18px;overflow-x:auto;scroll-behavior:smooth;
+.nat-rail__viewport{position:relative;margin-top:16px;}
+.nat-rail__track{display:flex;gap:14px;overflow-x:auto;scroll-behavior:smooth;
   scroll-snap-type:x mandatory;padding-bottom:6px;scrollbar-width:none;-ms-overflow-style:none;}
 .nat-rail__track::-webkit-scrollbar{display:none;}
 .nat-rail__arrow{position:absolute;top:50%;transform:translateY(-50%);z-index:3;width:46px;height:46px;
@@ -967,7 +975,7 @@ a{transition:color .15s;}
 .nat-rail__arrow[disabled]{opacity:0;pointer-events:none;}
 
 /* carte article */
-.nat-pcard{position:relative;flex:0 0 316px;width:316px;aspect-ratio:5/7;overflow:hidden;
+.nat-pcard{position:relative;flex:0 0 340px;width:340px;aspect-ratio:5/7;overflow:hidden;
   scroll-snap-align:start;display:block;background:var(--pale);}
 .nat-pcard__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
   transition:transform .6s ease;}

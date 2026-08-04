@@ -2,7 +2,7 @@
 {%- assign blog = blogs[section.settings.blog] -%}
 {%- if blog == blank or blog.articles_count == 0 -%}{%- assign blog = blogs['carnet-de-la-vigne'] -%}{%- endif -%}
 <div style="background:var(--pale);">
-  <div class="nat-wrap" style="padding-top:76px;padding-bottom:76px;">
+  <div class="nat-wrap" style="padding-top:52px;padding-bottom:52px;">
     <div class="nat-section-head">
       <div>
         <div class="nat-eyebrow">{{ section.settings.eyebrow }}</div>
@@ -10,7 +10,7 @@
       </div>
       <a class="nat-link" href="{{ blog.url | default: routes.root_url }}">Tous les articles →</a>
     </div>
-    <div class="nat-grid-3" style="margin-top:32px;">
+    <div class="nat-grid-3" style="margin-top:18px;">
       {%- for article in blog.articles limit: 3 -%}
         <a class="nat-post" href="{{ article.url }}">
           <div class="nat-post__media" style="background-image:url('{{ article.image | image_url: width: 800 }}');{% if article.image == blank %}background:var(--beige-gold);{% endif %}"></div>
