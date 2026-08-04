@@ -599,6 +599,47 @@ a{color:inherit;text-decoration:none;}
   .nat-feat__heading{font-size:25px;}
 }
 
+/* ============================================================
+   Corps de texte riche (articles, pages, contact)
+   Applique la direction artistique au contenu saisi dans l'admin.
+   ============================================================ */
+.nat-rte > *:first-child{margin-top:0;}
+.nat-rte > *:last-child{margin-bottom:0;}
+.nat-rte p{margin:0 0 1.15em;}
+.nat-rte h2,.nat-rte h3,.nat-rte h4{font-family:var(--serif);font-weight:500;color:var(--green-deep);
+  line-height:1.15;margin:1.9em 0 .5em;}
+.nat-rte h2{font-size:33px;}
+.nat-rte h3{font-size:26px;}
+.nat-rte h4{font-size:21px;}
+.nat-rte a{color:var(--olive);text-decoration:underline;text-underline-offset:3px;
+  text-decoration-thickness:1px;transition:color .15s;}
+.nat-rte a:hover{color:var(--green-deep);}
+.nat-rte strong,.nat-rte b{font-weight:700;color:var(--green-deep);}
+.nat-rte em{font-style:italic;}
+.nat-rte ul,.nat-rte ol{margin:0 0 1.15em;padding-left:0;list-style:none;}
+.nat-rte ol{counter-reset:nat-rte-ol;}
+.nat-rte li{position:relative;padding-left:26px;margin-bottom:.6em;line-height:1.7;}
+.nat-rte ul > li::before{content:"✦";position:absolute;left:0;top:0;color:var(--olive);font-size:.95em;}
+.nat-rte ol > li{counter-increment:nat-rte-ol;}
+.nat-rte ol > li::before{content:counter(nat-rte-ol) ".";position:absolute;left:0;top:0;
+  color:var(--olive-light);font-weight:700;font-size:.92em;}
+.nat-rte blockquote{margin:1.7em 0;padding:4px 0 4px 22px;border-left:2px solid var(--olive);
+  font-family:var(--serif);font-size:1.32em;line-height:1.4;color:var(--green-deep);}
+.nat-rte blockquote p{margin:0;}
+.nat-rte img{display:block;width:100%;height:auto;margin:1.8em 0;border-radius:0;}
+.nat-rte hr{border:none;border-top:1px solid var(--border);margin:2.4em 0;}
+.nat-rte table{width:100%;border-collapse:collapse;margin:1.6em 0;font-size:.94em;}
+.nat-rte th,.nat-rte td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--border);}
+.nat-rte th{font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--olive-light);font-weight:700;}
+.nat-rte figcaption{font-size:13px;color:var(--brown);margin-top:-1.2em;margin-bottom:1.8em;}
+@media (max-width:768px){
+  .nat-rte h2{font-size:27px;}
+  .nat-rte h3{font-size:22px;}
+  .nat-rte h4{font-size:19px;}
+  .nat-rte blockquote{font-size:1.2em;}
+}
+
 /* ---------- accordéon fiche produit ---------- */
 .nat-acc__item{border-top:1px solid var(--border);}
 .nat-acc__item:last-child{border-bottom:1px solid var(--border);}
