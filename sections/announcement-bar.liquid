@@ -1,18 +1,65 @@
-<div class="nat-promo">
-  {{ section.settings.text_left }}
-  {%- if section.settings.text_right != blank -%}
-    &nbsp;·&nbsp; <span style="opacity:.85;">{{ section.settings.text_right }}</span>
-    {%- if section.settings.code != blank -%} <strong>{{ section.settings.code }}</strong>{%- endif -%}
-  {%- endif -%}
+{%- comment -%}
+  Bandeau promo : les messages défilent en fondu, un bloc = un message.
+  Sans bloc configuré, on retombe sur les deux messages par défaut.
+{%- endcomment -%}
+<div class="nat-promo" id="NatPromo-{{ section.id }}">
+  <div class="nat-promo__track">
+    {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+        <span class="nat-promo__msg{% if forloop.first %} is-active{% endif %}" {{ block.shopify_attributes }}>
+          {%- if block.settings.url != blank -%}<a href="{{ block.settings.url }}">{%- endif -%}
+          {{ block.settings.text }}
+          {%- if block.settings.code != blank -%} <strong>{{ block.settings.code }}</strong>{%- endif -%}
+          {%- if block.settings.url != blank -%}</a>{%- endif -%}
+        </span>
+      {%- endfor -%}
+    {%- else -%}
+      <span class="nat-promo__msg is-active">Livraison offerte dès 49€ en France métropolitaine</span>
+      <span class="nat-promo__msg">-15% sur votre première commande avec le code <strong>BIENVENUE</strong></span>
+    {%- endif -%}
+  </div>
 </div>
+
+<script>
+  (function(){
+    var root = document.getElementById('NatPromo-{{ section.id }}');
+    if(!root) return;
+    var msgs = root.querySelectorAll('.nat-promo__msg');
+    if(msgs.length < 2) return;
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+    var delay = {{ section.settings.delay | default: 5 | times: 1000 }};
+    var i = 0;
+    setInterval(function(){
+      msgs[i].classList.remove('is-active');
+      i = (i + 1) % msgs.length;
+      msgs[i].classList.add('is-active');
+    }, delay);
+  })();
+</script>
 
 {% schema %}
 {
   "name": "Bandeau promo",
+  "max_blocks": 5,
   "settings": [
-    { "type": "text", "id": "text_left", "label": "Texte gauche", "default": "Livraison offerte dès 49€" },
-    { "type": "text", "id": "text_right", "label": "Texte droite", "default": "Cure découverte —15% avec le code" },
-    { "type": "text", "id": "code", "label": "Code promo", "default": "AUTOMNE" }
+    { "type": "range", "id": "delay", "label": "Durée d'affichage de chaque message", "min": 3, "max": 12, "step": 1, "unit": "s", "default": 5 }
+  ],
+  "blocks": [
+    {
+      "type": "message", "name": "Message",
+      "settings": [
+        { "type": "text", "id": "text", "label": "Texte", "default": "Livraison offerte dès 49€ en France métropolitaine" },
+        { "type": "text", "id": "code", "label": "Code promo (facultatif)" },
+        { "type": "url", "id": "url", "label": "Lien (facultatif)" }
+      ]
+    }
+  ],
+  "presets": [
+    { "name": "Bandeau promo", "blocks": [
+      { "type": "message", "settings": { "text": "Livraison offerte dès 49€ en France métropolitaine" } },
+      { "type": "message", "settings": { "text": "-15% sur votre première commande avec le code", "code": "BIENVENUE" } }
+    ] }
   ]
 }
 {% endschema %}

@@ -48,6 +48,10 @@
             </div>
             <div class="nat-mega__foot">
               <a class="nat-mega__all" href="{{ link.url }}">{{ all_label }} <span aria-hidden="true">→</span></a>
+              {%- comment -%} sur le menu Conseils, renvoi vers la FAQ à droite {%- endcomment -%}
+              {%- if t contains 'conseil' -%}
+                <a class="nat-mega__all nat-mega__all--right" href="{{ routes.root_url }}pages/faq">Consulter la FAQ <span aria-hidden="true">→</span></a>
+              {%- endif -%}
             </div>
           </div>
         </div>
