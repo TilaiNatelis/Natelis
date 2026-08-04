@@ -49,7 +49,10 @@
           <div style="display:flex;gap:12px;align-items:flex-start;"><span style="color:var(--olive);">✦</span><span style="font-size:14.5px;color:var(--green-text);line-height:1.5;">{{ c }}</span></div>
         {%- endfor -%}
       </div>
-      <a class="nat-btn" style="align-self:flex-start;margin-top:30px;" href="{{ section.settings.diag_url | default: '/pages/diagnostic' }}">Faire mon diagnostic →</a>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:30px;">
+        <a class="nat-btn" href="{{ section.settings.diag_url | default: '/pages/diagnostic' }}">Faire mon diagnostic</a>
+        <a class="nat-btn nat-btn--outline" href="{{ section.settings.faq_url | default: '/pages/faq' }}">Consulter la FAQ</a>
+      </div>
     </div>
   </div>
 </div>
@@ -129,7 +132,8 @@
     { "type": "blog", "id": "blog", "label": "Blog des conseils", "info": "Chaque rayon puise ses articles dans ce blog, filtré par thématique." },
     { "type": "header", "content": "Bloc routine" },
     { "type": "image_picker", "id": "image", "label": "Image routine" },
-    { "type": "url", "id": "diag_url", "label": "Lien diagnostic" }
+    { "type": "url", "id": "diag_url", "label": "Lien diagnostic" },
+    { "type": "url", "id": "faq_url", "label": "Lien FAQ" }
   ],
   "blocks": [
     {

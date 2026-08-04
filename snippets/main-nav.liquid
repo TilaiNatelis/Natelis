@@ -13,8 +13,15 @@
       {%- elsif t contains 'diagnostic' -%}{%- assign cls = 'nat-nav__item nat-nav__item--diag' -%}
       {%- else -%}{%- assign cls = 'nat-nav__item' -%}{%- endif -%}
 
-      {%- if link.links.size > 0 -%}
-        {%- if t contains 'conseil' -%}{%- assign all_label = 'Tous nos conseils' -%}{%- else -%}{%- assign all_label = 'Tous les produits' -%}{%- endif -%}
+      {%- comment -%}
+        « Conseils » reste un lien simple : ses sous-rubriques faisaient doublon
+        avec les rayons thématiques de la page Conseils elle-même.
+      {%- endcomment -%}
+      {%- if link.links.size > 0 and t contains 'conseil' -%}
+        <a class="{{ cls }}{% if link.active or link.child_active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }}</a>
+
+      {%- elsif link.links.size > 0 -%}
+        {%- assign all_label = 'Tous les produits' -%}
         <div class="nat-nav__parent">
           <a class="{{ cls }} nat-nav__item--has-mega{% if link.active or link.child_active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }}</a>
           <div class="nat-mega">
@@ -48,10 +55,6 @@
             </div>
             <div class="nat-mega__foot">
               <a class="nat-mega__all" href="{{ link.url }}">{{ all_label }} <span aria-hidden="true">→</span></a>
-              {%- comment -%} sur le menu Conseils, renvoi vers la FAQ à droite {%- endcomment -%}
-              {%- if t contains 'conseil' -%}
-                <a class="nat-mega__all nat-mega__all--right" href="{{ routes.root_url }}pages/faq">Consulter la FAQ <span aria-hidden="true">→</span></a>
-              {%- endif -%}
             </div>
           </div>
         </div>
@@ -78,7 +81,11 @@
   </div>
   <nav class="nat-mnav__list">
     {%- for link in linklists.main-menu.links -%}
-      {%- if link.links.size > 0 -%}
+      {%- assign mt = link.title | downcase -%}
+      {%- if link.links.size > 0 and mt contains 'conseil' -%}
+        {%- comment -%} même règle que sur ordinateur : lien simple {%- endcomment -%}
+        <a class="nat-mnav__link" href="{{ link.url }}">{{ link.title }}</a>
+      {%- elsif link.links.size > 0 -%}
         <details class="nat-mnav__group">
           <summary>{{ link.title }}</summary>
           <a class="nat-mnav__sub nat-mnav__sub--all" href="{{ link.url }}">Tout voir →</a>
