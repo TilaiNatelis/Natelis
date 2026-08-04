@@ -1,0 +1,38 @@
+{%- comment -%}
+  Bandeau d'engagements (emballage, bio, vegan, fabrication…).
+  Source, par ordre de priorité :
+    1. métachamp produit custom.engagements (une valeur par ligne)
+    2. paramètre `fallback` (une valeur par ligne), défini au niveau de la section
+  L'icône est choisie d'après les mots-clés du libellé ; à défaut, une feuille.
+  Paramètres : eng_product (objet produit), eng_fallback (texte)
+{%- endcomment -%}
+{%- assign eng_raw = eng_product.metafields.custom.engagements | default: eng_fallback -%}
+{%- if eng_raw != blank -%}
+  {%- assign eng_list = eng_raw | newline_to_br | split: '<br />' -%}
+  <div class="nat-engage">
+    {%- for e in eng_list -%}
+      {%- assign label = e | strip -%}
+      {%- if label != blank -%}
+        {%- assign k = label | downcase -%}
+        <div class="nat-engage__item">
+          <span class="nat-engage__icon" aria-hidden="true">
+            {%- if k contains 'emballage' or k contains 'recycl' or k contains 'carton' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M3 8.5 12 4l9 4.5v7L12 20l-9-4.5v-7Z"/><path d="M3 8.5 12 13l9-4.5M12 13v7"/></svg>
+            {%- elsif k contains 'vegan' or k contains 'végan' or k contains 'végétal' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M12 21c-4.5-3-7-6.5-7-10a7 7 0 0 1 14 0c0 3.5-2.5 7-7 10Z"/><path d="M12 21V8"/></svg>
+            {%- elsif k contains 'france' or k contains 'français' or k contains 'provence' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M12 2.5 20 7v10l-8 4.5L4 17V7l8-4.5Z"/></svg>
+            {%- elsif k contains 'sans additif' or k contains 'sans gluten' or k contains 'sans lactose' or k contains 'sans ' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><circle cx="12" cy="12" r="9"/><path d="m6 18 12-12"/></svg>
+            {%- elsif k contains 'test' or k contains 'contrôl' or k contains 'analys' -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M9 3v7L4.5 18A2 2 0 0 0 6.3 21h11.4a2 2 0 0 0 1.8-3L15 10V3"/><path d="M8 3h8"/></svg>
+            {%- else -%}
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" width="26" height="26"><path d="M20 4c0 8-5 13-13 13H4c0-8 5-13 13-13h3Z"/><path d="M4 20c2-5 5.5-8.5 10-10.5"/></svg>
+            {%- endif -%}
+          </span>
+          <span class="nat-engage__label">{{ label }}</span>
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}

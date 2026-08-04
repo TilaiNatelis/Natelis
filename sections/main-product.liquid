@@ -1,8 +1,7 @@
 {% render 'section-fonts', section: section %}
 {%- assign p = product -%}
 {%- assign sub = p.metafields.custom.subtitle | default: p.type -%}
-{%- assign rating = p.metafields.custom.rating -%}
-{%- assign rating_count = p.metafields.custom.rating_count -%}
+{%- assign units = p.metafields.custom.units -%}
 
 <div style="max-width:1300px;margin:0 auto;padding:30px 48px 80px;">
   <div style="font-size:12.5px;color:#9a8b6c;margin-bottom:26px;">
@@ -12,62 +11,92 @@
   </div>
 
   <div class="nat-pdp">
-    <!-- galerie -->
-    <div style="display:flex;flex-direction:column;gap:14px;">
-      <div class="nat-card__media" style="aspect-ratio:1/1;">
-        {%- if p.featured_image -%}
-          <img src="{{ p.featured_image | image_url: width: 1200 }}" alt="{{ p.featured_image.alt | escape }}">
-        {%- else -%}
-          <span class="nat-card__ph">{{ p.title }}</span>
-        {%- endif -%}
-      </div>
+
+    {%- comment -%} ---------- galerie : vignettes verticales + grand visuel ---------- {%- endcomment -%}
+    <div class="nat-gal" id="NatGal-{{ section.id }}">
       {%- if p.images.size > 1 -%}
-        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px;">
-          {%- for image in p.images limit: 4 -%}
-            <div style="aspect-ratio:1/1;border-radius:2px;overflow:hidden;{% if forloop.first %}border:1.5px solid var(--green-deep);{% endif %}">
-              <img src="{{ image | image_url: width: 300 }}" alt="" style="width:100%;height:100%;object-fit:cover;">
-            </div>
-          {%- endfor -%}
+        <div class="nat-gal__thumbs">
+          <button type="button" class="nat-gal__nav nat-gal__nav--up" aria-label="Visuels précédents">▲</button>
+          <div class="nat-gal__thumblist">
+            {%- for image in p.images -%}
+              <button type="button" class="nat-gal__thumb{% if forloop.first %} is-active{% endif %}" data-i="{{ forloop.index0 }}" aria-label="Visuel {{ forloop.index }}">
+                <img src="{{ image | image_url: width: 200 }}" alt="" loading="lazy">
+              </button>
+            {%- endfor -%}
+          </div>
+          <button type="button" class="nat-gal__nav nat-gal__nav--down" aria-label="Visuels suivants">▼</button>
         </div>
       {%- endif -%}
+
+      <div class="nat-gal__main">
+        {%- comment -%} pastille d'état, même logique que sur les cartes produit {%- endcomment -%}
+        {%- if p.compare_at_price_max > p.price_min -%}
+          <span class="nat-gal__badge nat-gal__badge--promo">Offre spéciale</span>
+        {%- elsif p.tags contains 'Nouveau' -%}
+          <span class="nat-gal__badge nat-gal__badge--new">Nouveau</span>
+        {%- elsif p.tags contains 'Best-seller' -%}
+          <span class="nat-gal__badge">Best-seller</span>
+        {%- endif -%}
+
+        {%- if p.images.size > 0 -%}
+          {%- for image in p.images -%}
+            <img class="nat-gal__img{% if forloop.first %} is-active{% endif %}" data-i="{{ forloop.index0 }}"
+                 src="{{ image | image_url: width: 1200 }}" alt="{{ image.alt | default: p.title | escape }}"
+                 {% unless forloop.first %}loading="lazy"{% endunless %}>
+          {%- endfor -%}
+          {%- if p.images.size > 1 -%}
+            <button type="button" class="nat-gal__arrow nat-gal__arrow--prev" aria-label="Visuel précédent">‹</button>
+            <button type="button" class="nat-gal__arrow nat-gal__arrow--next" aria-label="Visuel suivant">›</button>
+          {%- endif -%}
+        {%- else -%}
+          <span class="nat-card__ph" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;">{{ p.title }}</span>
+        {%- endif -%}
+      </div>
     </div>
 
-    <!-- infos -->
+    {%- comment -%} ---------- panneau d'achat ---------- {%- endcomment -%}
     <div>
-      {%- if p.tags.size > 0 -%}<div class="nat-eyebrow">{{ p.tags | join: ' · ' }}</div>{%- endif -%}
-      <h1 class="nat-pdp__title">{{ p.title }}</h1>
-      {%- if sub != blank -%}<div style="font-size:15px;color:var(--brown);margin-top:8px;">{{ sub }}</div>{%- endif -%}
-      {%- if rating != blank -%}
-        <div style="margin-top:14px;font-size:13px;color:var(--sage);">★★★★★ <span style="color:var(--brown);">{{ rating }}{% if rating_count != blank %} · {{ rating_count }} avis{% endif %}</span></div>
-      {%- endif -%}
+      {%- comment -%} note Judge.me (se remplit dès les premiers avis) {%- endcomment -%}
+      <div style="clear:both"></div>
+      <div class="jdgm-widget jdgm-preview-badge" data-id="{{ p.id }}" data-template="product"></div>
 
-      <div class="nat-pdp__price">{{ p.price | money }}</div>
-      {%- if p.selected_or_first_available_variant.title != 'Default Title' -%}
-        <div style="font-size:12.5px;color:#9a8b6c;margin-top:3px;">Soit la cure de {{ p.selected_or_first_available_variant.title }}</div>
-      {%- endif -%}
+      {%- if p.tags.size > 0 -%}<div class="nat-eyebrow" style="margin-top:10px;">{{ p.tags | join: ' · ' }}</div>{%- endif -%}
+      <h1 class="nat-pdp__title">{{ p.title }}</h1>
+
+      <div class="nat-pdp__meta">
+        <span>{%- if p.selected_or_first_available_variant.sku != blank -%}Réf. {{ p.selected_or_first_available_variant.sku }}{%- elsif sub != blank -%}{{ sub }}{%- endif -%}</span>
+        <span>{%- if units != blank -%}{{ units }} unités{%- elsif p.selected_or_first_available_variant.title != 'Default Title' -%}{{ p.selected_or_first_available_variant.title }}{%- endif -%}</span>
+      </div>
 
       <p class="nat-pdp__desc">{{ p.description | strip_html | default: 'Une formule pure et concentrée, pensée pour s’intégrer simplement à votre rituel quotidien. Actifs d’origine naturelle, dosés avec exigence et sans additifs controversés.' }}</p>
 
       {%- form 'product', p -%}
         {%- unless p.has_only_default_variant -%}
-          <div style="font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--green-deep);font-weight:700;margin-top:30px;">Format</div>
-          <div style="display:flex;gap:12px;margin-top:12px;flex-wrap:wrap;">
+          {%- comment -%}
+            Choisir un format sélectionne la variante (rechargement sur son URL)
+            et ne déclenche surtout pas l'ajout au panier.
+          {%- endcomment -%}
+          <div class="nat-vars">
             {%- for variant in p.variants -%}
-              {%- comment -%}
-                Choisir un format sélectionne la variante (rechargement sur son URL)
-                et ne déclenche surtout pas l'ajout au panier.
-              {%- endcomment -%}
-              <label style="font-size:13px;font-weight:600;padding:11px 18px;border-radius:0;cursor:pointer;border:1.5px solid #DCE2D0;{% if variant == p.selected_or_first_available_variant %}background:var(--green-deep);color:var(--cream);border-color:var(--green-deep);{% endif %}">
-                <input type="radio" name="id" value="{{ variant.id }}" style="display:none;" {% if variant == p.selected_or_first_available_variant %}checked{% endif %} data-variant-url="{{ p.url }}?variant={{ variant.id }}">
-                {{ variant.title }}
+              <label class="nat-var{% if variant == p.selected_or_first_available_variant %} is-selected{% endif %}{% unless variant.available %} nat-var--soldout{% endunless %}">
+                <input type="radio" name="id" value="{{ variant.id }}"
+                       {% if variant == p.selected_or_first_available_variant %}checked{% endif %}
+                       data-variant-url="{{ p.url }}?variant={{ variant.id }}">
+                <span class="nat-var__title">{{ variant.title }}</span>
+                <span class="nat-var__price">{{ variant.price | money }}
+                  {%- if variant.compare_at_price > variant.price -%}<s class="nat-var__was">{{ variant.compare_at_price | money }}</s>{%- endif -%}
+                </span>
               </label>
             {%- endfor -%}
           </div>
         {%- else -%}
           <input type="hidden" name="id" value="{{ p.selected_or_first_available_variant.id }}">
+          <div class="nat-pdp__price">{{ p.price | money }}
+            {%- if p.compare_at_price_max > p.price_min -%}<s class="nat-card__compare">{{ p.compare_at_price_max | money }}</s>{%- endif -%}
+          </div>
         {%- endunless -%}
 
-        <div style="display:flex;align-items:center;gap:16px;margin-top:30px;">
+        <div style="display:flex;align-items:center;gap:14px;margin-top:24px;">
           <div class="nat-qty">
             <span onclick="var q=this.parentNode.querySelector('input');q.value=Math.max(1,(+q.value||1)-1);">−</span>
             <input type="number" name="quantity" value="1" min="1" style="width:46px;text-align:center;border:none;font-size:15px;font-weight:700;font-family:var(--sans);">
@@ -79,16 +108,19 @@
         </div>
       {%- endform -%}
 
+      {%- comment -%} engagements : logos sous la description {%- endcomment -%}
+      {%- render 'engagements', eng_product: p, eng_fallback: section.settings.engagements -%}
+
       {%- assign benefits = p.metafields.custom.benefits.value -%}
       {%- if benefits -%}
         <div class="nat-benefits">
           {%- for b in benefits -%}<div class="nat-benefit"><span>{{ b }}</span></div>{%- endfor -%}
         </div>
       {%- endif -%}
-      <div style="font-size:12.5px;color:#9a8b6c;margin-top:24px;line-height:1.6;">Livraison offerte dès 49€ · Fabriqué en France · Sans additifs controversés</div>
+      <div style="font-size:12.5px;color:#9a8b6c;margin-top:22px;line-height:1.6;">Livraison offerte dès 49€ · Fabriqué en France · Sans additifs controversés</div>
 
-      {%- comment -%} Accordéon : composition, conseils, allergènes, FAQ (métachamps) {%- endcomment -%}
-      <div class="nat-acc" style="margin-top:30px;">
+      {%- comment -%} Accordéon : composition, provenance, conseils, allergènes, FAQ (métachamps) {%- endcomment -%}
+      <div class="nat-acc" style="margin-top:28px;">
         {%- assign composition = p.metafields.custom.composition -%}
         {%- assign usage = p.metafields.custom.usage -%}
         {%- assign allergens = p.metafields.custom.allergens -%}
@@ -118,6 +150,7 @@
             {%- if pv_text != blank -%}<p style="margin-top:12px;">{{ pv_text }}</p>{%- endif -%}
           </div></details>
         {%- endif -%}
+
         {%- if allergens != blank -%}<details class="nat-acc__item"><summary>Allergènes</summary><div class="nat-acc__body">{{ allergens }}</div></details>{%- endif -%}
         {%- if faq != blank -%}
           <details class="nat-acc__item"><summary>Questions fréquentes</summary><div class="nat-acc__body">{{ faq }}</div></details>
@@ -137,8 +170,19 @@
     </div>
   </div>
 
+  {%- comment -%} ---------- avis clients (Judge.me) ---------- {%- endcomment -%}
+  <div class="nat-reviews">
+    <div class="nat-reviews__head">
+      <p class="nat-section-head__eyebrow">Ils l'ont adopté</p>
+      <h2 class="nat-h2">{{ section.settings.reviews_title | default: 'Les avis de nos clients' }}</h2>
+    </div>
+    <div style="clear:both"></div>
+    <div id="judgeme_product_reviews" class="jdgm-widget jdgm-review-widget"
+         data-product-title="{{ p.title | escape }}" data-id="{{ p.id }}"></div>
+  </div>
+
   {%- if recommendations.performed and recommendations.products_count > 0 -%}
-    <div style="margin-top:84px;">
+    <div style="margin-top:70px;">
       <h2 class="nat-serif" style="font-size:32px;margin:0 0 26px;">Vous aimerez aussi</h2>
       <div class="nat-grid-4">
         {%- for rec in recommendations.products limit: 4 -%}{%- render 'product-card', product: rec -%}{%- endfor -%}
@@ -149,12 +193,57 @@
 
 <script>
   (function(){
+    var root = document.getElementById('NatGal-{{ section.id }}');
+
     // Choisir un format change de variante (et met à jour le prix) sans rien ajouter au panier.
     document.querySelectorAll('input[name="id"][data-variant-url]').forEach(function(input){
       input.addEventListener('change', function(){
         if(input.checked){ window.location.href = input.dataset.variantUrl; }
       });
     });
+
+    if(!root) return;
+    var imgs   = root.querySelectorAll('.nat-gal__img');
+    var thumbs = root.querySelectorAll('.nat-gal__thumb');
+    var list   = root.querySelector('.nat-gal__thumblist');
+    if(imgs.length < 2) return;
+
+    var i = 0;
+    function show(k){
+      i = (k + imgs.length) % imgs.length;
+      imgs.forEach(function(im, j){ im.classList.toggle('is-active', j === i); });
+      thumbs.forEach(function(tb, j){ tb.classList.toggle('is-active', j === i); });
+      if(thumbs[i] && list){ thumbs[i].scrollIntoView({ block: 'nearest', behavior: 'smooth' }); }
+    }
+    thumbs.forEach(function(tb){
+      tb.addEventListener('click', function(){ show(parseInt(tb.dataset.i, 10)); });
+      tb.addEventListener('mouseenter', function(){ show(parseInt(tb.dataset.i, 10)); });
+    });
+    var prev = root.querySelector('.nat-gal__arrow--prev');
+    var next = root.querySelector('.nat-gal__arrow--next');
+    if(prev) prev.addEventListener('click', function(){ show(i - 1); });
+    if(next) next.addEventListener('click', function(){ show(i + 1); });
+
+    // défilement de la colonne de vignettes
+    var up = root.querySelector('.nat-gal__nav--up');
+    var dn = root.querySelector('.nat-gal__nav--down');
+    function scrollThumbs(dir){
+      if(!list) return;
+      var t = list.querySelector('.nat-gal__thumb');
+      var step = t ? t.getBoundingClientRect().height + 10 : 98;
+      list.scrollBy({ top: step * 2 * dir, behavior: 'smooth' });
+    }
+    function refreshNav(){
+      if(!list || !up || !dn) return;
+      var over = list.scrollHeight - list.clientHeight > 2;
+      up.disabled = !over || list.scrollTop <= 2;
+      dn.disabled = !over || list.scrollTop >= list.scrollHeight - list.clientHeight - 2;
+    }
+    if(up) up.addEventListener('click', function(){ scrollThumbs(-1); });
+    if(dn) dn.addEventListener('click', function(){ scrollThumbs(1); });
+    if(list){ list.addEventListener('scroll', refreshNav, { passive: true }); }
+    window.addEventListener('resize', refreshNav);
+    refreshNav();
   })();
 </script>
 
@@ -162,6 +251,10 @@
 { "name": "Produit", "settings": [
       { "type": "header", "content": "Polices (cette section)" },
       { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
-      { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
+      { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] },
+      { "type": "header", "content": "Engagements", "info": "Affichés sous le bouton d'achat. Un engagement par ligne. Un produit peut surcharger cette liste via son métachamp « engagements »." },
+      { "type": "textarea", "id": "engagements", "label": "Engagements par défaut", "default": "Emballage 100% naturel" },
+      { "type": "header", "content": "Avis clients" },
+      { "type": "text", "id": "reviews_title", "label": "Titre du bloc avis", "default": "Les avis de nos clients" }
   ] }
 {% endschema %}
