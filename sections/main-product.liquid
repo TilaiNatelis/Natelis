@@ -40,7 +40,6 @@
       <div style="clear:both"></div>
       <div class="jdgm-widget jdgm-preview-badge" data-id="{{ p.id }}" data-template="product"></div>
 
-      {%- if p.tags.size > 0 -%}<div class="nat-eyebrow" style="margin-top:10px;">{{ p.tags | join: ' · ' }}</div>{%- endif -%}
       <h1 class="nat-pdp__title">{{ p.title }}</h1>
 
       <div class="nat-pdp__meta">
@@ -63,10 +62,14 @@
                 <input type="radio" name="id" value="{{ variant.id }}"
                        {% if variant == p.selected_or_first_available_variant %}checked{% endif %}
                        data-variant-url="{{ p.url }}?variant={{ variant.id }}">
-                <span class="nat-var__title">{{ variant.title }}</span>
-                <span class="nat-var__price">{{ variant.price | money }}
-                  {%- if variant.compare_at_price > variant.price -%}<s class="nat-var__was">{{ variant.compare_at_price | money }}</s>{%- endif -%}
+                <span class="nat-var__text">
+                  <span class="nat-var__title">{{ variant.title }}</span>
+                  <span class="nat-var__price">{{ variant.price | money }}
+                    {%- if variant.compare_at_price > variant.price -%}<s class="nat-var__was">{{ variant.compare_at_price | money }}</s>{%- endif -%}
+                  </span>
                 </span>
+                {%- comment -%} repère d'état : la case active porte un « − », les autres un « + » {%- endcomment -%}
+                <span class="nat-var__mark" aria-hidden="true"></span>
               </label>
             {%- endfor -%}
           </div>
@@ -78,14 +81,14 @@
         {%- endunless -%}
 
         {%- comment -%}
-          Bouton pleine largeur avec le prix intégré, quantité au-dessus en
-          retrait : l'ajout au panier reste la seule cible large de la colonne.
+          Quantité en ligne discrète, puis le bouton pleine largeur : l'ajout au
+          panier reste la seule cible large de la colonne.
         {%- endcomment -%}
         <div class="nat-pdp__qty">
           <span class="nat-pdp__qtylabel">Quantité</span>
           <div class="nat-qty">
             <span onclick="var q=this.parentNode.querySelector('input');q.value=Math.max(1,(+q.value||1)-1);">−</span>
-            <input type="number" name="quantity" value="1" min="1" style="width:42px;text-align:center;border:none;font-size:14px;font-weight:700;font-family:var(--sans);">
+            <input type="number" name="quantity" value="1" min="1" style="width:38px;text-align:center;border:none;font-size:13.5px;font-weight:700;font-family:var(--sans);">
             <span onclick="var q=this.parentNode.querySelector('input');q.value=(+q.value||1)+1;">+</span>
           </div>
         </div>
@@ -103,19 +106,13 @@
         <p class="nat-pdp__ship" data-ship-days="{{ section.settings.ship_days | default: 3 }}"></p>
       {%- endif -%}
 
-      {%- comment -%} engagements : logos sous la description {%- endcomment -%}
-      {%- render 'engagements', eng_product: p, eng_fallback: section.settings.engagements -%}
-
-      {%- assign benefits = p.metafields.custom.benefits.value -%}
-      {%- if benefits -%}
-        <div class="nat-benefits">
-          {%- for b in benefits -%}<div class="nat-benefit"><span>{{ b }}</span></div>{%- endfor -%}
-        </div>
-      {%- endif -%}
-      <div style="font-size:12.5px;color:#9a8b6c;margin-top:22px;line-height:1.6;">Livraison offerte dès 49€ · Fabriqué en France · Sans additifs controversés</div>
-
-      {%- comment -%} Accordéon : composition, provenance, conseils, allergènes, FAQ (métachamps) {%- endcomment -%}
-      <div class="nat-acc" style="margin-top:28px;">
+      {%- comment -%}
+        La colonne suit l'ordre de la référence : note, titre, référence,
+        description, formats, bouton, livraison, puis l'accordéon. Les
+        engagements et les bénéfices viennent après, pour ne pas repousser
+        l'accordéon hors de l'écran.
+      {%- endcomment -%}
+      <div class="nat-acc" style="margin-top:26px;">
         {%- assign composition = p.metafields.custom.composition -%}
         {%- assign usage = p.metafields.custom.usage -%}
         {%- assign allergens = p.metafields.custom.allergens -%}
@@ -155,6 +152,16 @@
           <p>Complément alimentaire. Ne se substitue pas à une alimentation variée et équilibrée ni à un mode de vie sain. Ne pas dépasser la dose journalière recommandée. Tenir hors de portée des enfants. Déconseillé aux femmes enceintes ou allaitantes sans avis médical. En cas de traitement, demandez conseil à un professionnel de santé.</p>
         </div></details>
       </div>
+
+      {%- comment -%} engagements et bénéfices, sous l'accordéon {%- endcomment -%}
+      {%- render 'engagements', eng_product: p, eng_fallback: section.settings.engagements -%}
+
+      {%- assign benefits = p.metafields.custom.benefits.value -%}
+      {%- if benefits -%}
+        <div class="nat-benefits">
+          {%- for b in benefits -%}<div class="nat-benefit"><span>{{ b }}</span></div>{%- endfor -%}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 

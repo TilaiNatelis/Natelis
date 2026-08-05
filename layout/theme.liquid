@@ -78,7 +78,7 @@
     {{ content_for_layout }}
   </main>
 
-  {% section 'newsletter' %}
+  {%- comment -%} L'inscription à la lettre est désormais intégrée au pied de page. {%- endcomment -%}
   {% section 'footer' %}
   {% section 'popup-welcome' %}
   {% render 'cart-drawer' %}

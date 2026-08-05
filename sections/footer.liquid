@@ -1,78 +1,139 @@
-{%- comment -%} Colonnes par défaut si aucun bloc/menu n'est configuré {%- endcomment -%}
+{%- comment -%}
+  Pied de page : panneau d'inscription à gauche, colonnes de liens à droite,
+  puis une barre légale. Les colonnes se configurent par blocs (titre + menu) ;
+  sans configuration, on retombe sur les rubriques par défaut du site.
+{%- endcomment -%}
 {%- assign has_configured_blocks = false -%}
 {%- for block in section.blocks -%}
   {%- if block.settings.menu != blank -%}{%- assign has_configured_blocks = true -%}{%- endif -%}
 {%- endfor -%}
 
-<div class="nat-footer">
-  <div>
-    {%- assign flh = section.settings.logo_height | default: 48 -%}
-    {%- if section.settings.logo != blank -%}
-      <img src="{{ section.settings.logo | image_url: height: 300 }}" alt="{{ shop.name }}" style="display:block;height:{{ flh }}px;width:auto;">
-    {%- else -%}
-      <span class="nat-logo-text" style="font-size:{{ flh | times: 0.7 | round }}px;">Natélis</span>
-    {%- endif -%}
-    <p class="nat-footer__desc">{{ section.settings.description }}</p>
-  </div>
+<footer class="nat-foot">
+  <div class="nat-foot__top">
 
-  {%- if has_configured_blocks -%}
-    {%- for block in section.blocks -%}
-      <div {{ block.shopify_attributes }}>
-        <div class="nat-footer__col-title">{{ block.settings.title }}</div>
-        {%- if block.settings.menu != blank -%}
-          {%- for link in linklists[block.settings.menu].links -%}
-            <a class="nat-footer__link" href="{{ link.url }}">{{ link.title }}</a>
-          {%- endfor -%}
+    {%- comment -%} ---- panneau de gauche : marque et inscription ---- {%- endcomment -%}
+    <div class="nat-foot__brand">
+      {%- assign flh = section.settings.logo_height | default: 48 -%}
+      {%- if section.settings.logo != blank -%}
+        {%- assign flh3 = flh | times: 3 -%}
+        <img class="nat-foot__logo" src="{{ section.settings.logo | image_url: height: flh3 }}"
+             alt="{{ shop.name }}" style="height:{{ flh }}px;">
+      {%- else -%}
+        <span class="nat-foot__word" style="font-size:{{ flh | times: 0.78 | round }}px;">Natélis</span>
+      {%- endif -%}
+
+      <div class="nat-foot__jointitle">{{ section.settings.join_title | default: 'Rejoignez-nous' }}</div>
+      <p class="nat-foot__joindesc">{{ section.settings.description }}</p>
+
+      {%- form 'customer' -%}
+        <input type="hidden" name="contact[tags]" value="newsletter">
+        <div class="nat-foot__form">
+          <input class="nat-foot__input" type="email" name="contact[email]"
+                 placeholder="{{ section.settings.placeholder | default: 'E-mail' }}" aria-label="Adresse e-mail" required>
+          <button type="submit" class="nat-foot__submit">{{ section.settings.cta | default: "S'inscrire" }}</button>
+        </div>
+        {%- if form.posted_successfully? -%}
+          <p class="nat-foot__ok">Merci, votre inscription est confirmée.</p>
+        {%- endif -%}
+      {%- endform -%}
+
+      {%- comment -%} réseaux : chaque icône n'apparaît que si son lien est renseigné {%- endcomment -%}
+      <div class="nat-foot__social">
+        {%- if section.settings.instagram != blank -%}
+          <a href="{{ section.settings.instagram }}" aria-label="Instagram" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="21" height="21" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r="1.1" fill="currentColor" stroke="none"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.facebook != blank -%}
+          <a href="{{ section.settings.facebook }}" aria-label="Facebook" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="21" height="21" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.1h-3.1V7.9c0-.9.25-1.5 1.55-1.5H16.7V3.6c-.29-.04-1.28-.12-2.43-.12-2.4 0-4.05 1.47-4.05 4.17V9.9H7.5V13h2.72v8h3.28Z"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.tiktok != blank -%}
+          <a href="{{ section.settings.tiktok }}" aria-label="TikTok" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="21" height="21" fill="currentColor"><path d="M16.2 3h-2.6v11.4a2.3 2.3 0 1 1-2-2.28V9.4a5.1 5.1 0 1 0 4.6 5.07V8.9a6.1 6.1 0 0 0 3.3.97V7.2a3.55 3.55 0 0 1-3.3-3.4V3Z"/></svg>
+          </a>
+        {%- endif -%}
+        {%- if section.settings.pinterest != blank -%}
+          <a href="{{ section.settings.pinterest }}" aria-label="Pinterest" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="21" height="21" fill="currentColor"><path d="M12 3a9 9 0 0 0-3.3 17.36c-.08-.72-.15-1.83.03-2.62l1.07-4.53s-.27-.55-.27-1.36c0-1.28.74-2.23 1.66-2.23.78 0 1.16.59 1.16 1.29 0 .79-.5 1.96-.76 3.05-.22.92.46 1.67 1.36 1.67 1.63 0 2.89-1.72 2.89-4.21 0-2.2-1.58-3.74-3.84-3.74-2.62 0-4.15 1.96-4.15 3.99 0 .79.3 1.63.68 2.09a.28.28 0 0 1 .06.26l-.26 1.04c-.04.17-.13.2-.3.12-1.13-.52-1.83-2.16-1.83-3.48 0-2.83 2.06-5.44 5.94-5.44 3.11 0 5.53 2.22 5.53 5.19 0 3.1-1.95 5.58-4.66 5.58-.91 0-1.77-.47-2.06-1.03l-.56 2.14c-.2.78-.75 1.75-1.12 2.35A9 9 0 1 0 12 3Z"/></svg>
+          </a>
         {%- endif -%}
       </div>
-    {%- endfor -%}
-  {%- else -%}
-    <div>
-      <div class="nat-footer__col-title">Produits</div>
-      <a class="nat-footer__link" href="{{ routes.root_url }}collections/immunite">Immunité</a>
-      <a class="nat-footer__link" href="{{ routes.root_url }}collections/sommeil">Sommeil</a>
-      <a class="nat-footer__link" href="{{ routes.root_url }}collections/stress">Stress</a>
-      <a class="nat-footer__link" href="{{ routes.root_url }}collections/beaute">Beauté</a>
-      <a class="nat-footer__link" href="{{ routes.root_url }}collections/energie">Énergie</a>
     </div>
-    <div>
-      <div class="nat-footer__col-title">La marque</div>
-      <a class="nat-footer__link" href="{{ routes.root_url }}pages/notre-histoire">Notre histoire</a>
-      <a class="nat-footer__link" href="{{ routes.root_url }}pages/nos-engagements">Nos engagements</a>
-      <a class="nat-footer__link" href="{{ routes.root_url }}pages/complements-alimentaires-provence">Compléments alimentaires en Provence</a>
-      <a class="nat-footer__link" href="{{ routes.root_url }}pages/conseils">Nos conseils</a>
-      <a class="nat-footer__link" href="{{ routes.root_url }}pages/diagnostic">Diagnostic</a>
-      <a class="nat-footer__link" href="{{ blogs['carnet-de-la-vigne'].url | default: routes.root_url }}">Le blog</a>
-      <a class="nat-footer__link" href="{{ routes.root_url }}pages/selection-automne">Sélection d'automne</a>
-    </div>
-    <div>
-      <div class="nat-footer__col-title">Aide</div>
-      <a class="nat-footer__link" href="{{ routes.root_url }}pages/contact">Contact</a>
-      <a class="nat-footer__link" href="{{ routes.root_url }}pages/faq">FAQ</a>
-      <a class="nat-footer__link" href="{{ routes.account_url | default: routes.account_login_url }}">Mon compte &amp; suivi de cure</a>
-      <a class="nat-footer__link" href="{{ routes.search_url }}">Recherche</a>
-      <a class="nat-footer__link" href="{{ routes.cart_url }}">Mon panier</a>
-    </div>
-  {%- endif -%}
-</div>
 
-<div class="nat-footer__legal">
-  <span>© {{ 'now' | date: '%Y' }} {{ shop.name }} en Provence</span>
-  <span>
-    <a href="{{ routes.root_url }}pages/mentions-legales">Mentions légales</a> ·
-    <a href="{{ routes.root_url }}pages/cgv">CGV</a> ·
-    <a href="{{ routes.root_url }}pages/politique-confidentialite">Confidentialité</a>
-  </span>
-</div>
+    {%- comment -%} ---- colonnes de liens ---- {%- endcomment -%}
+    <div class="nat-foot__cols">
+      {%- if has_configured_blocks -%}
+        {%- for block in section.blocks -%}
+          <div class="nat-foot__col" {{ block.shopify_attributes }}>
+            <div class="nat-foot__coltitle">{{ block.settings.title }}</div>
+            {%- if block.settings.menu != blank -%}
+              {%- for link in linklists[block.settings.menu].links -%}
+                <a class="nat-foot__link" href="{{ link.url }}">{{ link.title }}</a>
+              {%- endfor -%}
+            {%- endif -%}
+          </div>
+        {%- endfor -%}
+      {%- else -%}
+        <div class="nat-foot__col">
+          <div class="nat-foot__coltitle">Aide</div>
+          <a class="nat-foot__link" href="{{ routes.account_url | default: routes.account_login_url }}">Suivre ma commande</a>
+          <a class="nat-foot__link" href="{{ routes.root_url }}pages/livraison-retours">Livraison &amp; retours</a>
+          <a class="nat-foot__link" href="{{ routes.root_url }}pages/conseils">Nos conseils</a>
+          <a class="nat-foot__link" href="{{ routes.root_url }}pages/faq">Questions fréquentes</a>
+          <a class="nat-foot__link" href="{{ routes.root_url }}pages/contact">Nous contacter</a>
+        </div>
+        <div class="nat-foot__col">
+          <div class="nat-foot__coltitle">Natélis</div>
+          <a class="nat-foot__link" href="{{ routes.root_url }}pages/notre-histoire">Notre histoire</a>
+          <a class="nat-foot__link" href="{{ routes.root_url }}pages/nos-engagements">Nos engagements</a>
+          <a class="nat-foot__link" href="{{ routes.root_url }}pages/diagnostic">Faire mon diagnostic</a>
+          <a class="nat-foot__link" href="{{ routes.root_url }}pages/complements-alimentaires-provence">Nos terres de Provence</a>
+          <a class="nat-foot__link" href="{{ blogs['carnet-de-la-vigne'].url | default: routes.root_url }}">Le journal</a>
+        </div>
+        <div class="nat-foot__col">
+          <div class="nat-foot__coltitle">Nos produits</div>
+          <a class="nat-foot__link" href="{{ routes.root_url }}collections/vitalite-immunite">Vitalité &amp; immunité</a>
+          <a class="nat-foot__link" href="{{ routes.root_url }}collections/beaute-sommeil">Beauté &amp; sommeil</a>
+          <a class="nat-foot__link" href="{{ routes.root_url }}collections/sport-bien-etre">Sport &amp; bien-être</a>
+          <a class="nat-foot__link" href="{{ routes.root_url }}collections/routines">Routines</a>
+          <a class="nat-foot__link" href="{{ routes.root_url }}pages/selection-automne">Sélection d'automne</a>
+          <a class="nat-foot__link" href="{{ routes.all_products_collection_url }}">Voir tous les produits</a>
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+
+  {%- comment -%} ---- barre légale ---- {%- endcomment -%}
+  <div class="nat-foot__legal">
+    <nav class="nat-foot__legallinks">
+      <a href="{{ routes.root_url }}pages/cgv">CGV</a>
+      <a href="{{ routes.root_url }}pages/mentions-legales">Mentions légales</a>
+      <a href="{{ routes.root_url }}pages/politique-confidentialite">Politique de confidentialité</a>
+      <a href="{{ routes.root_url }}pages/livraison-retours">Livraison &amp; retours</a>
+    </nav>
+    <span class="nat-foot__copy">© {{ 'now' | date: '%Y' }} {{ shop.name }} en Provence</span>
+  </div>
+</footer>
 
 {% schema %}
 {
   "name": "Pied de page",
-  "max_blocks": 3,
+  "max_blocks": 4,
   "settings": [
     { "type": "image_picker", "id": "logo", "label": "Logo" },
     { "type": "range", "id": "logo_height", "label": "Hauteur du logo (px)", "min": 28, "max": 120, "step": 2, "unit": "px", "default": 48 },
-    { "type": "textarea", "id": "description", "label": "Description", "default": "Compléments alimentaires d'origine naturelle, formulés en Provence. Le retour à l'état originel de la plante." }
+    { "type": "header", "content": "Inscription" },
+    { "type": "text", "id": "join_title", "label": "Titre", "default": "Rejoignez-nous" },
+    { "type": "textarea", "id": "description", "label": "Texte", "default": "Nos conseils de saison, nos nouveautés et −15% sur votre première cure." },
+    { "type": "text", "id": "placeholder", "label": "Champ e-mail", "default": "E-mail" },
+    { "type": "text", "id": "cta", "label": "Bouton", "default": "S'inscrire" },
+    { "type": "header", "content": "Réseaux sociaux", "info": "Un lien vide n'affiche pas son icône." },
+    { "type": "url", "id": "instagram", "label": "Instagram" },
+    { "type": "url", "id": "facebook", "label": "Facebook" },
+    { "type": "url", "id": "tiktok", "label": "TikTok" },
+    { "type": "url", "id": "pinterest", "label": "Pinterest" }
   ],
   "blocks": [
     {

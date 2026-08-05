@@ -26,15 +26,7 @@
         "custom_css": [],
         "settings": {
           "logo": "shopify://shop_images/Aa_7_7ada689e-2be8-4c21-bcf0-184841f849af.png",
-          "logo_height": 44
-        }
-      },
-      "newsletter": {
-        "type": "newsletter",
-        "settings": {
-          "title": "Recevez nos rituels de saison",
-          "subtitle": "Conseils, nouveautés et —15% sur votre première cure.",
-          "cta": "Je m'inscris"
+          "logo_height": 40
         }
       },
       "footer": {
@@ -42,7 +34,10 @@
         "settings": {
           "logo": "shopify://shop_images/Aa_7.png",
           "logo_height": 44,
-          "description": "Compléments alimentaires d'origine naturelle, formulés en Provence. Le retour à l'état originel de la plante."
+          "join_title": "Rejoignez-nous",
+          "description": "Nos conseils de saison, nos nouveautés et −15% sur votre première cure.",
+          "placeholder": "E-mail",
+          "cta": "S'inscrire"
         }
       },
       "popup-welcome": {
