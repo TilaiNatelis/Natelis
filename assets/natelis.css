@@ -122,9 +122,13 @@ a{color:inherit;text-decoration:none;}
 /* ---------- sur-titres / sections ---------- */
 .nat-eyebrow{font-size:12px;letter-spacing:.24em;text-transform:uppercase;color:var(--olive-light);font-weight:700;}
 .nat-h2{font-family:var(--serif);font-weight:500;font-size:29px;line-height:1.12;letter-spacing:.005em;color:var(--green-deep);margin:0;}
-.nat-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:20px;}
+.nat-section-head{display:flex;align-items:center;justify-content:space-between;gap:24px;margin-bottom:20px;}
 .nat-section-head__eyebrow{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--olive-light);font-weight:700;margin:0 0 7px;}
-.nat-link{font-size:12px;color:var(--olive-light);font-weight:600;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;white-space:nowrap;}
+/* lien de section : bouton bordé, comme sur la référence */
+.nat-link{display:inline-block;flex:none;font-size:14px;color:var(--green-deep);font-weight:500;
+  letter-spacing:.01em;text-transform:none;cursor:pointer;white-space:nowrap;
+  border:1px solid var(--border);padding:16px 28px;transition:background .2s,border-color .2s;}
+.nat-link:hover{background:var(--soft);border-color:var(--sage);color:var(--green-deep);}
 
 /* ---------- hero accueil (carrousel glissant) ---------- */
 /* Hauteur = écran − (bandeau + en-tête + nav) − un léger débord.
@@ -189,14 +193,14 @@ a{color:inherit;text-decoration:none;}
 .nat-offres{display:grid;grid-template-columns:1fr 1fr;gap:0;}
 .nat-offre{position:relative;min-height:520px;display:flex;align-items:flex-end;
   background-size:cover;background-position:center;padding:34px;}
-.nat-offre__card{background:#fff;padding:32px 34px 34px;width:100%;max-width:560px;}
-.nat-offre__title{font-family:var(--serif);font-weight:500;font-size:30px;line-height:1.1;
+.nat-offre__card{background:#fff;padding:42px 46px 44px;width:100%;max-width:none;}
+.nat-offre__title{font-family:var(--serif);font-weight:500;font-size:32px;line-height:1.1;
   color:var(--green-deep);margin:0;}
-.nat-offre__text{font-size:14.5px;line-height:1.65;color:var(--brown-dark);margin:12px 0 0;}
+.nat-offre__text{font-size:15.5px;line-height:1.6;color:var(--brown-dark);margin:14px 0 0;}
 .nat-offre__code{font-weight:700;color:var(--green-deep);letter-spacing:.06em;}
-.nat-offre__btn{display:inline-block;margin-top:20px;border:1.5px solid var(--green-deep);
-  color:var(--green-deep);font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
-  padding:13px 30px;transition:background .2s,color .2s;}
+.nat-offre__btn{display:inline-block;margin-top:26px;border:1px solid var(--green-deep);
+  color:var(--green-deep);font-size:14px;font-weight:500;letter-spacing:.01em;text-transform:none;
+  padding:16px 32px;transition:background .2s,color .2s;}
 .nat-offre__btn:hover{background:var(--green-deep);color:#fff;}
 
 /* nos valeurs : tuiles sur fond clair */
@@ -237,14 +241,18 @@ a{color:inherit;text-decoration:none;}
 .nat-crail__track{display:flex;gap:14px;overflow-x:auto;scroll-behavior:smooth;
   scroll-snap-type:x mandatory;padding-bottom:4px;scrollbar-width:none;-ms-overflow-style:none;}
 .nat-crail__track::-webkit-scrollbar{display:none;}
-.nat-ccard{flex:0 0 328px;width:328px;scroll-snap-align:start;display:block;}
+/* La carte est fluide par défaut (elle remplit sa colonne de grille) ;
+   la largeur fixe ne vaut que dans le rail défilant, où elle règle le nombre
+   de cartes visibles et l'amorce de la suivante. */
+.nat-ccard{display:block;width:100%;}
+.nat-crail__track > .nat-ccard{flex:0 0 328px;width:328px;scroll-snap-align:start;}
 .nat-ccard__media{position:relative;aspect-ratio:1/1;overflow:hidden;background:var(--soft);}
 .nat-ccard__media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease;}
 .nat-ccard:hover .nat-ccard__media img{transform:scale(1.04);}
-.nat-ccard__title{font-size:15.5px;font-weight:700;color:var(--green-deep);margin-top:14px;line-height:1.3;}
-.nat-ccard__text{font-size:13.5px;line-height:1.6;color:var(--brown);margin-top:6px;}
-.nat-ccard__btn{display:inline-block;margin-top:14px;border:1px solid #DCE2D0;color:var(--green-deep);
-  font-size:12.5px;font-weight:600;letter-spacing:.04em;padding:11px 24px;transition:background .2s,color .2s;}
+.nat-ccard__title{font-size:15.5px;font-weight:700;color:var(--green-deep);margin-top:16px;line-height:1.3;}
+.nat-ccard__text{font-size:14.5px;line-height:1.55;color:var(--brown);margin-top:7px;}
+.nat-ccard__btn{display:inline-block;margin-top:18px;border:1px solid #DCE2D0;color:var(--green-deep);
+  font-size:14px;font-weight:500;letter-spacing:.01em;padding:16px 28px;transition:background .2s,color .2s;}
 .nat-ccard:hover .nat-ccard__btn{background:var(--green-deep);color:#fff;border-color:var(--green-deep);}
 .nat-crail__arrow{position:absolute;top:164px;transform:translateY(-50%);z-index:3;width:44px;height:44px;
   border-radius:999px;border:1px solid var(--border);background:#fff;color:var(--green-deep);cursor:pointer;
@@ -255,14 +263,14 @@ a{color:inherit;text-decoration:none;}
 .nat-crail__arrow--next{right:-14px;}
 .nat-crail__arrow[disabled]{opacity:0;pointer-events:none;}
 @media (max-width:768px){
-  .nat-ccard{flex-basis:74vw;width:74vw;}
+  .nat-crail__track > .nat-ccard{flex-basis:74vw;width:74vw;}
   .nat-crail__arrow{display:none;}
 }
 
 /* ---------- onglets ---------- */
 .nat-tabs{display:flex;gap:8px;margin:0 0 18px;}
-.nat-tab{font-size:13px;font-weight:700;letter-spacing:.04em;padding:9px 22px;border-radius:0;
-  cursor:pointer;background:transparent;color:var(--green-deep);border:1.5px solid #DCE2D0;}
+.nat-tab{font-size:14px;font-weight:500;letter-spacing:.01em;padding:13px 26px;border-radius:0;
+  cursor:pointer;background:transparent;color:var(--green-deep);border:1px solid #DCE2D0;}
 .nat-tab.is-active{background:var(--green-deep);color:var(--cream);border-color:var(--green-deep);}
 
 /* ---------- carte produit ---------- */
@@ -285,21 +293,21 @@ a{color:inherit;text-decoration:none;}
   font-size:11px;letter-spacing:.04em;font-weight:700;padding:5px 11px;border-radius:999px;}
 .nat-card--reco .nat-card__media{background:linear-gradient(160deg,var(--pale),var(--soft));}
 .nat-card__ph{color:#c5b596;font-family:monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:0 8px;}
-.nat-card__obj{display:block;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--olive-light);font-weight:700;margin-top:12px;}
-.nat-card__name{display:block;font-size:15px;font-weight:700;color:var(--green-deep);margin-top:4px;line-height:1.25;}
-.nat-card__sub{font-size:12.5px;color:var(--brown);margin-top:3px;}
+.nat-card__obj{display:block;font-size:14.5px;letter-spacing:0;text-transform:none;color:var(--green-deep);font-weight:700;margin-top:14px;line-height:1.3;}
+.nat-card__name{display:block;font-size:14.5px;font-weight:400;color:var(--brown-dark);margin-top:3px;line-height:1.35;}
+.nat-card__sub{font-size:13.5px;color:var(--brown);margin-top:3px;line-height:1.4;}
 .nat-card__note{font-size:13px;line-height:1.55;color:var(--brown-dark);margin:10px 0 0;
   padding-left:11px;border-left:2px solid var(--olive-light);}
 .nat-card__row{display:block;margin-top:10px;}
-.nat-card__price{font-size:18.5px;font-weight:700;color:var(--green-deep);}
+.nat-card__price{display:block;font-size:17px;font-weight:700;color:var(--green-deep);margin-top:9px;}
 .nat-card__compare{font-size:13px;color:#9a8b6c;text-decoration:line-through;margin-left:6px;font-weight:500;}
 /* bouton d'achat pleine largeur sous la carte (cible plus large, plus lisible) */
 .nat-card__add{display:block;width:100%;border:1px solid #DCE2D0;background:transparent;color:var(--green-deep);
-  font-size:13px;font-weight:600;letter-spacing:.04em;padding:13px 16px;margin-top:11px;border-radius:0;
+  font-size:14px;font-weight:500;letter-spacing:.01em;padding:17px 16px;margin-top:14px;border-radius:0;
   cursor:pointer;font-family:var(--sans);transition:all .2s;}
 .nat-card__add:hover{background:var(--green-deep);color:var(--cream);}
-.nat-card__rating{font-size:14px;color:var(--sage);margin-top:7px;letter-spacing:.06em;}
-.nat-card__rating span{color:var(--brown);font-size:12.5px;letter-spacing:0;}
+.nat-card__rating{font-size:15px;color:var(--green-deep);margin-top:9px;letter-spacing:.05em;}
+.nat-card__rating span{color:var(--brown);font-size:13px;letter-spacing:0;margin-left:4px;}
 
 /* ---------- bloc éditorial split ---------- */
 .nat-split{display:grid;grid-template-columns:1fr 1fr;gap:0;}
