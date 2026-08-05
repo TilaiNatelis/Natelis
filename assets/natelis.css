@@ -6,10 +6,21 @@
 :root{
   --cream:#FFFFFF;
   --soft:#FAFAF9;
-  --green-deep:#2e3a22;
+  /* ------------------------------------------------------------
+     Verts : tous derives du vert de marque #526F12 (teinte 79).
+     L'ancien --green-deep (#2e3a22) etait sur une autre teinte (90)
+     et deux fois moins sature : il tirait tout le site vers un
+     vert-gris etranger a la marque.
+     --green       surfaces de marque : pied de page, bandeau, boutons
+     --green-deep  nuance foncee : textes et fonds profonds
+     --green-dark  la plus foncee : bandes photo de la fiche produit
+     ------------------------------------------------------------ */
+  --green:#526F12;
+  --green-deep:#3A4F0D;
+  --green-dark:#233008;
   --autumn:#B5651D;
   --autumn-deep:#8A4B12;
-  --olive:#526F12;
+  --olive:#526F12;          /* alias historique du vert de marque */
   --olive-light:#758C41;
   --sage:#97A971;
   --beige:#F4EEE3;
@@ -40,26 +51,26 @@ a{color:inherit;text-decoration:none;}
 .nat-serif{font-family:var(--serif);font-weight:500;}
 
 /* ---------- boutons ---------- */
-.nat-btn{display:inline-flex;align-items:center;justify-content:center;height:50px;border:none;background:var(--green-deep);color:var(--cream);
+.nat-btn{display:inline-flex;align-items:center;justify-content:center;height:50px;border:none;background:var(--green);color:var(--cream);
   font-size:14px;font-weight:600;letter-spacing:.01em;padding:0 30px;border-radius:5px;
   cursor:pointer;font-family:var(--sans);transition:background .2s;}
-.nat-btn:hover{background:var(--olive);}
+.nat-btn:hover{background:var(--green-deep);}
 .nat-btn--outline{background:transparent;border:1.5px solid var(--green-deep);color:var(--green-deep);}
 .nat-btn--outline:hover{background:var(--green-deep);color:var(--cream);}
 .nat-btn--sm{height:42px;padding:0 22px;font-size:13px;}
-.nat-btn--glass{background:rgba(46,58,34,.34);color:#fff;border:1.5px solid rgba(255,255,255,.7);
+.nat-btn--glass{background:rgba(82,111,18,.36);color:#fff;border:1.5px solid rgba(255,255,255,.7);
   backdrop-filter:blur(7px);-webkit-backdrop-filter:blur(7px);box-shadow:0 4px 22px rgba(12,17,14,.18);}
-.nat-btn--glass:hover{background:rgba(46,58,34,.55);}
+.nat-btn--glass:hover{background:rgba(82,111,18,.58);}
 
 /* ---------- logo mot-symbole ---------- */
 .nat-logo-link{display:flex;align-items:center;flex:none;}
-.nat-logo-text{font-family:var(--serif);font-weight:500;font-size:46px;line-height:1;color:#4F7A1F;
+.nat-logo-text{font-family:var(--serif);font-weight:500;font-size:46px;line-height:1;color:var(--green);
   letter-spacing:.01em;display:block;}
 @media (max-width:768px){ .nat-logo-text{font-size:34px;} }
 
 /* ---------- annonce / promo ---------- */
 /* Bandeau : 50px de haut sur la référence. */
-.nat-promo{background:var(--green-deep);color:var(--cream);text-align:center;font-size:13.5px;
+.nat-promo{background:var(--green);color:var(--cream);text-align:center;font-size:13.5px;
   letter-spacing:.02em;padding:0 16px;font-weight:500;min-height:40px;
   display:flex;align-items:center;justify-content:center;}
 .nat-promo strong{letter-spacing:.12em;}
@@ -373,7 +384,7 @@ a{color:inherit;text-decoration:none;}
 /* ---------- pied de page ----------
    Panneau d'inscription à gauche, colonnes de liens à droite séparées par un
    filet vertical, puis une barre légale — sur le modèle de la référence. */
-.nat-foot{background:var(--green-deep);color:var(--cream);}
+.nat-foot{background:var(--green);color:var(--cream);}
 .nat-foot__top{display:grid;grid-template-columns:minmax(320px,36%) 1fr;gap:0;
   max-width:1728px;margin:0 auto;padding:56px 24px 48px;}
 .nat-foot__brand{padding-right:56px;}
@@ -382,34 +393,34 @@ a{color:inherit;text-decoration:none;}
   letter-spacing:.06em;color:#fff;text-transform:uppercase;}
 .nat-foot__jointitle{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
   color:#fff;margin-top:38px;}
-.nat-foot__joindesc{font-size:15px;line-height:1.6;color:rgba(255,255,255,.8);margin:14px 0 0;max-width:420px;}
+.nat-foot__joindesc{font-size:15px;line-height:1.6;color:rgba(255,255,255,.86);margin:14px 0 0;max-width:420px;}
 .nat-foot__form{display:flex;gap:0;margin-top:22px;max-width:470px;}
 .nat-foot__input{flex:1;min-width:0;height:52px;background:transparent;border:1px solid rgba(255,255,255,.55);
   border-right:none;padding:0 18px;color:#fff;font-size:12px;font-family:var(--sans);
   letter-spacing:.1em;text-transform:uppercase;outline:none;}
-.nat-foot__input::placeholder{color:rgba(255,255,255,.62);letter-spacing:.1em;text-transform:uppercase;}
+.nat-foot__input::placeholder{color:rgba(255,255,255,.75);letter-spacing:.1em;text-transform:uppercase;}
 .nat-foot__input:focus{border-color:#fff;}
 .nat-foot__submit{flex:none;height:52px;padding:0 30px;border:1px solid rgba(255,255,255,.55);
   background:rgba(255,255,255,.12);color:#fff;font-family:var(--sans);font-size:12px;font-weight:700;
   letter-spacing:.12em;text-transform:uppercase;cursor:pointer;transition:background .2s,color .2s;}
 .nat-foot__submit:hover{background:#fff;color:var(--green-deep);}
-.nat-foot__ok{font-size:13px;color:var(--sage);margin:10px 0 0;}
-.nat-foot__social{display:flex;gap:16px;margin-top:28px;color:var(--sage);}
+.nat-foot__ok{font-size:13px;color:#E8F0D4;margin:10px 0 0;}
+.nat-foot__social{display:flex;gap:16px;margin-top:28px;color:rgba(255,255,255,.82);}
 .nat-foot__social a{display:flex;transition:color .18s;}
 .nat-foot__social a:hover{color:#fff;}
 /* colonnes de liens */
 .nat-foot__cols{display:grid;grid-template-columns:repeat(3,1fr);gap:40px;
   border-left:1px solid rgba(255,255,255,.22);padding-left:56px;}
 .nat-foot__coltitle{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;}
-.nat-foot__link{display:block;font-size:15px;color:rgba(255,255,255,.8);margin-top:14px;transition:color .18s;}
+.nat-foot__link{display:block;font-size:15px;color:rgba(255,255,255,.86);margin-top:14px;transition:color .18s;}
 .nat-foot__link:hover{color:#fff;}
 /* barre légale */
 .nat-foot__legal{border-top:1px solid rgba(255,255,255,.22);}
 .nat-foot__legallinks{display:flex;flex-wrap:wrap;gap:26px;}
 .nat-foot__legallinks a{font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
-  color:rgba(255,255,255,.78);transition:color .18s;}
+  color:rgba(255,255,255,.88);transition:color .18s;}
 .nat-foot__legallinks a:hover{color:#fff;}
-.nat-foot__copy{font-size:11.5px;color:rgba(255,255,255,.55);}
+.nat-foot__copy{font-size:11.5px;color:rgba(255,255,255,.72);}
 .nat-foot__legal{display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap;
   max-width:1728px;margin:0 auto;padding:22px 24px;}
 @media (max-width:1024px){
@@ -426,7 +437,7 @@ a{color:inherit;text-decoration:none;}
 
 /* ---------- bande catégorie ---------- */
 .nat-cat-hero{position:relative;height:230px;background-size:cover;background-position:center 38%;display:flex;align-items:center;}
-.nat-cat-hero__veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(46,58,34,.62),rgba(46,58,34,.18));}
+.nat-cat-hero__veil{position:absolute;inset:0;background:linear-gradient(90deg,rgba(35,48,8,.62),rgba(35,48,8,.18));}
 .nat-cat-hero__body{position:relative;padding:0 48px;max-width:1440px;margin:0 auto;width:100%;color:var(--cream);}
 .nat-cat-grid{display:grid;grid-template-columns:236px 1fr;gap:44px;max-width:1440px;margin:0 auto;padding:44px 48px 72px;}
 .nat-filter-title{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--green-deep);font-weight:700;padding-bottom:14px;border-bottom:1px solid var(--border);}
@@ -570,10 +581,10 @@ a{color:inherit;text-decoration:none;}
 
 /* ---------- colonne d'achat : quantite, bouton, livraison ---------- */
 .nat-pdp__cta{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:56px;
-  margin-top:30px;border:none;border-radius:5px;background:var(--green-deep);color:var(--cream);
+  margin-top:30px;border:none;border-radius:5px;background:var(--green);color:var(--cream);
   font-family:var(--sans);font-size:13.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;
   transition:background .2s;}
-.nat-pdp__cta:hover{background:var(--olive);}
+.nat-pdp__cta:hover{background:var(--green-deep);}
 .nat-pdp__cta[disabled]{background:#B9BEB0;cursor:not-allowed;}
 .nat-pdp__cta-price{font-weight:700;}
 .nat-pdp__cta-price::before{content:"\2013";margin-right:12px;opacity:.65;}
@@ -581,7 +592,7 @@ a{color:inherit;text-decoration:none;}
 
 /* ---------- ce que contient chaque prise (bande sombre) ---------- */
 .nat-formula{display:grid;grid-template-columns:1fr 1.15fr;margin-top:70px;background:var(--green-deep);color:var(--cream);}
-.nat-formula__media{min-height:460px;background-size:cover;background-position:center;background-color:#26301c;}
+.nat-formula__media{min-height:460px;background-size:cover;background-position:center;background-color:#30420B;}
 .nat-formula__body{padding:56px 60px;display:flex;flex-direction:column;justify-content:center;}
 .nat-formula__title{font-family:var(--serif);font-weight:500;font-size:32px;line-height:1.12;margin:0;color:#fff;}
 .nat-formula__sub{font-size:15px;line-height:1.6;margin:10px 0 0;color:rgba(255,255,255,.72);}
@@ -605,8 +616,8 @@ a{color:inherit;text-decoration:none;}
 }
 
 /* ---------- vos questions (bande sombre, bas de fiche) ---------- */
-.nat-pfaq{display:grid;grid-template-columns:1fr 1.15fr;margin-top:70px;background:#1D2416;color:var(--cream);}
-.nat-pfaq__media{min-height:440px;background-size:cover;background-position:center;background-color:#141a0f;}
+.nat-pfaq{display:grid;grid-template-columns:1fr 1.15fr;margin-top:70px;background:var(--green-dark);color:var(--cream);}
+.nat-pfaq__media{min-height:440px;background-size:cover;background-position:center;background-color:#1A2306;}
 .nat-pfaq__body{padding:56px 60px;display:flex;flex-direction:column;justify-content:center;}
 .nat-pfaq__title{font-family:var(--serif);font-weight:500;font-size:32px;line-height:1.12;margin:0 0 24px;color:#fff;}
 .nat-pfaq__item{border-bottom:1px solid rgba(255,255,255,.18);}
@@ -667,9 +678,9 @@ a{color:inherit;text-decoration:none;}
   background:var(--soft);border:1px solid var(--border);padding:9px 16px 9px 9px;}
 .nat-finder__stepchip span{width:24px;height:24px;background:var(--pale);color:var(--olive);
   display:flex;align-items:center;justify-content:center;font-weight:700;font-size:12.5px;}
-.nat-finder__cta{display:inline-flex;align-items:center;justify-content:center;height:50px;border:none;background:var(--green-deep);color:#fff;font-family:var(--sans);
+.nat-finder__cta{display:inline-flex;align-items:center;justify-content:center;height:50px;border:none;background:var(--green);color:#fff;font-family:var(--sans);
   font-size:13.5px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:0 34px;cursor:pointer;transition:background .2s;}
-.nat-finder__cta:hover{background:var(--olive);}
+.nat-finder__cta:hover{background:var(--green-deep);}
 .nat-finder__ghost{display:inline-flex;align-items:center;justify-content:center;height:50px;background:none;border:1px solid var(--green-deep);color:var(--green-deep);font-family:var(--sans);
   font-size:13.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;padding:0 28px;cursor:pointer;transition:background .2s,color .2s;}
 .nat-finder__ghost:hover{background:var(--green-deep);color:#fff;}
@@ -826,7 +837,7 @@ a{color:inherit;text-decoration:none;}
 
 /* ---------- héros Nouveautés (variante image) ---------- */
 .nat-nouv-hero{position:relative;background-size:cover;background-position:center;}
-.nat-nouv-hero__veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,58,34,.30),rgba(46,58,34,.62));}
+.nat-nouv-hero__veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(35,48,8,.30),rgba(35,48,8,.62));}
 .nat-nouv-hero__inner{position:relative;text-align:center;}
 .nat-nouv-hero__inner--img{max-width:920px;padding-top:96px;padding-bottom:88px;}
 @media (max-width:768px){ .nat-nouv-hero__inner--img{padding-top:60px;padding-bottom:54px;} }
@@ -843,7 +854,7 @@ a{color:inherit;text-decoration:none;}
 /* ---------- pages conseils thématiques ---------- */
 .nat-conseil-hero img{display:block;width:100%;height:340px;object-fit:cover;transition:transform 6s ease;}
 .nat-conseil-hero:hover img{transform:scale(1.05);}
-.nat-conseil-hero__veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(46,58,34,.12),rgba(46,58,34,.62));}
+.nat-conseil-hero__veil{position:absolute;inset:0;background:linear-gradient(180deg,rgba(35,48,8,.12),rgba(35,48,8,.62));}
 .nat-recos{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:18px;}
 .nat-rprod__media{display:block;aspect-ratio:1/1;border-radius:10px;overflow:hidden;background:var(--soft);}
 .nat-rprod__media img{width:100%;height:100%;object-fit:cover;transition:transform .4s ease;}

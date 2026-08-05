@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#2e3a22">
+  <meta name="theme-color" content="#526F12">
 
   {%- comment -%} ---------- SEO : titre & description (compléments alimentaires · Aix-en-Provence / Provence) ---------- {%- endcomment -%}
   {%- assign seo_suffix = 'Compléments alimentaires naturels en Provence' -%}
@@ -56,7 +56,9 @@
       --cream: {{ settings.color_bg | default: '#FFFFFF' }};
       --soft: {{ settings.color_soft | default: '#FAFAF9' }};
       --pale: {{ settings.color_section_bg | default: '#EEF1E7' }};
-      --green-deep: {{ settings.color_text | default: '#2e3a22' }};
+      --green: {{ settings.color_green | default: '#526F12' }};
+      --green-deep: {{ settings.color_text | default: '#3A4F0D' }};
+      --green-dark: {{ settings.color_deep | default: '#233008' }};
       --olive: {{ settings.color_accent | default: '#526F12' }};
       --olive-light: {{ settings.color_accent_light | default: '#758C41' }};
       --brown: {{ settings.color_brown | default: '#7B6C50' }};
@@ -66,7 +68,7 @@
       --serif: "{{ hfont }}", Georgia, serif;
       --sans: "{{ bfont }}", -apple-system, BlinkMacSystemFont, sans-serif;
     }
-    .nat-logo-text{ color: {{ settings.color_logo | default: '#4F7A1F' }}; }
+    .nat-logo-text{ color: {{ settings.color_logo | default: '#526F12' }}; }
   </style>
   {% render 'seo-schema' %}
 </head>
