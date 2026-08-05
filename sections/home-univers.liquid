@@ -1,6 +1,6 @@
 {% render 'section-fonts', section: section %}
 <div class="nat-wrap" style="padding-top:52px;padding-bottom:8px;">
-  <div class="nat-section-head" style="margin-bottom:38px;">
+  <div class="nat-section-head">
     <div>
       {%- if section.settings.eyebrow != blank -%}<p class="nat-section-head__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
       <h2 class="nat-h2">{{ section.settings.title }}</h2>
@@ -19,12 +19,15 @@
         {%- assign def = univers_defaults[forloop.index0] | default: univers_defaults.first -%}
         {%- assign img_src = def | asset_url -%}
       {%- endif -%}
+      {%- comment -%} render n'accepte pas de filtres dans ses arguments : on précalcule {%- endcomment -%}
+      {%- assign u_title = block.settings.title | default: col.title -%}
+      {%- assign u_link = col.url | default: block.settings.link -%}
       {%- render 'card-rail',
             cr_image: img_src,
-            cr_title: block.settings.title | default: col.title,
+            cr_title: u_title,
             cr_text: block.settings.subtitle,
             cr_cta: 'Découvrir',
-            cr_link: col.url | default: block.settings.link,
+            cr_link: u_link,
             cr_attrs: block.shopify_attributes -%}
     {%- endfor -%}
   </div>

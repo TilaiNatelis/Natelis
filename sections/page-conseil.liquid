@@ -55,11 +55,15 @@
 {%- endcomment -%}
 
 <!-- deux rayons de conseils : généraux, puis liés aux produits -->
+{%- comment -%} render n'accepte pas de filtres dans ses arguments : on précalcule {%- endcomment -%}
+{%- assign r1_title = section.settings.rail1_title | default: 'Nos conseils' -%}
+{%- assign r2_title = section.settings.rail2_title | default: 'Bien utiliser nos compléments' -%}
+{%- assign r2_sub = section.settings.rail2_sub | default: 'Posologie, associations et bonnes pratiques, produit par produit.' -%}
 <div class="nat-wrap" style="padding-bottom:16px;">
   {%- render 'conseil-rail',
         rail_blog: cblog,
         rail_tag: tag1,
-        rail_title: section.settings.rail1_title | default: 'Nos conseils',
+        rail_title: r1_title,
         rail_sub: section.settings.rail1_sub,
         rail_limit: 12,
         rail_chips: 'false',
@@ -68,8 +72,8 @@
   {%- render 'conseil-rail',
         rail_blog: cblog,
         rail_tag: tag2,
-        rail_title: section.settings.rail2_title | default: 'Bien utiliser nos compléments',
-        rail_sub: section.settings.rail2_sub | default: 'Posologie, associations et bonnes pratiques, produit par produit.',
+        rail_title: r2_title,
+        rail_sub: r2_sub,
         rail_limit: 12,
         rail_chips: 'false',
         rail_id: 'r2' -%}
