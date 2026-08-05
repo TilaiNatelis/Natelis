@@ -18,23 +18,25 @@
 </div>
 
 {%- comment -%}
-  Les produits suivent directement la bannière, deux par ligne.
-  Les textes « pourquoi ce produit » se règlent en no-code via les blocs (produit + texte),
-  appariés par produit. À défaut de bloc, on déroule simplement la collection.
+  Bannière puis grille de produits, comme sur la référence. Les blocs servent à
+  choisir et à ordonner les produits mis en avant ; à défaut, la collection est
+  déroulée telle quelle. Les textes éditoriaux saisis dans les blocs ne sont
+  plus affichés — ils restent disponibles dans l'admin.
 {%- endcomment -%}
-<div class="nat-wrap" style="padding-top:26px;padding-bottom:80px;">
-  {%- comment -%} deux mises en avant par ligne : orientation identique pour toutes {%- endcomment -%}
-  <div class="nat-season-grid">
+<div class="nat-wrap" style="padding-top:30px;padding-bottom:80px;">
+  <div class="nat-grid-4 nat-grid--products">
     {%- if section.blocks.size > 0 -%}
       {%- for block in section.blocks -%}
         {%- assign bp = block.settings.product -%}
         {%- if bp == blank -%}{%- assign bp = col.products[forloop.index0] -%}{%- endif -%}
-        {%- render 'automne-row', bp: bp, heading: block.settings.title, text: block.settings.text, points: block.settings.points, rev: 1, attrs: block.shopify_attributes -%}
+        {%- if bp != blank -%}{%- render 'product-card', product: bp -%}{%- endif -%}
+      {%- endfor -%}
+    {%- elsif col != blank and col.products.size > 0 -%}
+      {%- for product in col.products limit: 24 -%}
+        {%- render 'product-card', product: product -%}
       {%- endfor -%}
     {%- else -%}
-      {%- for product in col.products limit: 12 -%}
-        {%- render 'automne-row', bp: product, rev: 1 -%}
-      {%- endfor -%}
+      <p style="color:var(--brown);">La sélection arrive très bientôt.</p>
     {%- endif -%}
   </div>
 </div>
@@ -50,10 +52,7 @@
     { "type": "image_picker", "id": "image", "label": "Visuel de la bannière" },
     { "type": "text", "id": "title", "label": "Titre sur la bannière", "default": "L'automne en Provence · Renforcez vos défenses naturellement" },
     { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Quand les jours raccourcissent, le corps a besoin de soutien. Immunité, énergie, sérénité — notre sélection pour traverser l'automne en pleine forme." },
-    { "type": "collection", "id": "collection", "label": "Collection « Sélection d'automne »", "info": "Sert de repli si un bloc n'a pas de produit défini." },
-    { "type": "header", "content": "Titre de la sélection" },
-    { "type": "text", "id": "why_title", "label": "Titre", "default": "Notre sélection de saison" },
-    { "type": "textarea", "id": "why_intro", "label": "Sous-titre", "default": "Le bon actif, au bon moment de la saison — découvrez pourquoi chaque cure compte cet automne." }
+    { "type": "collection", "id": "collection", "label": "Collection « Sélection d'automne »", "info": "Utilisée si aucun bloc n'est défini, ou pour compléter un bloc sans produit." }
   ],
   "blocks": [
     {
@@ -61,10 +60,8 @@
       "settings": [
         { "type": "header", "content": "Produit" },
         { "type": "product", "id": "product", "label": "Produit à mettre en avant" },
-        { "type": "header", "content": "Texte (indépendant du produit)" },
-        { "type": "text", "id": "title", "label": "Titre du panneau", "info": "Par défaut : le nom du produit." },
-        { "type": "textarea", "id": "text", "label": "Paragraphe", "info": "Pourquoi ce produit pour cette saison." },
-        { "type": "textarea", "id": "points", "label": "Points clés", "info": "Un point par ligne, affiché avec une puce ✦." }
+        { "type": "header", "content": "Note interne", "info": "Ces champs ne sont plus affichés sur la page." },
+        { "type": "textarea", "id": "text", "label": "Mémo" }
       ]
     }
   ],

@@ -21,7 +21,6 @@
         <a class="{{ cls }}{% if link.active or link.child_active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }}</a>
 
       {%- elsif link.links.size > 0 -%}
-        {%- assign all_label = 'Tous les produits' -%}
         <div class="nat-nav__parent">
           <a class="{{ cls }} nat-nav__item--has-mega{% if link.active or link.child_active %} is-active{% endif %}" href="{{ link.url }}">{{ link.title }}</a>
           <div class="nat-mega">
@@ -52,9 +51,6 @@
                   <span class="nat-mega__cardlabel">{{ child.title }}</span>
                 </a>
               {%- endfor -%}
-            </div>
-            <div class="nat-mega__foot">
-              <a class="nat-mega__all" href="{{ link.url }}">{{ all_label }} <span aria-hidden="true">→</span></a>
             </div>
           </div>
         </div>

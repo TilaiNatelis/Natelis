@@ -23,22 +23,22 @@
 </div>
 
 {%- comment -%}
-  Les produits suivent directement la bannière, deux par ligne,
-  chacun avec son panneau de texte éditable (indépendant du produit).
+  Bannière puis grille de produits, comme sur la référence. Les blocs servent à
+  choisir et à ordonner les produits mis en avant ; à défaut, la collection est
+  déroulée telle quelle. Les textes éditoriaux saisis dans les blocs ne sont
+  plus affichés — ils restent disponibles dans l'admin.
 {%- endcomment -%}
-<div class="nat-wrap" style="padding-top:26px;padding-bottom:80px;">
-  <div class="nat-season-grid">
+<div class="nat-wrap" style="padding-top:30px;padding-bottom:80px;">
+  <div class="nat-grid-4 nat-grid--products">
     {%- if section.blocks.size > 0 -%}
       {%- for block in section.blocks -%}
-        {%- assign p = block.settings.product -%}
-        {%- if p == blank -%}{%- assign p = col.products[forloop.index0] -%}{%- endif -%}
-        {%- if p != blank -%}
-          {%- render 'automne-row', bp: p, heading: block.settings.title, text: block.settings.text, points: block.settings.points, rev: 1, attrs: block.shopify_attributes -%}
-        {%- endif -%}
+        {%- assign bp = block.settings.product -%}
+        {%- if bp == blank -%}{%- assign bp = col.products[forloop.index0] -%}{%- endif -%}
+        {%- if bp != blank -%}{%- render 'product-card', product: bp -%}{%- endif -%}
       {%- endfor -%}
     {%- elsif col != blank and col.products.size > 0 -%}
-      {%- for product in col.products limit: 12 -%}
-        {%- render 'automne-row', bp: product, rev: 1 -%}
+      {%- for product in col.products limit: 24 -%}
+        {%- render 'product-card', product: product -%}
       {%- endfor -%}
     {%- else -%}
       <p style="color:var(--brown);">Les nouveautés arrivent très bientôt.</p>
@@ -67,10 +67,8 @@
       "settings": [
         { "type": "header", "content": "Produit" },
         { "type": "product", "id": "product", "label": "Produit à mettre en avant" },
-        { "type": "header", "content": "Texte (indépendant du produit)" },
-        { "type": "text", "id": "title", "label": "Titre du panneau", "info": "Par défaut : le nom du produit." },
-        { "type": "textarea", "id": "text", "label": "Paragraphe", "info": "Pourquoi cette nouveauté, conseil d'utilisation…" },
-        { "type": "textarea", "id": "points", "label": "Points clés", "info": "Un point par ligne, affiché avec une puce ✦." }
+        { "type": "header", "content": "Note interne", "info": "Ces champs ne sont plus affichés sur la page." },
+        { "type": "textarea", "id": "text", "label": "Mémo" }
       ]
     }
   ],
