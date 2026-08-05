@@ -1,0 +1,63 @@
+{%- comment -%}
+  « Ce que contient chaque prise » — bande sombre, visuel à gauche, tableau des
+  actifs à droite, puis une ligne d'arguments courts.
+
+  Le contenu vient du métachamp produit « formule » (custom.formule), une ligne
+  par actif :   nom | dose | apport de référence
+  L'apport de référence est facultatif ; s'il est absent la colonne reste vide.
+  Exemple :     Acérola bio | 500 mg | 625% AR
+
+  Les arguments courts viennent du métachamp « formule_points », séparés par
+  des barres verticales.  La bande ne s'affiche pas si le métachamp est vide :
+  on ne fabrique jamais de composition par défaut.
+
+  Paramètres : f_product, f_title, f_sub, f_image, f_dose, f_link
+{%- endcomment -%}
+{%- assign f_raw = f_product.metafields.custom.formule -%}
+{%- if f_raw != blank -%}
+  {%- assign f_lines = f_raw | strip | newline_to_br | split: '<br />' -%}
+  {%- if f_image != blank -%}
+    {%- assign f_src = f_image | image_url: width: 1200 -%}
+  {%- elsif f_product.images.size > 1 -%}
+    {%- assign f_src = f_product.images[1] | image_url: width: 1200 -%}
+  {%- elsif f_product.featured_image != blank -%}
+    {%- assign f_src = f_product.featured_image | image_url: width: 1200 -%}
+  {%- endif -%}
+
+  <section class="nat-formula">
+    <div class="nat-formula__media"{% if f_src %} style="background-image:url('{{ f_src }}');"{% endif %}></div>
+    <div class="nat-formula__body">
+      <h2 class="nat-formula__title">{{ f_title | default: 'Ce que contient chaque prise' }}</h2>
+      {%- if f_sub != blank -%}<p class="nat-formula__sub">{{ f_sub }}</p>{%- endif -%}
+
+      <div class="nat-formula__head">
+        <span>{{ f_product.metafields.custom.formule_dose | default: f_dose | default: 'Par prise' }}</span>
+        {%- if f_link != blank -%}<a class="nat-formula__all" href="{{ f_link }}">Voir tous les ingrédients →</a>{%- endif -%}
+      </div>
+
+      <ul class="nat-formula__list">
+        {%- for line in f_lines -%}
+          {%- assign cells = line | strip_html | strip | split: '|' -%}
+          {%- if cells.size > 0 and cells[0] != blank -%}
+            <li class="nat-formula__row">
+              <span class="nat-formula__name">{{ cells[0] | strip }}</span>
+              {%- if cells[2] != blank -%}<span class="nat-formula__ar">{{ cells[2] | strip }}</span>{%- endif -%}
+              {%- if cells[1] != blank -%}<span class="nat-formula__dose">{{ cells[1] | strip }}</span>{%- endif -%}
+            </li>
+          {%- endif -%}
+        {%- endfor -%}
+      </ul>
+
+      {%- assign f_points = f_product.metafields.custom.formule_points -%}
+      {%- if f_points != blank -%}
+        <ul class="nat-formula__points">
+          {%- assign pts = f_points | split: '|' -%}
+          {%- for pt in pts -%}
+            {%- assign pt_t = pt | strip -%}
+            {%- if pt_t != blank -%}<li>{{ pt_t }}</li>{%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+    </div>
+  </section>
+{%- endif -%}

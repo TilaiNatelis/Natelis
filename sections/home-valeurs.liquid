@@ -1,7 +1,8 @@
 {% render 'section-fonts', section: section %}
 {%- comment -%}
-  Nos valeurs : quatre tuiles. Chaque bloc affiche soit un chiffre, soit une icône
-  choisie d'après le libellé, avec un intitulé et une précision.
+  Nos valeurs : quatre tuiles. Chaque bloc affiche, par ordre de priorité, le
+  logo téléversé, sinon un chiffre, sinon une icône choisie d'après le libellé —
+  puis un intitulé et une précision.
 {%- endcomment -%}
 {%- if section.blocks.size > 0 -%}
 <div class="nat-wrap" style="padding-top:52px;padding-bottom:14px;">
@@ -19,7 +20,13 @@
     {%- for block in section.blocks -%}
       {%- assign vk = block.settings.label | downcase -%}
       <div class="nat-valeur" {{ block.shopify_attributes }}>
-        {%- if block.settings.figure != blank -%}
+        {%- if block.settings.logo != blank -%}
+          {%- comment -%}
+            Logo téléversé : servi en 3x pour rester net, hauteur pilotée en CSS.
+          {%- endcomment -%}
+          <img class="nat-valeur__logo" src="{{ block.settings.logo | image_url: height: 264 }}"
+               alt="{{ block.settings.label | escape }}" loading="lazy" width="264" height="264">
+        {%- elsif block.settings.figure != blank -%}
           <div class="nat-valeur__fig">{{ block.settings.figure }}</div>
         {%- else -%}
           <span class="nat-valeur__icon">
@@ -61,7 +68,8 @@
     {
       "type": "valeur", "name": "Valeur",
       "settings": [
-        { "type": "text", "id": "figure", "label": "Chiffre (facultatif)", "info": "S'affiche à la place de l'icône." },
+        { "type": "image_picker", "id": "logo", "label": "Logo", "info": "Prioritaire sur le chiffre et l'icône. Fond transparent (PNG ou SVG) de préférence." },
+        { "type": "text", "id": "figure", "label": "Chiffre (facultatif)", "info": "S'affiche à la place de l'icône, si aucun logo n'est déposé." },
         { "type": "text", "id": "label", "label": "Intitulé" },
         { "type": "text", "id": "sub", "label": "Précision" }
       ]

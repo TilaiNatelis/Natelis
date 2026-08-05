@@ -231,6 +231,9 @@ a{color:inherit;text-decoration:none;}
   gap:16px;padding:32px 26px;text-align:center;transition:background .2s;}
 .nat-valeur:hover{background:var(--pale);}
 .nat-valeur__icon{width:52px;height:52px;color:var(--olive);}
+/* logo de valeur : hauteur fixe, largeur libre, pour que des logos de formats
+   différents (carré, bandeau) s'alignent sur une même ligne optique. */
+.nat-valeur__logo{display:block;height:88px;width:auto;max-width:78%;object-fit:contain;}
 .nat-valeur__fig{font-family:var(--serif);font-weight:500;font-size:37px;line-height:1;color:var(--green-deep);}
 .nat-valeur__label{font-size:14.5px;font-weight:600;line-height:1.4;color:var(--green-deep);letter-spacing:.01em;}
 .nat-valeur__sub{font-size:13px;line-height:1.5;color:var(--brown);}
@@ -397,7 +400,7 @@ a{color:inherit;text-decoration:none;}
 .nat-filter.is-active{color:var(--olive);font-weight:700;}
 
 /* ---------- produit ---------- */
-.nat-pdp{display:grid;grid-template-columns:1.05fr 1fr;gap:52px;align-items:start;}
+.nat-pdp{display:grid;grid-template-columns:1fr 1.05fr;gap:44px;align-items:start;}
 .nat-pdp__title{font-family:var(--serif);font-weight:500;font-size:46px;line-height:1.05;color:var(--green-deep);margin:10px 0 0;}
 .nat-pdp__meta{display:flex;align-items:baseline;justify-content:space-between;gap:16px;
   margin-top:10px;font-size:12.5px;color:var(--brown);}
@@ -473,6 +476,75 @@ a{color:inherit;text-decoration:none;}
 /* ---------- bloc avis ---------- */
 .nat-reviews{border-top:1px solid var(--border);margin-top:70px;padding-top:56px;}
 .nat-reviews__head{margin-bottom:26px;}
+/* avis + visuel d'ambiance, cote a cote */
+.nat-reviews__grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;}
+.nat-reviews__list{min-width:0;}
+.nat-reviews__media{aspect-ratio:1/1;max-height:560px;background-size:cover;background-position:center;border-radius:3px;}
+@media (max-width:1024px){
+  .nat-reviews__grid{grid-template-columns:1fr;}
+  .nat-reviews__media{aspect-ratio:16/9;order:-1;}
+}
+
+/* ---------- colonne d'achat : quantite, bouton, livraison ---------- */
+.nat-pdp__qty{display:flex;align-items:center;gap:14px;margin-top:24px;}
+.nat-pdp__qtylabel{font-size:13px;color:var(--brown);}
+.nat-pdp__cta{display:flex;align-items:center;justify-content:center;gap:12px;width:100%;height:56px;
+  margin-top:14px;border:none;border-radius:5px;background:var(--green-deep);color:var(--cream);
+  font-family:var(--sans);font-size:15px;font-weight:600;letter-spacing:.01em;cursor:pointer;
+  transition:background .2s;}
+.nat-pdp__cta:hover{background:var(--olive);}
+.nat-pdp__cta[disabled]{background:#B9BEB0;cursor:not-allowed;}
+.nat-pdp__cta-price{font-weight:700;}
+.nat-pdp__cta-price::before{content:"\00b7";margin-right:12px;opacity:.6;}
+.nat-pdp__ship{font-size:13px;color:var(--brown);text-align:center;margin:12px 0 0;}
+
+/* ---------- ce que contient chaque prise (bande sombre) ---------- */
+.nat-formula{display:grid;grid-template-columns:1fr 1.15fr;margin-top:70px;background:var(--green-deep);color:var(--cream);}
+.nat-formula__media{min-height:460px;background-size:cover;background-position:center;background-color:#26301c;}
+.nat-formula__body{padding:56px 60px;display:flex;flex-direction:column;justify-content:center;}
+.nat-formula__title{font-family:var(--serif);font-weight:500;font-size:32px;line-height:1.12;margin:0;color:#fff;}
+.nat-formula__sub{font-size:15px;line-height:1.6;margin:10px 0 0;color:rgba(255,255,255,.72);}
+.nat-formula__head{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-top:30px;
+  font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);font-weight:600;}
+.nat-formula__all{color:#fff;border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:2px;white-space:nowrap;}
+.nat-formula__list{list-style:none;margin:12px 0 0;padding:0;display:flex;flex-direction:column;gap:8px;}
+.nat-formula__row{display:flex;align-items:center;gap:14px;padding:15px 18px;
+  border:1px solid rgba(255,255,255,.22);border-radius:4px;}
+.nat-formula__name{flex:1;font-size:14.5px;color:#fff;}
+.nat-formula__ar{font-size:12.5px;color:rgba(255,255,255,.6);white-space:nowrap;}
+.nat-formula__dose{font-size:15px;font-weight:700;color:#fff;white-space:nowrap;}
+.nat-formula__points{list-style:none;display:flex;flex-wrap:wrap;gap:10px 24px;margin:26px 0 0;padding:0;}
+.nat-formula__points li{font-size:12.5px;color:rgba(255,255,255,.78);}
+.nat-formula__points li::before{content:"\2713";color:var(--sage);margin-right:8px;}
+@media (max-width:900px){
+  .nat-formula{grid-template-columns:1fr;}
+  .nat-formula__media{min-height:220px;}
+  .nat-formula__body{padding:34px 24px;}
+  .nat-formula__title{font-size:26px;}
+}
+
+/* ---------- vos questions (bande sombre, bas de fiche) ---------- */
+.nat-pfaq{display:grid;grid-template-columns:1fr 1.15fr;margin-top:70px;background:#1D2416;color:var(--cream);}
+.nat-pfaq__media{min-height:440px;background-size:cover;background-position:center;background-color:#141a0f;}
+.nat-pfaq__body{padding:56px 60px;display:flex;flex-direction:column;justify-content:center;}
+.nat-pfaq__title{font-family:var(--serif);font-weight:500;font-size:32px;line-height:1.12;margin:0 0 24px;color:#fff;}
+.nat-pfaq__item{border-bottom:1px solid rgba(255,255,255,.18);}
+.nat-pfaq__item summary{display:flex;align-items:center;justify-content:space-between;gap:16px;
+  padding:17px 0;cursor:pointer;list-style:none;font-size:14.5px;font-weight:600;color:#fff;}
+.nat-pfaq__item summary::-webkit-details-marker{display:none;}
+.nat-pfaq__item summary::after{content:"+";font-size:19px;color:var(--sage);line-height:1;}
+.nat-pfaq__item[open] summary::after{content:"\2013";}
+.nat-pfaq__answer{font-size:14px;line-height:1.7;color:rgba(255,255,255,.75);padding:0 0 18px;}
+.nat-pfaq__answer p{margin:0;}
+.nat-pfaq__rte{font-size:14px;line-height:1.7;color:rgba(255,255,255,.78);}
+.nat-pfaq__all{display:inline-block;margin-top:26px;font-size:13px;font-weight:600;color:#fff;
+  border-bottom:1px solid rgba(255,255,255,.5);padding-bottom:3px;align-self:flex-start;}
+@media (max-width:900px){
+  .nat-pfaq{grid-template-columns:1fr;}
+  .nat-pfaq__media{min-height:200px;}
+  .nat-pfaq__body{padding:34px 24px;}
+  .nat-pfaq__title{font-size:26px;}
+}
 .nat-reviews__empty{font-size:14.5px;color:var(--brown);line-height:1.7;}
 
 @media (max-width:900px){
@@ -850,8 +922,8 @@ a{color:inherit;text-decoration:none;}
 /* ---------- accordéon fiche produit ---------- */
 .nat-acc__item{border-top:1px solid var(--border);}
 .nat-acc__item:last-child{border-bottom:1px solid var(--border);}
-.nat-acc__item summary{display:flex;align-items:center;justify-content:space-between;padding:16px 2px;cursor:pointer;
-  list-style:none;font-size:14.5px;font-weight:700;color:var(--green-deep);}
+.nat-acc__item summary{display:flex;align-items:center;justify-content:space-between;padding:17px 2px;cursor:pointer;
+  list-style:none;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--green-deep);}
 .nat-acc__item summary::-webkit-details-marker{display:none;}
 .nat-acc__item summary::after{content:"+";font-size:20px;color:var(--olive-light);}
 .nat-acc__item[open] summary::after{content:"–";}

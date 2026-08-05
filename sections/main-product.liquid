@@ -3,7 +3,7 @@
 {%- assign sub = p.metafields.custom.subtitle | default: p.type -%}
 {%- assign units = p.metafields.custom.units -%}
 
-<div style="max-width:1300px;margin:0 auto;padding:30px 48px 80px;">
+<div style="max-width:1600px;margin:0 auto;padding:24px 40px 80px;">
   <div style="font-size:12.5px;color:#9a8b6c;margin-bottom:26px;">
     <a href="{{ routes.root_url }}">Accueil</a> ·
     <a href="{{ routes.all_products_collection_url }}">Produits</a> ·
@@ -77,17 +77,31 @@
           </div>
         {%- endunless -%}
 
-        <div style="display:flex;align-items:center;gap:14px;margin-top:24px;">
+        {%- comment -%}
+          Bouton pleine largeur avec le prix intégré, quantité au-dessus en
+          retrait : l'ajout au panier reste la seule cible large de la colonne.
+        {%- endcomment -%}
+        <div class="nat-pdp__qty">
+          <span class="nat-pdp__qtylabel">Quantité</span>
           <div class="nat-qty">
             <span onclick="var q=this.parentNode.querySelector('input');q.value=Math.max(1,(+q.value||1)-1);">−</span>
-            <input type="number" name="quantity" value="1" min="1" style="width:46px;text-align:center;border:none;font-size:15px;font-weight:700;font-family:var(--sans);">
+            <input type="number" name="quantity" value="1" min="1" style="width:42px;text-align:center;border:none;font-size:14px;font-weight:700;font-family:var(--sans);">
             <span onclick="var q=this.parentNode.querySelector('input');q.value=(+q.value||1)+1;">+</span>
           </div>
-          <button type="submit" class="nat-btn" style="flex:1;"{% unless p.available %} disabled{% endunless %}>
-            {%- if p.available -%}Ajouter au panier · {{ p.price | money }}{%- else -%}Épuisé{%- endif -%}
-          </button>
         </div>
+        {%- assign buy_price = p.selected_or_first_available_variant.price | default: p.price -%}
+        <button type="submit" class="nat-pdp__cta"{% unless p.available %} disabled{% endunless %}>
+          {%- if p.available -%}Ajouter au panier<span class="nat-pdp__cta-price">{{ buy_price | money }}</span>{%- else -%}Épuisé{%- endif -%}
+        </button>
       {%- endform -%}
+
+      {%- comment -%}
+        Estimation de livraison : jour ouvré calculé côté navigateur pour rester
+        juste quelle que soit la date de consultation (le délai est réglable).
+      {%- endcomment -%}
+      {%- if p.available -%}
+        <p class="nat-pdp__ship" data-ship-days="{{ section.settings.ship_days | default: 3 }}"></p>
+      {%- endif -%}
 
       {%- comment -%} engagements : logos sous la description {%- endcomment -%}
       {%- render 'engagements', eng_product: p, eng_fallback: section.settings.engagements -%}
@@ -133,17 +147,10 @@
         {%- endif -%}
 
         {%- if allergens != blank -%}<details class="nat-acc__item"><summary>Allergènes</summary><div class="nat-acc__body">{{ allergens }}</div></details>{%- endif -%}
-        {%- if faq != blank -%}
-          <details class="nat-acc__item"><summary>Questions fréquentes</summary><div class="nat-acc__body">{{ faq }}</div></details>
-        {%- else -%}
-          <details class="nat-acc__item"><summary>Questions fréquentes</summary><div class="nat-acc__body">
-            <p><strong>Comment prendre ce complément ?</strong><br>Reportez-vous à l'onglet « Conseils d'utilisation », avec un grand verre d'eau, sur une cure de 1 à 3 mois.</p>
-            <p><strong>En combien de temps voit-on les premiers effets ?</strong><br>Les bienfaits s'installent progressivement : comptez en général 2 à 4 semaines de prise régulière.</p>
-            <p><strong>Peut-on l'associer à d'autres compléments ?</strong><br>Oui : un actif principal et un ou deux de soutien suffisent. Notre diagnostic compose pour vous une routine équilibrée.</p>
-            <p><strong>Où sont fabriqués vos compléments ?</strong><br>Nos formules sont développées et fabriquées en France, à partir d'actifs d'origine naturelle et sans additifs controversés.</p>
-            <p><strong>À qui s'adressent-ils ?</strong><br>À toute personne adulte souhaitant soutenir son bien-être. Déconseillé aux femmes enceintes ou allaitantes sans avis médical ; en cas de traitement, demandez conseil à un professionnel de santé.</p>
-          </div></details>
-        {%- endif -%}
+        {%- comment -%}
+          Les questions fréquentes ne sont plus dans la colonne d'achat : elles
+          ont leur bande dédiée en bas de fiche, sur le modèle d'Onatera.
+        {%- endcomment -%}
         <details class="nat-acc__item"><summary>Précautions d'emploi</summary><div class="nat-acc__body">
           <p>Complément alimentaire. Ne se substitue pas à une alimentation variée et équilibrée ni à un mode de vie sain. Ne pas dépasser la dose journalière recommandée. Tenir hors de portée des enfants. Déconseillé aux femmes enceintes ou allaitantes sans avis médical. En cas de traitement, demandez conseil à un professionnel de santé.</p>
         </div></details>
@@ -155,6 +162,13 @@
   {%- render 'product-science', sci_product: p,
         sci_title: section.settings.sci_title,
         sci_note: section.settings.sci_note -%}
+
+  {%- comment -%} ---------- ce que contient chaque prise ---------- {%- endcomment -%}
+  {%- render 'product-formula', f_product: p,
+        f_title: section.settings.formula_title,
+        f_sub: section.settings.formula_sub,
+        f_image: section.settings.formula_image,
+        f_link: section.settings.formula_link -%}
 
   {%- comment -%} ---------- rythme de la cure ---------- {%- endcomment -%}
   {%- render 'product-steps', steps_product: p,
@@ -172,16 +186,70 @@
     </div>
   {%- endif -%}
 
-  {%- comment -%} ---------- avis clients (Judge.me) ---------- {%- endcomment -%}
+  {%- comment -%}
+    ---------- avis clients (Judge.me) ----------
+    Deux colonnes : les avis à gauche, un visuel d'ambiance à droite, comme sur
+    la référence. Le visuel se replie sous les avis en dessous de 1024px.
+  {%- endcomment -%}
   <div class="nat-reviews">
     <div class="nat-reviews__head">
       <p class="nat-section-head__eyebrow">Ils l'ont adopté</p>
       <h2 class="nat-h2">{{ section.settings.reviews_title | default: 'Les avis de nos clients' }}</h2>
     </div>
-    <div style="clear:both"></div>
-    <div id="judgeme_product_reviews" class="jdgm-widget jdgm-review-widget"
-         data-product-title="{{ p.title | escape }}" data-id="{{ p.id }}"></div>
+    <div class="nat-reviews__grid">
+      <div class="nat-reviews__list">
+        <div style="clear:both"></div>
+        <div id="judgeme_product_reviews" class="jdgm-widget jdgm-review-widget"
+             data-product-title="{{ p.title | escape }}" data-id="{{ p.id }}"></div>
+      </div>
+      {%- if section.settings.reviews_image != blank -%}
+        {%- assign rev_src = section.settings.reviews_image | image_url: width: 1000 -%}
+      {%- elsif p.images.size > 2 -%}
+        {%- assign rev_src = p.images[2] | image_url: width: 1000 -%}
+      {%- endif -%}
+      {%- if rev_src -%}
+        <div class="nat-reviews__media" style="background-image:url('{{ rev_src }}');" role="presentation"></div>
+      {%- endif -%}
+    </div>
   </div>
+
+  {%- comment -%}
+    ---------- vos questions ----------
+    Bande sombre en bas de fiche : visuel à gauche, accordéon à droite. Le
+    contenu vient du métachamp « faq » du produit ; à défaut, les questions
+    générales communes à toutes nos cures.
+  {%- endcomment -%}
+  {%- assign pfaq = p.metafields.custom.faq -%}
+  {%- if section.settings.faq_image != blank -%}
+    {%- assign faq_src = section.settings.faq_image | image_url: width: 1200 -%}
+  {%- elsif p.images.size > 3 -%}
+    {%- assign faq_src = p.images[3] | image_url: width: 1200 -%}
+  {%- elsif p.featured_image != blank -%}
+    {%- assign faq_src = p.featured_image | image_url: width: 1200 -%}
+  {%- endif -%}
+  <section class="nat-pfaq">
+    <div class="nat-pfaq__media"{% if faq_src %} style="background-image:url('{{ faq_src }}');"{% endif %}></div>
+    <div class="nat-pfaq__body">
+      <h2 class="nat-pfaq__title">{{ section.settings.faq_title | default: 'Vos questions, nos réponses' }}</h2>
+      <div class="nat-pfaq__acc">
+        {%- if pfaq != blank -%}
+          <div class="nat-pfaq__rte">{{ pfaq }}</div>
+        {%- else -%}
+          <details class="nat-pfaq__item" open><summary>Comment prendre ce complément ?</summary><div class="nat-pfaq__answer">
+            <p>Reportez-vous à la rubrique « Conseils d'utilisation » de la fiche, avec un grand verre d'eau, sur une cure de 1 à 3 mois.</p></div></details>
+          <details class="nat-pfaq__item"><summary>En combien de temps voit-on les premiers effets ?</summary><div class="nat-pfaq__answer">
+            <p>Les bienfaits s'installent progressivement : comptez en général 2 à 4 semaines de prise régulière. Les ressentis varient d'une personne à l'autre.</p></div></details>
+          <details class="nat-pfaq__item"><summary>Peut-on l'associer à d'autres compléments ?</summary><div class="nat-pfaq__answer">
+            <p>Oui : un actif principal et un ou deux de soutien suffisent. Notre diagnostic compose pour vous une routine équilibrée.</p></div></details>
+          <details class="nat-pfaq__item"><summary>Où sont fabriqués vos compléments ?</summary><div class="nat-pfaq__answer">
+            <p>Nos formules sont développées et fabriquées en France, à partir d'actifs d'origine naturelle et sans additifs controversés.</p></div></details>
+          <details class="nat-pfaq__item"><summary>À qui s'adressent-ils ?</summary><div class="nat-pfaq__answer">
+            <p>À toute personne adulte souhaitant soutenir son bien-être. Déconseillé aux femmes enceintes ou allaitantes sans avis médical ; en cas de traitement, demandez conseil à un professionnel de santé.</p></div></details>
+        {%- endif -%}
+      </div>
+      <a class="nat-pfaq__all" href="{{ section.settings.faq_url | default: '/pages/faq' }}">Voir toutes les questions →</a>
+    </div>
+  </section>
 
   {%- if recommendations.performed and recommendations.products_count > 0 -%}
     <div style="margin-top:70px;">
@@ -202,6 +270,17 @@
       });
     });
 
+    // Estimation de livraison : on saute samedis et dimanches.
+    document.querySelectorAll('.nat-pdp__ship').forEach(function(el){
+      var left = parseInt(el.dataset.shipDays, 10) || 3;
+      var d = new Date();
+      while(left > 0){
+        d.setDate(d.getDate() + 1);
+        if(d.getDay() !== 0 && d.getDay() !== 6) left--;
+      }
+      el.textContent = 'Livré chez vous le ' +
+        d.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+    });
   })();
 </script>
 
@@ -219,7 +298,19 @@
       { "type": "text", "id": "steps_title", "label": "Titre", "default": "Le rythme de votre cure" },
       { "type": "textarea", "id": "steps_default", "label": "Étapes par défaut", "default": "Les premiers jours | Semaine 1 | La cure s'installe. C'est la régularité de la prise, à heure fixe, qui compte le plus à ce stade.\nLes premiers ressentis | Semaines 2 à 4 | C'est en général la période où les premiers effets se font sentir, progressivement et variablement selon les personnes.\nLa cure complète | 1 à 3 mois | La durée que nous recommandons pour l'ensemble de nos cures, avant de faire le point sur vos besoins." },
       { "type": "textarea", "id": "steps_note", "label": "Mention sous les étapes", "default": "Ces repères décrivent le déroulé d'une cure et non un effet garanti : les ressentis varient d'une personne à l'autre." },
+      { "type": "header", "content": "Ce que contient chaque prise", "info": "Le tableau se saisit produit par produit dans le métachamp « formule ». Une ligne par actif : nom | dose | apport de référence. Les arguments courts sous le tableau viennent du métachamp « formule_points », séparés par des barres verticales." },
+      { "type": "text", "id": "formula_title", "label": "Titre", "default": "Ce que contient chaque prise" },
+      { "type": "text", "id": "formula_sub", "label": "Sous-titre", "default": "Formulé pour être assimilé, pas seulement avalé." },
+      { "type": "image_picker", "id": "formula_image", "label": "Visuel", "info": "À défaut, le deuxième visuel du produit est utilisé." },
+      { "type": "url", "id": "formula_link", "label": "Lien « Voir tous les ingrédients »" },
+      { "type": "header", "content": "Livraison" },
+      { "type": "range", "id": "ship_days", "label": "Délai de livraison (jours ouvrés)", "min": 1, "max": 10, "step": 1, "unit": "j", "default": 3 },
       { "type": "header", "content": "Avis clients" },
-      { "type": "text", "id": "reviews_title", "label": "Titre du bloc avis", "default": "Les avis de nos clients" }
+      { "type": "text", "id": "reviews_title", "label": "Titre du bloc avis", "default": "Les avis de nos clients" },
+      { "type": "image_picker", "id": "reviews_image", "label": "Visuel à côté des avis", "info": "À défaut, le troisième visuel du produit est utilisé." },
+      { "type": "header", "content": "Vos questions" },
+      { "type": "text", "id": "faq_title", "label": "Titre", "default": "Vos questions, nos réponses" },
+      { "type": "image_picker", "id": "faq_image", "label": "Visuel", "info": "À défaut, le quatrième visuel du produit est utilisé." },
+      { "type": "url", "id": "faq_url", "label": "Lien vers la page FAQ" }
   ] }
 {% endschema %}
