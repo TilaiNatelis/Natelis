@@ -1,10 +1,12 @@
 {% render 'section-fonts', section: section %}
 {%- comment -%}
-  Duo d'offres : deux panneaux visuels, chacun avec sa carte blanche posée en bas.
-  Un bloc = une offre. Prévu pour deux, tient jusqu'à quatre (deux par ligne).
+  Bande d'offres : des panneaux visuels jointifs, chacun avec sa carte blanche
+  posée en bas. Un bloc = une offre. Deux ou trois par ligne, comme la référence.
 {%- endcomment -%}
 {%- if section.blocks.size > 0 -%}
-  <div class="nat-offres">
+  {%- assign offres_mod = '' -%}
+  {%- if section.blocks.size == 3 -%}{%- assign offres_mod = ' nat-offres--3' -%}{%- endif -%}
+  <div class="nat-offres{{ offres_mod }}">
     {%- assign offre_defaults = 'prov-lavande.jpg,prov-vignes.jpg,prov-calanque.jpg,prov-calanque2.jpg' | split: ',' -%}
     {%- for block in section.blocks -%}
       {%- if block.settings.image != blank -%}
