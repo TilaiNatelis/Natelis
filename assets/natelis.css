@@ -786,25 +786,26 @@ a{color:inherit;text-decoration:none;}
 @media (max-width:768px){ .nat-automne-hero img{height:230px !important;} }
 
 /* ---------- bannière de saison (large et courte, texte centré) ---------- */
-.nat-season-banner{position:relative;overflow:hidden;min-height:236px;display:flex;
-  align-items:center;justify-content:center;text-align:center;padding:46px 40px;}
+/* Mesures relevees sur la reference : bandeau court (150px) et large, cale sur
+   la grille, titre discret et voile leger — la photo doit rester lisible. */
+.nat-season-banner{position:relative;overflow:hidden;min-height:150px;display:flex;
+  align-items:center;justify-content:center;text-align:center;padding:26px 40px;}
 .nat-season-banner__img{position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;object-position:center 58%;display:block;}
-/* double voile : un fond général + un halo centré derrière le texte,
-   pour que le titre reste lisible quelle que soit la photo */
+/* halo centre derriere le texte, plus discret que le fond general */
 .nat-season-banner__veil{position:absolute;inset:0;
   background:
-    radial-gradient(58% 84% at 50% 52%, rgba(20,26,16,.62), rgba(20,26,16,0) 72%),
-    linear-gradient(180deg, rgba(20,26,16,.50), rgba(20,26,16,.66));}
-.nat-season-banner__body{position:relative;z-index:2;max-width:760px;color:#fff;}
-.nat-season-banner__title{font-family:var(--serif);font-weight:500;font-size:40px;line-height:1.12;
+    radial-gradient(46% 78% at 50% 52%, rgba(20,26,16,.46), rgba(20,26,16,0) 74%),
+    linear-gradient(180deg, rgba(20,26,16,.20), rgba(20,26,16,.30));}
+.nat-season-banner__body{position:relative;z-index:2;max-width:620px;color:#fff;}
+.nat-season-banner__title{font-family:var(--serif);font-weight:500;font-size:24px;line-height:1.16;
   letter-spacing:.005em;margin:0;text-shadow:0 2px 6px rgba(12,17,14,.55),0 4px 26px rgba(12,17,14,.45);}
-.nat-season-banner__sub{font-size:16px;line-height:1.6;margin:14px 0 0;color:#fff;
+.nat-season-banner__sub{font-size:15px;line-height:22px;margin:7px 0 0;color:#fff;
   text-shadow:0 1px 5px rgba(12,17,14,.6),0 2px 18px rgba(12,17,14,.4);}
 @media (max-width:768px){
-  .nat-season-banner{min-height:200px;padding:38px 24px;}
-  .nat-season-banner__title{font-size:28px;}
-  .nat-season-banner__sub{font-size:14.5px;}
+  .nat-season-banner{min-height:130px;padding:24px 20px;}
+  .nat-season-banner__title{font-size:21px;}
+  .nat-season-banner__sub{font-size:14px;line-height:20px;}
 }
 
 /* ---------- sélection de saison : deux mises en avant par ligne ---------- */
@@ -1164,6 +1165,7 @@ a{transition:color .15s;}
 .nat-rail__chips{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0 0;}
 .nat-chip{display:inline-flex;align-items:center;height:36px;background:var(--soft);border:1px solid var(--border);
   border-radius:999px;color:var(--green-deep);font-size:14px;font-weight:500;padding:0 18px;white-space:nowrap;
+  font-family:var(--sans);cursor:pointer;
   transition:background .18s,border-color .18s,color .18s;}
 .nat-chip:hover{background:var(--pale);border-color:var(--sage);color:var(--olive);}
 .nat-chip.is-active{background:var(--green-deep);border-color:var(--green-deep);color:#fff;}

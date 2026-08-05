@@ -92,18 +92,25 @@
       s = (s || '').toLowerCase();
       return s.normalize ? s.normalize('NFD').replace(/[\u0300-\u036f]/g, '') : s;
     }
+    // Recherche et pastilles filtrent le meme rayon, et se combinent :
+    // la thematique restreint, le texte affine.
     document.querySelectorAll('[data-rail-search]').forEach(function(input){
       var id    = input.getAttribute('data-rail-search');
       var track = document.getElementById('NatRail-' + id);
       var empty = document.querySelector('[data-rail-empty="' + id + '"]');
       if(!track) return;
-      var vp = track.closest('.nat-rail__viewport');
+      var vp    = track.closest('.nat-rail__viewport');
+      var chips = document.querySelectorAll('[data-rail-tag="' + id + '"]');
+      var tag   = '';
 
-      input.addEventListener('input', function(){
+      function apply(){
         var q = fold(input.value.trim());
         var shown = 0;
         Array.prototype.forEach.call(track.children, function(card){
-          var hit = !q || fold(card.getAttribute('data-search') || '').indexOf(q) > -1;
+          var tags = (card.getAttribute('data-tags') || '').split('|');
+          var okTag = !tag || tags.indexOf(tag) > -1;
+          var okTxt = !q || fold(card.getAttribute('data-search') || '').indexOf(q) > -1;
+          var hit = okTag && okTxt;
           card.style.display = hit ? '' : 'none';
           if(hit) shown++;
         });
@@ -111,6 +118,19 @@
         if(empty) empty.style.display = shown ? 'none' : '';
         track.scrollLeft = 0;
         if(vp && vp._refreshArrows) vp._refreshArrows();
+      }
+
+      input.addEventListener('input', apply);
+      chips.forEach(function(chip){
+        chip.addEventListener('click', function(){
+          var next = chip.getAttribute('data-tag') || '';
+          // recliquer sur la thematique active la desactive
+          tag = (tag === next && next !== '') ? '' : next;
+          chips.forEach(function(c){
+            c.classList.toggle('is-active', (c.getAttribute('data-tag') || '') === tag);
+          });
+          apply();
+        });
       });
     });
   })();

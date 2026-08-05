@@ -25,8 +25,14 @@
         <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         <input type="search" placeholder="Rechercher un conseil, un actif…" aria-label="Rechercher un conseil" data-rail-search="{{ rail_id }}">
       </div>
+      {%- comment -%}
+        Les pastilles filtrent le rayon sur place, comme la recherche : elles ne
+        renvoient plus vers la page de tag du blog.
+      {%- endcomment -%}
+      <button type="button" class="nat-chip is-active" data-rail-tag="{{ rail_id }}" data-tag="">Tous</button>
       {%- for t in rail_blog.all_tags -%}
-        <a class="nat-chip{% if t == rail_tag %} is-active{% endif %}" href="{{ rail_blog.url }}/tagged/{{ t | handleize }}">{{ t }}</a>
+        {%- assign t_fold = t | downcase | escape -%}
+        <button type="button" class="nat-chip" data-rail-tag="{{ rail_id }}" data-tag="{{ t_fold }}">{{ t }}</button>
       {%- endfor -%}
     </div>
   {%- endif -%}
@@ -49,7 +55,8 @@
             {%- if rl_shown < rl_limit -%}
               {%- assign rl_shown = rl_shown | plus: 1 -%}
               {%- assign rl_search = article.title | append: ' ' | append: article.tags | join: ' ' | downcase | strip_html | escape -%}
-              <a class="nat-pcard" href="{{ article.url }}" data-search="{{ rl_search }}">
+              {%- assign rl_tags = article.tags | join: '|' | downcase | escape -%}
+              <a class="nat-pcard" href="{{ article.url }}" data-search="{{ rl_search }}" data-tags="{{ rl_tags }}">
                 {%- if article.image -%}
                   <img class="nat-pcard__img" src="{{ article.image | image_url: width: 700 }}" alt="{{ article.image.alt | default: article.title | escape }}" loading="lazy">
                 {%- endif -%}

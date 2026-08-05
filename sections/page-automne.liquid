@@ -23,8 +23,9 @@
   déroulée telle quelle. Les textes éditoriaux saisis dans les blocs ne sont
   plus affichés — ils restent disponibles dans l'admin.
 {%- endcomment -%}
-<div class="nat-wrap" style="padding-top:30px;padding-bottom:80px;">
-  <div class="nat-grid-4 nat-grid--products">
+<div class="nat-wrap" style="padding-top:16px;padding-bottom:80px;">
+  {%- comment -%} gouttiere resserree, calee sur la reference {%- endcomment -%}
+  <div class="nat-grid-4 nat-grid--products" style="gap:14px 12px;">
     {%- if section.blocks.size > 0 -%}
       {%- for block in section.blocks -%}
         {%- assign bp = block.settings.product -%}
