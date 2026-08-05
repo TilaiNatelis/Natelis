@@ -9,7 +9,7 @@
 
 {%- comment -%} bannière de saison, comme sur la Sélection d'automne {%- endcomment -%}
 {%- if section.settings.image != blank -%}{%- assign nv_img = section.settings.image | image_url: width: 2400 -%}{%- else -%}{%- assign nv_img = 'prov-vignes.jpg' | asset_url -%}{%- endif -%}
-<div class="nat-wrap" style="padding-top:20px;">
+<div class="nat-wrap nat-wrap--season" style="padding-top:20px;">
   <div class="nat-season-banner">
     <img class="nat-season-banner__img" src="{{ nv_img }}" alt="{{ section.settings.title | escape }}">
     <div class="nat-season-banner__veil"></div>
@@ -28,7 +28,7 @@
   déroulée telle quelle. Les textes éditoriaux saisis dans les blocs ne sont
   plus affichés — ils restent disponibles dans l'admin.
 {%- endcomment -%}
-<div class="nat-wrap" style="padding-top:16px;padding-bottom:80px;">
+<div class="nat-wrap nat-wrap--season" style="padding-top:16px;padding-bottom:80px;">
   {%- comment -%} gouttiere resserree, calee sur la reference {%- endcomment -%}
   <div class="nat-grid-4 nat-grid--products" style="gap:14px 12px;">
     {%- if section.blocks.size > 0 -%}

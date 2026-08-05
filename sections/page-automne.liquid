@@ -4,7 +4,7 @@
 {%- if col == blank or col.products.size == 0 -%}{%- assign col = collections['tous-nos-complements'] -%}{%- endif -%}
 {%- comment -%} bannière de saison : large, courte, titre + sous-titre centrés {%- endcomment -%}
 {%- if section.settings.image != blank -%}{%- assign aut_img = section.settings.image | image_url: width: 2400 -%}{%- else -%}{%- assign aut_img = 'automne.webp' | asset_url -%}{%- endif -%}
-<div class="nat-wrap" style="padding-top:20px;">
+<div class="nat-wrap nat-wrap--season" style="padding-top:20px;">
   <div class="nat-season-banner">
     <img class="nat-season-banner__img" src="{{ aut_img }}" alt="Village de Provence dans les vignes d'automne">
     <div class="nat-season-banner__veil"></div>
@@ -23,7 +23,7 @@
   déroulée telle quelle. Les textes éditoriaux saisis dans les blocs ne sont
   plus affichés — ils restent disponibles dans l'admin.
 {%- endcomment -%}
-<div class="nat-wrap" style="padding-top:16px;padding-bottom:80px;">
+<div class="nat-wrap nat-wrap--season" style="padding-top:16px;padding-bottom:80px;">
   {%- comment -%} gouttiere resserree, calee sur la reference {%- endcomment -%}
   <div class="nat-grid-4 nat-grid--products" style="gap:14px 12px;">
     {%- if section.blocks.size > 0 -%}

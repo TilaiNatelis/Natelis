@@ -9,85 +9,41 @@
         "hero_text": "Pas besoin d'accumuler les compléments. Partez d'un objectif, choisissez les bons actifs, installez un rituel — on vous explique tout, depuis la Provence."
       },
       "blocks": {
-        "r_guide": {
+        "r_general": {
           "type": "rail",
           "settings": {
-            "title": "Comprendre les actifs",
-            "subtitle": "Tout comprendre pour mieux choisir : cherchez un actif ou filtrez par thématique.",
+            "title": "Général",
+            "subtitle": "Tout ce qu'il faut savoir pour bien choisir : cherchez un actif ou filtrez par thématique.",
             "tag": "",
             "limit": 12,
             "show_chips": "true"
           }
         },
-        "r_bienetre": {
+        "r_produits": {
           "type": "rail",
           "settings": {
-            "title": "Bien-être au quotidien",
-            "subtitle": "Sommeil, digestion, équilibre.",
-            "tag": "Bien-être",
-            "limit": 12,
-            "show_chips": "false"
+            "title": "Nos produits",
+            "subtitle": "Bien choisir, bien associer et bien utiliser chaque cure.",
+            "tag": "Produits",
+            "show_chips": "false",
+            "limit": 12
           }
         },
-        "r_beaute": {
+        "r_blog": {
           "type": "rail",
           "settings": {
-            "title": "Beauté",
-            "subtitle": "Peau, cheveux et ongles.",
-            "tag": "Beauté",
-            "limit": 12,
-            "show_chips": "false"
-          }
-        },
-        "r_energie": {
-          "type": "rail",
-          "settings": {
-            "title": "Énergie",
-            "subtitle": "Retrouver du tonus, durablement.",
-            "tag": "Énergie",
-            "limit": 12,
-            "show_chips": "false"
-          }
-        },
-        "r_saison": {
-          "type": "rail",
-          "settings": {
-            "title": "Au fil des saisons",
-            "subtitle": "Adapter sa cure au moment de l'année.",
-            "tag": "Saison",
-            "limit": 12,
-            "show_chips": "false"
-          }
-        },
-        "r_conseils": {
-          "type": "rail",
-          "settings": {
-            "title": "Nos conseils d'experts",
-            "subtitle": "Posologie, associations, bonnes pratiques.",
-            "tag": "Conseils",
-            "limit": 12,
-            "show_chips": "false"
-          }
-        },
-        "r_terroir": {
-          "type": "rail",
-          "settings": {
-            "title": "Terroir & savoir-faire",
-            "subtitle": "D'où viennent nos actifs.",
-            "tag": "Terroir",
-            "limit": 12,
-            "show_chips": "false"
+            "title": "Le blog",
+            "subtitle": "Nos publications et nos lectures, en Provence et ailleurs.",
+            "tag": "Blog",
+            "show_chips": "false",
+            "limit": 12
           }
         }
       },
       "block_order": [
-        "r_guide",
-        "r_bienetre",
-        "r_beaute",
-        "r_energie",
-        "r_saison",
-        "r_conseils",
-        "r_terroir"
+        "r_general",
+        "r_produits",
+        "r_blog"
       ]
     }
   },

@@ -37,6 +37,10 @@ a{color:inherit;text-decoration:none;}
 .nat-wrap{max-width:1728px;margin:0 auto;padding-left:24px;padding-right:24px;}
 /* Certaines sections (valeurs, textes centrés) respirent davantage. */
 .nat-wrap--inset{padding-left:40px;padding-right:40px;}
+/* Conteneur des pages de saison : mesuré sur la référence, le contenu y est
+   centré sur 970px — bien plus étroit que le reste du site, avec quatre
+   produits par ligne et une gouttière de 12px. */
+.nat-wrap--season{max-width:1018px;}
 .nat-serif{font-family:var(--serif);font-weight:500;}
 
 /* ---------- boutons ---------- */
@@ -300,8 +304,10 @@ a{color:inherit;text-decoration:none;}
 .nat-tab.is-active{background:transparent;color:var(--green-deep);border:2px solid var(--green-deep);font-weight:600;}
 
 /* ---------- carte produit ---------- */
-.nat-card{display:block;cursor:pointer;}
-.nat-card__media{position:relative;aspect-ratio:1/1;border-radius:0;overflow:hidden;
+/* Colonne flexible : le bouton est pousse en bas, si bien que les boutons
+   d'une meme ligne s'alignent quel que soit le nombre de lignes du nom. */
+.nat-card{display:flex;flex-direction:column;height:100%;cursor:pointer;}
+.nat-card__media{position:relative;flex:none;aspect-ratio:1/1;border-radius:0;overflow:hidden;
   background:repeating-linear-gradient(135deg,#fff 0 16px,var(--beige) 16px 32px);
   display:flex;align-items:center;justify-content:center;}
 .nat-card__media img{width:100%;height:100%;object-fit:cover;}
@@ -328,12 +334,12 @@ a{color:inherit;text-decoration:none;}
 .nat-card__note{font-size:13px;line-height:1.55;color:var(--brown-dark);margin:10px 0 0;
   padding-left:11px;border-left:2px solid var(--olive-light);}
 .nat-card__row{display:block;margin-top:10px;}
-.nat-card__price{display:block;font-size:15px;font-weight:700;color:var(--green-deep);margin-top:11px;}
+.nat-card__price{display:block;font-size:15px;font-weight:700;color:var(--green-deep);margin-top:11px;margin-bottom:15px;}
 .nat-card__compare{font-size:13px;color:#9a8b6c;text-decoration:line-through;margin-left:8px;font-weight:500;}
 /* Bouton d'achat : pleine largeur, 62px de haut, filet 1px, angles 6px. */
 .nat-card__add{display:flex;align-items:center;justify-content:center;width:100%;height:50px;
   border:1px solid #DCE2D0;background:transparent;color:var(--green-deep);
-  font-size:14px;font-weight:500;letter-spacing:.01em;padding:0 16px;margin-top:15px;border-radius:5px;
+  font-size:14px;font-weight:500;letter-spacing:.01em;padding:0 16px;margin-top:auto;border-radius:5px;
   cursor:pointer;font-family:var(--sans);transition:all .2s;}
 .nat-card__add:hover{background:var(--green-deep);color:var(--cream);}
 .nat-card__rating{font-size:15px;color:var(--green-deep);margin-top:10px;letter-spacing:.05em;}
