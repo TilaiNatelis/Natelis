@@ -91,14 +91,25 @@
             "subtitle": "Articulations, récupération, équilibre",
             "link": ""
           }
+        },
+        "u4": {
+          "type": "univers",
+          "settings": {
+            "collection": "routines",
+            "title": "Routines",
+            "subtitle": "Des cures complètes, prêtes à suivre",
+            "link": ""
+          }
         }
       },
       "block_order": [
         "u1",
         "u2",
-        "u3"
+        "u3",
+        "u4"
       ],
       "settings": {
+        "eyebrow": "Nos univers bien-être",
         "title": "Explorez par univers"
       }
     },
@@ -126,19 +137,19 @@
         "e1": {
           "type": "card",
           "settings": {
-            "title": "La science de la plante",
-            "text": "Née en Provence, des formules naturelles et traçables.",
-            "cta": "Découvrir",
-            "link": "/pages/science-de-la-plante"
+            "title": "Diagnostic personnalisé",
+            "text": "Votre cure sur-mesure en 6 questions.",
+            "cta": "Faire le test",
+            "link": "/pages/diagnostic"
           }
         },
         "e2": {
           "type": "card",
           "settings": {
-            "title": "Diagnostic personnalisé",
-            "text": "Votre routine de compléments sur-mesure en 2 minutes.",
-            "cta": "Faire le test",
-            "link": "/pages/diagnostic"
+            "title": "La science de la plante",
+            "text": "Des formules naturelles, dosées avec exigence.",
+            "cta": "Découvrir",
+            "link": "/pages/science-de-la-plante"
           }
         },
         "e3": {
@@ -153,10 +164,28 @@
         "e4": {
           "type": "card",
           "settings": {
-            "title": "Offre de bienvenue",
-            "text": "—15% et la livraison offerte dès 49€ d'achat.",
-            "cta": "J'en profite",
-            "link": "/collections/tous-nos-complements"
+            "title": "Le guide Natélis",
+            "text": "Bien choisir et bien associer ses compléments.",
+            "cta": "Lire nos conseils",
+            "link": "/pages/conseils"
+          }
+        },
+        "e5": {
+          "type": "card",
+          "settings": {
+            "title": "Nos engagements",
+            "text": "Origine, fabrication et emballage.",
+            "cta": "Nos valeurs",
+            "link": "/pages/nos-engagements"
+          }
+        },
+        "e6": {
+          "type": "card",
+          "settings": {
+            "title": "Notre histoire",
+            "text": "Née d'une conviction simple, en Provence.",
+            "cta": "Découvrir",
+            "link": "/pages/notre-histoire"
           }
         }
       },
@@ -164,10 +193,15 @@
         "e1",
         "e2",
         "e3",
-        "e4"
+        "e4",
+        "e5",
+        "e6"
       ],
       "settings": {
-        "title": "L'expérience Natélis"
+        "eyebrow": "Aller plus loin",
+        "title": "L'expérience Natélis",
+        "cta": "",
+        "link": ""
       }
     },
     "journal": {
@@ -184,20 +218,19 @@
         "o1": {
           "type": "offre",
           "settings": {
-            "title": "Cure découverte",
-            "text": "-15% sur votre première commande, sur toute la gamme.",
-            "code": "BIENVENUE",
-            "cta": "En profiter",
-            "link": "/collections/tous-nos-complements"
+            "title": "Trouvez votre cure en 2 minutes",
+            "text": "Six questions sur votre objectif et votre rythme de vie. Nous composons une cure précise : quels compléments, à quel moment, et pour combien de temps.",
+            "cta": "Faire mon diagnostic",
+            "link": "/pages/diagnostic"
           }
         },
         "o2": {
           "type": "offre",
           "settings": {
-            "title": "Livraison offerte",
-            "text": "Dès 49€ d'achat, en France métropolitaine.",
-            "cta": "Composer ma cure",
-            "link": "/pages/diagnostic"
+            "title": "La sélection d'automne",
+            "text": "Immunité, énergie, sérénité : les cures qui comptent quand les jours raccourcissent.",
+            "cta": "Voir la sélection",
+            "link": "/pages/selection-automne"
           }
         }
       },
@@ -309,8 +342,8 @@
   "order": [
     "hero",
     "selection",
-    "offres",
     "univers",
+    "offres",
     "experience",
     "editorial",
     "journal",

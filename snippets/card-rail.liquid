@@ -1,0 +1,16 @@
+{%- comment -%}
+  Rail de cartes éditoriales, navigable par flèches (comme les rails de conseils).
+  Attend que l'appelant ait déjà ouvert <div class="nat-crail"> ... rien ici :
+  ce snippet ne rend qu'une carte, pour rester réutilisable.
+  Paramètres : cr_image, cr_title, cr_text, cr_cta, cr_link, cr_attrs
+{%- endcomment -%}
+<a class="nat-ccard" href="{{ cr_link | default: '#' }}" {{ cr_attrs }}>
+  <div class="nat-ccard__media">
+    {%- if cr_image != blank -%}
+      <img src="{{ cr_image }}" alt="{{ cr_title | escape }}" loading="lazy">
+    {%- endif -%}
+  </div>
+  <div class="nat-ccard__title">{{ cr_title }}</div>
+  {%- if cr_text != blank -%}<div class="nat-ccard__text">{{ cr_text }}</div>{%- endif -%}
+  {%- if cr_cta != blank -%}<span class="nat-ccard__btn">{{ cr_cta }}</span>{%- endif -%}
+</a>
