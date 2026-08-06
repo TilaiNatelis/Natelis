@@ -119,7 +119,7 @@
         "u2": {
           "type": "univers",
           "settings": {
-            "collection": "beaute-sommeil",
+            "collection": "beaute-eclat",
             "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_16_52_20.png",
             "title": "Beauté & sommeil",
             "subtitle": "Peau, cheveux et nuits sereines",
@@ -129,7 +129,7 @@
         "u3": {
           "type": "univers",
           "settings": {
-            "collection": "sport-bien-etre",
+            "collection": "sport-mobilite",
             "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_03_55.png",
             "title": "Sport & bien-être",
             "subtitle": "Articulations, récupération, équilibre",
