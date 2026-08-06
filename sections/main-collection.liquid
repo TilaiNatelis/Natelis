@@ -29,10 +29,21 @@
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;">
       <span style="font-size:13.5px;color:var(--brown);">{{ collection.products_count }} produits</span>
     </div>
+    {%- comment -%}
+      Les visuels ne sont inseres que sur la premiere page : leur rang est
+      compte depuis le debut de la collection, il n'a pas de sens page 2.
+    {%- endcomment -%}
+    {%- assign visuels = section.blocks | where: 'type', 'visuel' -%}
     {%- paginate collection.products by 15 -%}
       <div class="nat-grid-3 nat-grid--products" style="gap:44px 20px;">
+        {%- if paginate.current_page == 1 -%}
+          {%- render 'promo-slot', slot_blocks: visuels, slot_index: 0 -%}
+        {%- endif -%}
         {%- for product in collection.products -%}
           {%- render 'product-card', product: product -%}
+          {%- if paginate.current_page == 1 -%}
+            {%- render 'promo-slot', slot_blocks: visuels, slot_index: forloop.index -%}
+          {%- endif -%}
         {%- else -%}
           <p>Aucun produit dans cette collection pour le moment.</p>
         {%- endfor -%}
@@ -49,5 +60,22 @@
       { "type": "header", "content": "Polices (cette section)" },
       { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
       { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
+  ],
+  "blocks": [
+    {
+      "type": "visuel", "name": "Visuel dans la grille",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "range", "id": "position", "label": "Insérer après le … produit", "min": 0, "max": 15, "step": 1, "default": 2, "info": "0 place le visuel avant le premier produit. Première page uniquement." },
+        { "type": "select", "id": "span", "label": "Largeur", "default": "1", "options": [{"value":"1","label":"Une colonne"},{"value":"2","label":"Deux colonnes"}] },
+        { "type": "header", "content": "Texte (facultatif)", "info": "Laissez vide pour une image seule." },
+        { "type": "text", "id": "title", "label": "Titre" },
+        { "type": "textarea", "id": "text", "label": "Accroche" },
+        { "type": "text", "id": "cta", "label": "Libellé du bouton" },
+        { "type": "url", "id": "link", "label": "Lien" },
+        { "type": "select", "id": "align", "label": "Position du texte", "default": "center", "options": [{"value":"top","label":"En haut"},{"value":"center","label":"Au centre"},{"value":"bottom","label":"En bas"}] },
+        { "type": "select", "id": "theme", "label": "Contraste", "default": "light", "options": [{"value":"light","label":"Texte sombre (image claire)"},{"value":"dark","label":"Texte clair sur voile (image sombre)"}] }
+      ]
+    }
   ] }
 {% endschema %}

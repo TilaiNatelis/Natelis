@@ -1,0 +1,42 @@
+{%- comment -%}
+  Tuile promotionnelle glissee entre les produits d'une grille, sur le modele
+  de la reference : l'image occupe toute la cellule et prend la hauteur de la
+  ligne, le texte est facultatif et se pose par-dessus.
+
+  Parametres :
+    pt_image  (image)  visuel de fond
+    pt_title  (texte)  titre, facultatif
+    pt_text   (texte)  accroche, facultative
+    pt_cta    (texte)  libelle du bouton, facultatif
+    pt_link   (url)    cible ; la tuile entiere devient cliquable
+    pt_align  (texte)  'top' | 'center' | 'bottom' — position du texte
+    pt_theme  (texte)  'light' (texte clair sur voile sombre) | 'dark'
+    pt_span   (texte)  '2' pour occuper deux colonnes
+    pt_attrs  (texte)  shopify_attributes du bloc
+{%- endcomment -%}
+{%- if pt_image != blank or pt_title != blank -%}
+  {%- assign pt_cls = 'nat-promo' -%}
+  {%- if pt_span == '2' -%}{%- assign pt_cls = pt_cls | append: ' nat-promo--wide' -%}{%- endif -%}
+  {%- if pt_theme == 'dark' -%}{%- assign pt_cls = pt_cls | append: ' nat-promo--dark' -%}{%- endif -%}
+  {%- assign pt_a = pt_align | default: 'center' -%}
+  {%- assign pt_cls = pt_cls | append: ' nat-promo--' | append: pt_a -%}
+  {%- assign pt_has_body = false -%}
+  {%- if pt_title != blank or pt_text != blank or pt_cta != blank -%}{%- assign pt_has_body = true -%}{%- endif -%}
+
+  <div class="{{ pt_cls }}" {{ pt_attrs }}>
+    {%- if pt_link != blank -%}<a class="nat-promo__inner" href="{{ pt_link }}">{%- else -%}<div class="nat-promo__inner">{%- endif -%}
+      {%- if pt_image != blank -%}
+        <img class="nat-promo__img" src="{{ pt_image | image_url: width: 900 }}"
+             alt="{{ pt_title | default: pt_text | escape }}" loading="lazy">
+      {%- endif -%}
+      {%- if pt_has_body -%}
+        <div class="nat-promo__veil"></div>
+        <div class="nat-promo__body">
+          {%- if pt_title != blank -%}<p class="nat-promo__title">{{ pt_title }}</p>{%- endif -%}
+          {%- if pt_text != blank -%}<p class="nat-promo__text">{{ pt_text }}</p>{%- endif -%}
+          {%- if pt_cta != blank -%}<span class="nat-promo__btn">{{ pt_cta }}</span>{%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- if pt_link != blank -%}</a>{%- else -%}</div>{%- endif -%}
+  </div>
+{%- endif -%}

@@ -25,16 +25,25 @@
 {%- endcomment -%}
 <div class="nat-wrap nat-wrap--season" style="padding-top:16px;padding-bottom:80px;">
   {%- comment -%} gouttiere resserree, calee sur la reference {%- endcomment -%}
+  {%- comment -%}
+    Les blocs « visuel » sont retires du flux des produits : ils se glissent
+    entre les cartes au rang choisi dans l'admin.
+  {%- endcomment -%}
+  {%- assign prod_blocks = section.blocks | where: 'type', 'why' -%}
+  {%- assign visuels = section.blocks | where: 'type', 'visuel' -%}
   <div class="nat-grid-4 nat-grid--products" style="gap:14px 12px;">
-    {%- if section.blocks.size > 0 -%}
-      {%- for block in section.blocks -%}
+    {%- render 'promo-slot', slot_blocks: visuels, slot_index: 0 -%}
+    {%- if prod_blocks.size > 0 -%}
+      {%- for block in prod_blocks -%}
         {%- assign bp = block.settings.product -%}
         {%- if bp == blank -%}{%- assign bp = col.products[forloop.index0] -%}{%- endif -%}
         {%- if bp != blank -%}{%- render 'product-card', product: bp -%}{%- endif -%}
+        {%- render 'promo-slot', slot_blocks: visuels, slot_index: forloop.index -%}
       {%- endfor -%}
     {%- elsif col != blank and col.products.size > 0 -%}
       {%- for product in col.products limit: 24 -%}
         {%- render 'product-card', product: product -%}
+        {%- render 'promo-slot', slot_blocks: visuels, slot_index: forloop.index -%}
       {%- endfor -%}
     {%- else -%}
       <p style="color:var(--brown);">La sélection arrive très bientôt.</p>
@@ -51,8 +60,8 @@
       { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
     ,
     { "type": "image_picker", "id": "image", "label": "Visuel de la bannière" },
-    { "type": "text", "id": "title", "label": "Titre sur la bannière", "default": "L'automne en Provence · Renforcez vos défenses naturellement" },
-    { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Quand les jours raccourcissent, le corps a besoin de soutien. Immunité, énergie, sérénité — notre sélection pour traverser l'automne en pleine forme." },
+    { "type": "text", "id": "title", "label": "Titre sur la bannière", "default": "Sélection d'automne" },
+    { "type": "textarea", "id": "intro", "label": "Introduction", "default": "Immunité, énergie, sérénité : nos formules pour la saison." },
     { "type": "collection", "id": "collection", "label": "Collection « Sélection d'automne »", "info": "Utilisée si aucun bloc n'est défini, ou pour compléter un bloc sans produit." }
   ],
   "blocks": [
@@ -63,6 +72,21 @@
         { "type": "product", "id": "product", "label": "Produit à mettre en avant" },
         { "type": "header", "content": "Note interne", "info": "Ces champs ne sont plus affichés sur la page." },
         { "type": "textarea", "id": "text", "label": "Mémo" }
+      ]
+    },
+    {
+      "type": "visuel", "name": "Visuel dans la grille",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "range", "id": "position", "label": "Insérer après le … produit", "min": 0, "max": 24, "step": 1, "default": 3, "info": "0 place le visuel avant le premier produit. 3 le place en 4e case." },
+        { "type": "select", "id": "span", "label": "Largeur", "default": "1", "options": [{"value":"1","label":"Une colonne"},{"value":"2","label":"Deux colonnes"}] },
+        { "type": "header", "content": "Texte (facultatif)", "info": "Laissez vide pour une image seule." },
+        { "type": "text", "id": "title", "label": "Titre" },
+        { "type": "textarea", "id": "text", "label": "Accroche" },
+        { "type": "text", "id": "cta", "label": "Libellé du bouton" },
+        { "type": "url", "id": "link", "label": "Lien" },
+        { "type": "select", "id": "align", "label": "Position du texte", "default": "center", "options": [{"value":"top","label":"En haut"},{"value":"center","label":"Au centre"},{"value":"bottom","label":"En bas"}] },
+        { "type": "select", "id": "theme", "label": "Contraste", "default": "light", "options": [{"value":"light","label":"Texte sombre (image claire)"},{"value":"dark","label":"Texte clair sur voile (image sombre)"}] }
       ]
     }
   ],

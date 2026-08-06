@@ -329,12 +329,20 @@ a{color:inherit;text-decoration:none;}
 .nat-card__ph{color:#c5b596;font-family:monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:0 8px;}
 /* Échelle relevée sur la référence : 19px pour la gamme comme pour le nom,
    interligne 28px, le tout démarrant 19px sous le visuel. */
-.nat-card__obj{display:block;font-size:15px;letter-spacing:0;text-transform:none;color:var(--green-deep);font-weight:700;margin-top:15px;line-height:24px;}
-.nat-card__name{display:block;font-size:15px;font-weight:400;color:var(--brown-dark);margin-top:0;line-height:24px;}
+/* Ligne d'objectifs sur une seule ligne et nom sur deux au plus : sans cela une
+   enumeration longue (« Anti-age · Articulations · Beaute de la peau ») passait
+   sur deux lignes et decalait tout le bas de la carte. */
+.nat-card__obj{display:block;font-size:15px;letter-spacing:0;text-transform:none;color:var(--green-deep);font-weight:700;margin-top:15px;line-height:24px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.nat-card__name{display:block;font-size:15px;font-weight:400;color:var(--brown-dark);margin-top:0;line-height:24px;
+  min-height:48px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
 .nat-card__sub{font-size:13px;color:var(--brown);margin-top:2px;line-height:20px;}
 .nat-card__note{font-size:13px;line-height:1.55;color:var(--brown-dark);margin:10px 0 0;
   padding-left:11px;border-left:2px solid var(--olive-light);}
-.nat-card__row{display:block;margin-top:10px;}
+/* margin-top:auto — c'est ce qui colle le prix et « Ajouter » en bas de carte,
+   donc a la meme hauteur d'une carte a l'autre quelle que soit la longueur du
+   nom. Un margin fixe laissait les boutons en escalier. */
+.nat-card__row{display:block;margin-top:auto;}
 .nat-card__price{display:block;font-size:15px;font-weight:700;color:var(--green-deep);margin-top:11px;margin-bottom:15px;}
 .nat-card__compare{font-size:13px;color:#9a8b6c;text-decoration:line-through;margin-left:8px;font-weight:500;}
 /* Bouton d'achat : pleine largeur, 62px de haut, filet 1px, angles 6px. */
@@ -357,6 +365,34 @@ a{color:inherit;text-decoration:none;}
 .nat-exp__media{aspect-ratio:4/5;background-size:cover;background-position:center;border-radius:3px;}
 .nat-exp__title{font-size:16px;font-weight:700;color:var(--green-deep);margin-top:16px;}
 .nat-exp__text{font-size:13px;color:var(--brown);line-height:1.55;margin-top:8px;}
+
+/* ---------- tuile promotionnelle dans une grille produits ----------
+   Se glisse entre les cartes et prend la hauteur de la ligne, comme sur la
+   reference. L'image couvre la cellule ; le texte, facultatif, se pose dessus. */
+.nat-promo{position:relative;overflow:hidden;background:var(--soft);border-radius:0;min-height:240px;}
+.nat-promo--wide{grid-column:span 2;}
+.nat-promo__inner{position:absolute;inset:0;display:flex;padding:26px 24px;}
+.nat-promo--top .nat-promo__inner{align-items:flex-start;}
+.nat-promo--center .nat-promo__inner{align-items:center;}
+.nat-promo--bottom .nat-promo__inner{align-items:flex-end;}
+.nat-promo__img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .6s ease;}
+a.nat-promo__inner:hover .nat-promo__img{transform:scale(1.04);}
+/* voile : seulement sous le texte, et seulement en theme sombre */
+.nat-promo__veil{position:absolute;inset:0;background:none;}
+.nat-promo--dark .nat-promo__veil{background:linear-gradient(180deg,rgba(12,17,14,.05),rgba(12,17,14,.5));}
+.nat-promo__body{position:relative;z-index:1;width:100%;text-align:center;color:var(--green-deep);}
+.nat-promo--dark .nat-promo__body{color:#fff;}
+.nat-promo__title{font-family:var(--serif);font-weight:500;font-size:27px;line-height:1.15;margin:0;}
+.nat-promo__text{font-size:14px;line-height:1.5;margin:10px 0 0;}
+.nat-promo__btn{display:inline-flex;align-items:center;justify-content:center;height:46px;padding:0 22px;margin-top:16px;
+  background:var(--green-deep);color:var(--cream);font-size:13.5px;font-weight:700;letter-spacing:.02em;}
+.nat-promo--dark .nat-promo__btn{background:#fff;color:var(--green-deep);}
+a.nat-promo__inner:hover .nat-promo__btn{background:var(--olive);color:#fff;}
+@media (max-width:768px){
+  .nat-promo--wide{grid-column:span 2;}
+  .nat-promo{min-height:200px;}
+  .nat-promo__title{font-size:22px;}
+}
 
 /* ---------- journal / blog cards ---------- */
 /* Les cartes du journal sont des colonnes flexibles de hauteur pleine : titre et

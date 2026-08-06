@@ -1,0 +1,19 @@
+{%- comment -%}
+  Emplacement d'insertion dans une grille de produits. Appele apres chaque
+  produit avec le rang courant ; sort les tuiles dont la position correspond.
+  Parametres : slot_blocks (blocs de type « visuel »), slot_index (entier)
+{%- endcomment -%}
+{%- for v in slot_blocks -%}
+  {%- if v.settings.position == slot_index -%}
+    {%- render 'promo-tile',
+          pt_image: v.settings.image,
+          pt_title: v.settings.title,
+          pt_text: v.settings.text,
+          pt_cta: v.settings.cta,
+          pt_link: v.settings.link,
+          pt_align: v.settings.align,
+          pt_theme: v.settings.theme,
+          pt_span: v.settings.span,
+          pt_attrs: v.shopify_attributes -%}
+  {%- endif -%}
+{%- endfor -%}
