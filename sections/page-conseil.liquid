@@ -10,20 +10,25 @@
   de surcharger les thématiques (tags) sans toucher au code.
 {%- endcomment -%}
 {%- assign h = page.handle -%}
-{%- if h contains 'vitalite' -%}
+{%- if h contains 'vitalite' or h contains 'energie' -%}
   {%- assign d_tag1 = 'Saison' -%}{%- assign d_tag2 = 'Conseils' -%}
-  {%- assign coll = 'vitalite-immunite' -%}{%- assign hero = 'prov-vignes.jpg' -%}
-  {%- assign sub = 'Vitalité & immunité' -%}
+  {%- assign coll = 'energie-vitalite' -%}{%- assign hero = 'prov-vignes.jpg' -%}
+  {%- assign sub = 'Énergie & Vitalité' -%}
   {%- assign intro = 'Renforcez vos défenses et votre énergie avec les bons actifs, formulés en Provence.' -%}
+{%- elsif h contains 'sommeil' or h contains 'stress' -%}
+  {%- assign d_tag1 = 'Sommeil' -%}{%- assign d_tag2 = 'Bien-être' -%}
+  {%- assign coll = 'sommeil-stress' -%}{%- assign hero = 'prov-lavande.jpg' -%}
+  {%- assign sub = 'Sommeil & Stress' -%}
+  {%- assign intro = 'Retrouvez des nuits sereines et traversez les périodes chargées plus sereinement.' -%}
 {%- elsif h contains 'beaute' -%}
   {%- assign d_tag1 = 'Beauté' -%}{%- assign d_tag2 = 'Bien-être' -%}
-  {%- assign coll = 'beaute-sommeil' -%}{%- assign hero = 'prov-lavande.jpg' -%}
-  {%- assign sub = 'Beauté & sommeil' -%}
-  {%- assign intro = 'Sublimez votre peau et retrouvez des nuits sereines, naturellement.' -%}
+  {%- assign coll = 'beaute-eclat' -%}{%- assign hero = 'prov-lavande.jpg' -%}
+  {%- assign sub = 'Beauté & Éclat' -%}
+  {%- assign intro = 'Sublimez votre peau, vos cheveux et vos ongles, naturellement.' -%}
 {%- elsif h contains 'sport' -%}
   {%- assign d_tag1 = 'Énergie' -%}{%- assign d_tag2 = 'Conseils' -%}
-  {%- assign coll = 'sport-bien-etre' -%}{%- assign hero = 'prov-calanque.jpg' -%}
-  {%- assign sub = 'Sport & bien-être' -%}
+  {%- assign coll = 'sport-mobilite' -%}{%- assign hero = 'prov-calanque.jpg' -%}
+  {%- assign sub = 'Sport & Mobilité' -%}
   {%- assign intro = 'Récupération, articulations et équilibre : les compléments qui accompagnent votre activité.' -%}
 {%- else -%}
   {%- assign d_tag1 = 'Conseils' -%}{%- assign d_tag2 = 'Bien-être' -%}

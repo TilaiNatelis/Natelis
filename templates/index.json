@@ -111,38 +111,38 @@
           "settings": {
             "collection": "energie-vitalite",
             "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_06_31.png",
-            "title": "Vitalité & immunité",
-            "subtitle": "Énergie, défenses naturelles, anti-fatigue",
+            "title": "Énergie & Vitalité",
+            "subtitle": "Tonus, défenses naturelles, anti-fatigue",
             "link": ""
           }
         },
         "u2": {
           "type": "univers",
           "settings": {
-            "collection": "beaute-eclat",
-            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_16_52_20.png",
-            "title": "Beauté & sommeil",
-            "subtitle": "Peau, cheveux et nuits sereines",
+            "collection": "sommeil-stress",
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_14_04.png",
+            "title": "Sommeil & Stress",
+            "subtitle": "Nuits sereines et périodes chargées",
             "link": ""
           }
         },
         "u3": {
           "type": "univers",
           "settings": {
-            "collection": "sport-mobilite",
-            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_03_55.png",
-            "title": "Sport & bien-être",
-            "subtitle": "Articulations, récupération, équilibre",
+            "collection": "beaute-eclat",
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_16_52_20.png",
+            "title": "Beauté & Éclat",
+            "subtitle": "Peau, cheveux et ongles",
             "link": ""
           }
         },
         "u4": {
           "type": "univers",
           "settings": {
-            "collection": "routines",
-            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_14_04.png",
-            "title": "Routines",
-            "subtitle": "Des cures complètes, prêtes à suivre",
+            "collection": "sport-mobilite",
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_03_55.png",
+            "title": "Sport & Mobilité",
+            "subtitle": "Articulations, os et muscles",
             "link": ""
           }
         }

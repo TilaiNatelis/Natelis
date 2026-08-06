@@ -41,9 +41,10 @@
                   {%- assign bb = blogs[seg] -%}
                   {%- assign blogthumb = bb.articles.first.image -%}
                 {%- elsif child.url contains '/collections/' -%}{%- assign cc = collections[seg] -%}
-                {%- elsif child.url contains 'vitalite' -%}{%- assign cc = collections['vitalite-immunite'] -%}
-                {%- elsif child.url contains 'beaute' -%}{%- assign cc = collections['beaute-sommeil'] -%}
-                {%- elsif child.url contains 'sport' -%}{%- assign cc = collections['sport-bien-etre'] -%}
+                {%- elsif child.url contains 'energie' -%}{%- assign cc = collections['energie-vitalite'] -%}
+                {%- elsif child.url contains 'sommeil' -%}{%- assign cc = collections['sommeil-stress'] -%}
+                {%- elsif child.url contains 'beaute' -%}{%- assign cc = collections['beaute-eclat'] -%}
+                {%- elsif child.url contains 'sport' -%}{%- assign cc = collections['sport-mobilite'] -%}
                 {%- elsif child.url contains 'conseil' -%}{%- assign cc = collections['tous-nos-complements'] -%}{%- endif -%}
                 {%- assign thumb = blogthumb | default: cc.image | default: cc.products.first.featured_image -%}
                 <a class="nat-mega__card" href="{{ child.url }}">
