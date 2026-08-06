@@ -12,10 +12,36 @@
     "hero": {
       "type": "home-hero",
       "blocks": {
+        "slide_hNjwCe": {
+          "type": "slide",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/Gemini_Generated_Image_wi96qswi96qswi96.png",
+            "eyebrow": "",
+            "title": "",
+            "cta_label": "",
+            "cta_url": "",
+            "text_position": "",
+            "text_theme": ""
+          }
+        },
+        "slide_jiPhhD": {
+          "type": "slide",
+          "disabled": true,
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_15_18_00.png",
+            "eyebrow": "",
+            "title": "",
+            "cta_label": "",
+            "cta_url": "",
+            "text_position": "",
+            "text_theme": ""
+          }
+        },
         "slide_GVRzrt": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_26.png",
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_15_45_58.png",
             "eyebrow": "Puisé en Provence",
             "title": "La nature, à sa juste mesure",
             "cta_label": "Découvrir nos cures",
@@ -27,7 +53,7 @@
         "s1": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_30.png",
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_15_45_50.png",
             "eyebrow": "Formules courtes, actifs dosés",
             "title": "Des compléments que l'on comprend",
             "cta_label": "Voir nos formules",
@@ -39,7 +65,7 @@
         "s2": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/ChatGPT_Image_12_mai_2026_11_20_40.png",
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_15_45_36.png",
             "eyebrow": "Un besoin, une routine",
             "title": "Trouvez la cure qui vous ressemble",
             "cta_label": "Faire le diagnostic",
@@ -50,13 +76,31 @@
         }
       },
       "block_order": [
+        "slide_hNjwCe",
+        "slide_jiPhhD",
         "slide_GVRzrt",
         "s1",
         "s2"
       ],
       "settings": {
+        "heading_font_name": "",
+        "body_font_name": "",
+        "eyebrow": "Puisé en Provence",
+        "title": "La nature, à sa juste mesure",
+        "text_position": "left",
+        "text_theme": "light",
         "cta_label": "Découvrir nos cures",
         "cta_url": ""
+      }
+    },
+    "selection": {
+      "type": "home-selection",
+      "settings": {
+        "heading_font_name": "",
+        "body_font_name": "",
+        "title": "Votre sélection",
+        "collection_ventes": "meilleures-ventes",
+        "collection_nouveautes": "nouveautes"
       }
     },
     "univers": {
@@ -66,7 +110,7 @@
           "type": "univers",
           "settings": {
             "collection": "vitalite-immunite",
-            "image": "shopify://shop_images/ChatGPT_Image_22_juin_2026_21_33_00.png",
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_06_31.png",
             "title": "Vitalité & immunité",
             "subtitle": "Énergie, défenses naturelles, anti-fatigue",
             "link": ""
@@ -76,7 +120,7 @@
           "type": "univers",
           "settings": {
             "collection": "beaute-sommeil",
-            "image": "shopify://shop_images/ChatGPT_Image_22_juin_2026_21_28_36.png",
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_16_52_20.png",
             "title": "Beauté & sommeil",
             "subtitle": "Peau, cheveux et nuits sereines",
             "link": ""
@@ -86,7 +130,7 @@
           "type": "univers",
           "settings": {
             "collection": "sport-bien-etre",
-            "image": "shopify://shop_images/ChatGPT_Image_22_juin_2026_21_27_16.png",
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_03_55.png",
             "title": "Sport & bien-être",
             "subtitle": "Articulations, récupération, équilibre",
             "link": ""
@@ -96,6 +140,7 @@
           "type": "univers",
           "settings": {
             "collection": "routines",
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_14_04.png",
             "title": "Routines",
             "subtitle": "Des cures complètes, prêtes à suivre",
             "link": ""
@@ -109,26 +154,45 @@
         "u4"
       ],
       "settings": {
+        "heading_font_name": "",
+        "body_font_name": "",
         "eyebrow": "",
         "title": "Explorez par univers"
       }
     },
-    "selection": {
-      "type": "home-selection",
+    "offres": {
+      "type": "home-offres",
+      "blocks": {
+        "o1": {
+          "type": "offre",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_15_54_52.png",
+            "title": "Trouvez votre cure en 2 minutes",
+            "text": "Six questions sur votre objectif et votre rythme de vie. Nous composons une cure précise : quels compléments, à quel moment, et pour combien de temps.",
+            "code": "",
+            "cta": "Faire mon diagnostic",
+            "link": "/pages/diagnostic"
+          }
+        },
+        "o2": {
+          "type": "offre",
+          "settings": {
+            "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_16_42_53.png",
+            "title": "La sélection d'automne",
+            "text": "Immunité, énergie, sérénité : les cures qui comptent quand les jours raccourcissent.",
+            "code": "",
+            "cta": "Voir la sélection",
+            "link": "/pages/selection-automne"
+          }
+        }
+      },
+      "block_order": [
+        "o1",
+        "o2"
+      ],
       "settings": {
-        "title": "Votre sélection",
-        "collection_ventes": "meilleures-ventes",
-        "collection_nouveautes": "nouveautes"
-      }
-    },
-    "editorial": {
-      "type": "home-editorial",
-      "settings": {
-        "eyebrow": "La science de la plante",
-        "title": "Une nature à l'état brut, distillée avec soin",
-        "text": "Né au cœur de la Provence, Natélis restaure le lien entre le corps et la terre. Des actifs purs, traçables et dosés avec exigence — rien de superflu.",
-        "cta_label": "Notre histoire",
-        "cta_url": "/pages/notre-histoire"
+        "heading_font_name": "",
+        "body_font_name": ""
       }
     },
     "experience": {
@@ -198,6 +262,8 @@
         "e6"
       ],
       "settings": {
+        "heading_font_name": "",
+        "body_font_name": "",
         "eyebrow": "Aller plus loin",
         "title": "L'expérience Natélis",
         "cta": "",
@@ -207,38 +273,12 @@
     "journal": {
       "type": "home-journal",
       "settings": {
+        "heading_font_name": "",
+        "body_font_name": "",
         "eyebrow": "Le journal Natélis",
         "title": "À lire en ce moment",
         "blog": "carnet-de-la-vigne"
       }
-    },
-    "offres": {
-      "type": "home-offres",
-      "blocks": {
-        "o1": {
-          "type": "offre",
-          "settings": {
-            "title": "Trouvez votre cure en 2 minutes",
-            "text": "Six questions sur votre objectif et votre rythme de vie. Nous composons une cure précise : quels compléments, à quel moment, et pour combien de temps.",
-            "cta": "Faire mon diagnostic",
-            "link": "/pages/diagnostic"
-          }
-        },
-        "o2": {
-          "type": "offre",
-          "settings": {
-            "title": "La sélection d'automne",
-            "text": "Immunité, énergie, sérénité : les cures qui comptent quand les jours raccourcissent.",
-            "cta": "Voir la sélection",
-            "link": "/pages/selection-automne"
-          }
-        }
-      },
-      "block_order": [
-        "o1",
-        "o2"
-      ],
-      "settings": {}
     },
     "valeurs": {
       "type": "home-valeurs",
@@ -246,29 +286,37 @@
         "v1": {
           "type": "valeur",
           "settings": {
-            "label": "Actifs d'origine naturelle",
+            "logo": "shopify://shop_images/1.png",
+            "figure": "",
+            "label": "",
             "sub": "Choisis pour leur assimilation"
           }
         },
         "v2": {
           "type": "valeur",
           "settings": {
-            "label": "Sans additifs controversés",
+            "logo": "shopify://shop_images/3.png",
+            "figure": "",
+            "label": "",
             "sub": "Des formules courtes et lisibles"
           }
         },
         "v3": {
           "type": "valeur",
           "settings": {
-            "label": "Fabriqué en France",
-            "sub": "Formulé en Provence"
+            "logo": "shopify://shop_images/2.png",
+            "figure": "",
+            "label": "",
+            "sub": "Fabriqué en France"
           }
         },
         "v4": {
           "type": "valeur",
           "settings": {
-            "label": "Emballage 100% naturel",
-            "sub": "Carton et verre recyclables"
+            "logo": "shopify://shop_images/4.png",
+            "figure": "",
+            "label": "",
+            "sub": "Emballage 100% naturel"
           }
         }
       },
@@ -279,15 +327,32 @@
         "v4"
       ],
       "settings": {
+        "heading_font_name": "",
+        "body_font_name": "",
         "eyebrow": "Ce en quoi nous croyons",
         "title": "Nos valeurs",
         "cta": "Découvrir nos engagements",
         "link": "/pages/nos-engagements"
       }
     },
+    "editorial": {
+      "type": "home-editorial",
+      "settings": {
+        "heading_font_name": "",
+        "body_font_name": "",
+        "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_16_49_03.png",
+        "eyebrow": "La science de la plante",
+        "title": "Une nature à l'état brut, distillée avec soin",
+        "text": "Né au cœur de la Provence, Natélis restaure le lien entre le corps et la terre. Des actifs purs, traçables et dosés avec exigence — rien de superflu.",
+        "cta_label": "Notre histoire",
+        "cta_url": "/pages/notre-histoire"
+      }
+    },
     "social": {
       "type": "home-social",
       "settings": {
+        "heading_font_name": "",
+        "body_font_name": "",
         "eyebrow": "La vie Natélis",
         "title": "Suivez-nous",
         "handle": "Voir sur Instagram",

@@ -24,8 +24,9 @@
           {%- comment -%}
             Logo téléversé : servi en 3x pour rester net, hauteur pilotée en CSS.
           {%- endcomment -%}
-          <img class="nat-valeur__logo" src="{{ block.settings.logo | image_url: height: 264 }}"
-               alt="{{ block.settings.label | escape }}" loading="lazy" width="264" height="264">
+          {%- assign logo_alt = block.settings.label | default: block.settings.sub -%}
+          <img class="nat-valeur__logo" src="{{ block.settings.logo | image_url: height: 420 }}"
+               alt="{{ logo_alt | escape }}" loading="lazy" width="420" height="420">
         {%- elsif block.settings.figure != blank -%}
           <div class="nat-valeur__fig">{{ block.settings.figure }}</div>
         {%- else -%}
@@ -43,7 +44,11 @@
             {%- endif -%}
           </span>
         {%- endif -%}
-        <div class="nat-valeur__label">{{ block.settings.label }}</div>
+        {%- comment -%}
+          Intitule facultatif : laisse vide, on n'emet pas le div, sinon il
+          ajoute une gouttiere sous le logo pour un texte inexistant.
+        {%- endcomment -%}
+        {%- if block.settings.label != blank -%}<div class="nat-valeur__label">{{ block.settings.label }}</div>{%- endif -%}
         {%- if block.settings.sub != blank -%}<div class="nat-valeur__sub">{{ block.settings.sub }}</div>{%- endif -%}
       </div>
     {%- endfor -%}

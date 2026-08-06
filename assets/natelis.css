@@ -237,7 +237,7 @@ a{color:inherit;text-decoration:none;}
 .nat-valeur__icon{width:52px;height:52px;color:var(--olive);}
 /* logo de valeur : hauteur fixe, largeur libre, pour que des logos de formats
    différents (carré, bandeau) s'alignent sur une même ligne optique. */
-.nat-valeur__logo{display:block;height:88px;width:auto;max-width:78%;object-fit:contain;}
+.nat-valeur__logo{display:block;height:140px;width:auto;max-width:88%;object-fit:contain;}
 .nat-valeur__fig{font-family:var(--serif);font-weight:500;font-size:37px;line-height:1;color:var(--green-deep);}
 .nat-valeur__label{font-size:14.5px;font-weight:600;line-height:1.4;color:var(--green-deep);letter-spacing:.01em;}
 .nat-valeur__sub{font-size:13px;line-height:1.5;color:var(--brown);}
@@ -259,6 +259,7 @@ a{color:inherit;text-decoration:none;}
   .nat-offre__title{font-size:25px;}
   .nat-valeur{padding:22px 16px;gap:12px;}
   .nat-valeur__icon{width:42px;height:42px;}
+  .nat-valeur__logo{height:104px;}
   .nat-valeur__fig{font-size:30px;}
 }
 
@@ -358,12 +359,18 @@ a{color:inherit;text-decoration:none;}
 .nat-exp__text{font-size:13px;color:var(--brown);line-height:1.55;margin-top:8px;}
 
 /* ---------- journal / blog cards ---------- */
-.nat-post{cursor:pointer;}
+/* Les cartes du journal sont des colonnes flexibles de hauteur pleine : titre et
+   accroche reservent un nombre de lignes fixe, et « Lire l'article » est pousse
+   en bas. Sans cela, un titre sur deux lignes decalait toute la carte et les
+   trois liens ne s'alignaient plus d'une colonne a l'autre. */
+.nat-post{cursor:pointer;display:flex;flex-direction:column;height:100%;}
 .nat-post__media{aspect-ratio:3/2;background-size:cover;background-position:center;border-radius:3px;}
 .nat-post__meta{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--olive-light);font-weight:700;margin-top:16px;}
-.nat-post__title{font-family:var(--serif);font-size:24px;line-height:1.15;color:var(--green-deep);margin-top:8px;}
-.nat-post__excerpt{font-size:13.5px;color:var(--brown);line-height:1.55;margin-top:8px;}
-.nat-post__more{font-size:12.5px;color:var(--olive);font-weight:700;margin-top:12px;}
+.nat-post__title{font-family:var(--serif);font-size:24px;line-height:1.15;color:var(--green-deep);margin-top:8px;
+  min-height:2.3em;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.nat-post__excerpt{font-size:13.5px;color:var(--brown);line-height:1.55;margin-top:8px;
+  min-height:4.65em;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;}
+.nat-post__more{font-size:12.5px;color:var(--olive);font-weight:700;margin-top:auto;padding-top:12px;}
 
 /* ---------- blog compact (5 par ligne) ---------- */
 .nat-blog5{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;}
