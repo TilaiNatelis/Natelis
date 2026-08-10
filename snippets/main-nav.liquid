@@ -53,6 +53,23 @@
                 </a>
               {%- endfor -%}
             </div>
+            {%- comment -%}
+              Pied du panneau : le lien « tout voir » retire des vignettes plus
+              haut est repris ici, centre sous la ligne.
+            {%- endcomment -%}
+            {%- assign all_label = 'Tous les produits' -%}
+            {%- assign all_url = link.url -%}
+            {%- for child in link.links -%}
+              {%- assign ct = child.title | downcase -%}
+              {%- if ct contains 'tous les produits' or ct contains 'tous nos conseils' or ct contains 'tout voir' -%}
+                {%- assign all_label = child.title -%}{%- assign all_url = child.url -%}{%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+            <div class="nat-mega__foot">
+              <a class="nat-mega__all" href="{{ all_url }}">{{ all_label }}
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="15" height="15" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+              </a>
+            </div>
           </div>
         </div>
       {%- else -%}

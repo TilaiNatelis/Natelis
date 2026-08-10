@@ -24,14 +24,14 @@
   plus affichés — ils restent disponibles dans l'admin.
 {%- endcomment -%}
 <div class="nat-wrap nat-wrap--season" style="padding-top:16px;padding-bottom:80px;">
-  {%- comment -%} gouttiere resserree, calee sur la reference {%- endcomment -%}
+  {%- comment -%} gouttieres portees par .nat-grid--season {%- endcomment -%}
   {%- comment -%}
     Les blocs « visuel » sont retires du flux des produits : ils se glissent
     entre les cartes au rang choisi dans l'admin.
   {%- endcomment -%}
   {%- assign prod_blocks = section.blocks | where: 'type', 'why' -%}
   {%- assign visuels = section.blocks | where: 'type', 'visuel' -%}
-  <div class="nat-grid-4 nat-grid--products" style="gap:14px 12px;">
+  <div class="nat-grid-4 nat-grid--products nat-grid--season">
     {%- render 'promo-slot', slot_blocks: visuels, slot_index: 0 -%}
     {%- if prod_blocks.size > 0 -%}
       {%- for block in prod_blocks -%}
