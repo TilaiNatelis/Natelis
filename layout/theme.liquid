@@ -49,6 +49,8 @@
 
   {{ content_for_header }}
   {{ 'natelis.css' | asset_url | stylesheet_tag }}
+  {%- comment -%} Surcharges chargees apres la feuille principale — voir l'en-tete du fichier {%- endcomment -%}
+  {{ 'natelis-overrides.css' | asset_url | stylesheet_tag }}
 
   {%- comment -%} Réglages de thème (couleurs & polices) éditables dans Personnaliser → Paramètres {%- endcomment -%}
   <style>
