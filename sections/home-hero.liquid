@@ -20,7 +20,7 @@
         {%- assign s_cta = block.settings.cta_label | default: section.settings.cta_label -%}
         {%- assign s_url = block.settings.cta_url | default: section.settings.cta_url -%}
         <div class="nat-hero__slide" {{ block.shopify_attributes }}>
-          <img class="nat-hero__img" src="{{ src }}" alt="{{ s_title | default: 'Natélis en Provence' | strip_html | escape }}"{% unless forloop.first %} loading="lazy"{% endunless %}>
+          <img class="nat-hero__img" src="{{ src }}" alt="{{ s_title | default: 'Navélie en Provence' | strip_html | escape }}"{% unless forloop.first %} loading="lazy"{% endunless %}>
           {%- if theme == 'light' -%}<div class="nat-hero__scrim nat-hero__scrim--{{ pos }}"></div>{%- endif -%}
           <div class="nat-hero__overlay nat-hero__overlay--{{ pos }} nat-hero__overlay--{{ theme }}">
             <div class="nat-hero__text">
@@ -38,7 +38,7 @@
       {%- assign theme = section.settings.text_theme | default: 'light' -%}
       {%- for def in hero_defaults -%}
         <div class="nat-hero__slide">
-          <img class="nat-hero__img" src="{{ def | asset_url }}" alt="Natélis en Provence — complément alimentaire naturel">
+          <img class="nat-hero__img" src="{{ def | asset_url }}" alt="Navélie en Provence — complément alimentaire naturel">
           {%- if theme == 'light' -%}<div class="nat-hero__scrim nat-hero__scrim--{{ pos }}"></div>{%- endif -%}
           <div class="nat-hero__overlay nat-hero__overlay--{{ pos }} nat-hero__overlay--{{ theme }}">
             <div class="nat-hero__text">

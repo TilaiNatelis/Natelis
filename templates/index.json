@@ -98,7 +98,7 @@
       "settings": {
         "heading_font_name": "",
         "body_font_name": "",
-        "title": "Votre sélection",
+        "title": "Nos essentiels",
         "collection_ventes": "meilleures-ventes",
         "collection_nouveautes": "nouveautes"
       }
@@ -112,7 +112,8 @@
             "collection": "energie-vitalite",
             "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_06_31.png",
             "title": "Énergie & Vitalité",
-            "subtitle": "Tonus, défenses naturelles, anti-fatigue",
+            "subtitle": "Pour les coups de fatigue et les défenses qui faiblissent.",
+            "cta": "Découvrir",
             "link": ""
           }
         },
@@ -122,7 +123,8 @@
             "collection": "sommeil-stress",
             "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_14_04.png",
             "title": "Sommeil & Stress",
-            "subtitle": "Nuits sereines et périodes chargées",
+            "subtitle": "Pour les nuits courtes et les périodes chargées.",
+            "cta": "Découvrir",
             "link": ""
           }
         },
@@ -132,7 +134,8 @@
             "collection": "beaute-eclat",
             "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_16_52_20.png",
             "title": "Beauté & Éclat",
-            "subtitle": "Peau, cheveux et ongles",
+            "subtitle": "Pour la peau, les cheveux et les ongles.",
+            "cta": "Découvrir",
             "link": ""
           }
         },
@@ -142,7 +145,8 @@
             "collection": "sport-mobilite",
             "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_17_03_55.png",
             "title": "Sport & Mobilité",
-            "subtitle": "Articulations, os et muscles",
+            "subtitle": "Pour les articulations, les os et les muscles.",
+            "cta": "Découvrir",
             "link": ""
           }
         }
@@ -157,7 +161,10 @@
         "heading_font_name": "",
         "body_font_name": "",
         "eyebrow": "",
-        "title": "Explorez par univers"
+        "title": "Ce dont votre corps a besoin",
+        "intro": "Des formules ciblées, des dosages lisibles, et rien de superflu.",
+        "all_label": "Voir tous les univers",
+        "all_link": ""
       }
     },
     "offres": {
@@ -210,7 +217,7 @@
         "e2": {
           "type": "card",
           "settings": {
-            "title": "La science de la plante",
+            "title": "Notre savoir-faire",
             "text": "Des formules naturelles, dosées avec exigence.",
             "cta": "Découvrir",
             "link": "/pages/science-de-la-plante"
@@ -228,7 +235,7 @@
         "e4": {
           "type": "card",
           "settings": {
-            "title": "Le guide Natélis",
+            "title": "Le guide Navélie",
             "text": "Bien choisir et bien associer ses compléments.",
             "cta": "Lire nos conseils",
             "link": "/pages/conseils"
@@ -265,7 +272,7 @@
         "heading_font_name": "",
         "body_font_name": "",
         "eyebrow": "Aller plus loin",
-        "title": "L'expérience Natélis",
+        "title": "Mieux nous connaître",
         "cta": "",
         "link": ""
       }
@@ -275,7 +282,7 @@
       "settings": {
         "heading_font_name": "",
         "body_font_name": "",
-        "eyebrow": "Le journal Natélis",
+        "eyebrow": "Le carnet Navélie",
         "title": "À lire en ce moment",
         "blog": "carnet-de-la-vigne"
       }
@@ -341,9 +348,9 @@
         "heading_font_name": "",
         "body_font_name": "",
         "image": "shopify://shop_images/ChatGPT_Image_6_aout_2026_16_49_03.png",
-        "eyebrow": "La science de la plante",
+        "eyebrow": "Notre savoir-faire",
         "title": "Une nature à l'état brut, distillée avec soin",
-        "text": "Né au cœur de la Provence, Natélis restaure le lien entre le corps et la terre. Des actifs purs, traçables et dosés avec exigence — rien de superflu.",
+        "text": "Né au cœur de la Provence, Navélie restaure le lien entre le corps et la terre. Des actifs purs, traçables et dosés avec exigence — rien de superflu.",
         "cta_label": "Notre histoire",
         "cta_url": "/pages/notre-histoire"
       }
@@ -353,7 +360,7 @@
       "settings": {
         "heading_font_name": "",
         "body_font_name": "",
-        "eyebrow": "La vie Natélis",
+        "eyebrow": "La vie Navélie",
         "title": "Suivez-nous",
         "handle": "Voir sur Instagram",
         "link": ""

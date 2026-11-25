@@ -1,35 +1,57 @@
 {% render 'section-fonts', section: section %}
-<div class="nat-wrap" style="padding-top:52px;padding-bottom:64px;">
-  <div class="nat-section-head">
-    <div>
-      {%- if section.settings.eyebrow != blank -%}<p class="nat-section-head__eyebrow">{{ section.settings.eyebrow }}</p>{%- endif -%}
-      <h2 class="nat-h2">{{ section.settings.title }}</h2>
-    </div>
-    <a class="nat-link" href="{{ routes.all_products_collection_url }}">Tous les produits →</a>
-  </div>
-  {%- assign univers_defaults = 'prov-vignes.jpg,prov-lavande.jpg,prov-calanque.jpg,prov-calanque2.jpg' | split: ',' -%}
-  {%- comment -%} même carte que « L'expérience Natélis », en grille de quatre {%- endcomment -%}
-  <div class="nat-grid-4">
-    {%- for block in section.blocks -%}
-      {%- assign col = block.settings.collection -%}
-      {%- assign img = block.settings.image | default: col.featured_image -%}
-      {%- if img != blank -%}
-        {%- assign img_src = img | image_url: width: 700 -%}
-      {%- else -%}
-        {%- assign def = univers_defaults[forloop.index0] | default: univers_defaults.first -%}
-        {%- assign img_src = def | asset_url -%}
+{%- comment -%}
+  « Ce dont votre corps a besoin » — quatre cartes editoriales, sur le modele
+  de la rangee de rubriques de la reference : visuel au ratio 4/5, titre,
+  phrase courte, puis bouton borde. Ici les quatre blocs remplissent la
+  rangee : il n'y a pas de cinquieme carte en debord.
+{%- endcomment -%}
+<div class="nat-univ-band">
+  <div class="nat-wrap">
+    <div class="nat-univ__head">
+      <div>
+        {%- if section.settings.eyebrow != blank -%}
+          <p class="nat-section-head__eyebrow">{{ section.settings.eyebrow }}</p>
+        {%- endif -%}
+        <h2 class="nat-univ__title">{{ section.settings.title }}</h2>
+        {%- if section.settings.intro != blank -%}
+          <p class="nat-univ__intro">{{ section.settings.intro }}</p>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.all_label != blank -%}
+        <a class="nat-univ__all" href="{{ section.settings.all_link | default: routes.all_products_collection_url }}">{{ section.settings.all_label }}</a>
       {%- endif -%}
-      {%- comment -%} render n'accepte pas de filtres dans ses arguments : on précalcule {%- endcomment -%}
-      {%- assign u_title = block.settings.title | default: col.title -%}
-      {%- assign u_link = col.url | default: block.settings.link -%}
-      {%- render 'card-rail',
-            cr_image: img_src,
-            cr_title: u_title,
-            cr_text: block.settings.subtitle,
-            cr_cta: 'Découvrir',
-            cr_link: u_link,
-            cr_attrs: block.shopify_attributes -%}
-    {%- endfor -%}
+    </div>
+
+    <div class="nat-univ__grid">
+      {%- assign univ_defaults = 'prov-lavande.jpg,prov-calanque.jpg,prov-vignes.jpg,prov-calanque2.jpg' | split: ',' -%}
+      {%- for block in section.blocks -%}
+        {%- assign uc = collections[block.settings.collection] -%}
+
+        {%- comment -%} visuel : celui du bloc, sinon celui de la collection, sinon un visuel d'ambiance {%- endcomment -%}
+        {%- if block.settings.image != blank -%}
+          {%- assign u_img = block.settings.image | image_url: width: 900 -%}
+        {%- elsif uc.image != blank -%}
+          {%- assign u_img = uc.image | image_url: width: 900 -%}
+        {%- elsif uc.products.first.featured_image != blank -%}
+          {%- assign u_img = uc.products.first.featured_image | image_url: width: 900 -%}
+        {%- else -%}
+          {%- assign def = univ_defaults[forloop.index0] | default: univ_defaults.first -%}
+          {%- assign u_img = def | asset_url -%}
+        {%- endif -%}
+
+        {%- assign u_title = block.settings.title | default: uc.title -%}
+        {%- assign u_link = block.settings.link | default: uc.url | default: routes.all_products_collection_url -%}
+        {%- assign u_cta = block.settings.cta | default: 'Découvrir' -%}
+
+        {%- render 'card-rail',
+              cr_image: u_img,
+              cr_title: u_title,
+              cr_text: block.settings.subtitle,
+              cr_cta: u_cta,
+              cr_link: u_link,
+              cr_attrs: block.shopify_attributes -%}
+      {%- endfor -%}
+    </div>
   </div>
 </div>
 
@@ -42,28 +64,26 @@
       { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
       { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
     ,
-    { "type": "text", "id": "eyebrow", "label": "Sur-titre", "info": "Laissé vide : seul le titre s'affiche." },
-    { "type": "text", "id": "title", "label": "Titre", "default": "Explorez par univers" }
+    { "type": "text", "id": "eyebrow", "label": "Sur-titre" },
+    { "type": "text", "id": "title", "label": "Titre", "default": "Ce dont votre corps a besoin" },
+    { "type": "textarea", "id": "intro", "label": "Phrase d'introduction", "default": "Des formules ciblées, des dosages lisibles, et rien de superflu." },
+    { "type": "text", "id": "all_label", "label": "Lien « tout voir »", "default": "Voir tous les univers" },
+    { "type": "url", "id": "all_link", "label": "Cible du lien « tout voir »" }
   ],
   "blocks": [
     {
-      "type": "univers", "name": "Carte univers",
+      "type": "univers",
+      "name": "Univers",
       "settings": [
         { "type": "collection", "id": "collection", "label": "Collection" },
-        { "type": "image_picker", "id": "image", "label": "Image (optionnel)" },
+        { "type": "image_picker", "id": "image", "label": "Visuel", "info": "À défaut, le visuel de la collection est utilisé." },
         { "type": "text", "id": "title", "label": "Titre" },
-        { "type": "text", "id": "subtitle", "label": "Sous-titre" },
-        { "type": "url", "id": "link", "label": "Lien (si pas de collection)" }
+        { "type": "text", "id": "subtitle", "label": "Phrase courte" },
+        { "type": "text", "id": "cta", "label": "Bouton", "default": "Découvrir" },
+        { "type": "url", "id": "link", "label": "Lien" }
       ]
     }
   ],
-  "presets": [
-    { "name": "Univers", "blocks": [
-      { "type": "univers", "settings": { "title": "Vitalité & immunité", "subtitle": "Énergie, défenses naturelles, anti-fatigue" } },
-      { "type": "univers", "settings": { "title": "Beauté & sommeil", "subtitle": "Peau, cheveux et nuits sereines" } },
-      { "type": "univers", "settings": { "title": "Sport & bien-être", "subtitle": "Articulations, récupération, équilibre" } },
-      { "type": "univers", "settings": { "title": "Routines", "subtitle": "Des cures complètes, prêtes à suivre" } }
-    ] }
-  ]
+  "presets": [ { "name": "Univers" } ]
 }
 {% endschema %}
