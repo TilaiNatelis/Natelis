@@ -16,37 +16,41 @@
       "announcement-bar": {
         "type": "announcement-bar",
         "settings": {
-          "text_left": "Livraison offerte dès 49€",
-          "text_right": "Cure découverte —15% avec le code",
-          "code": "AUTOMNE"
+          "delay": 5,
+          "panel_title": "Les offres du moment"
         }
       },
       "header": {
         "type": "header",
         "custom_css": [],
         "settings": {
-          "logo": "shopify://shop_images/Aa_7_7ada689e-2be8-4c21-bcf0-184841f849af.png",
+          "use_svg": false,
+          "logo": "shopify://shop_images/Ajouter_un_sous-titre_1.svg",
           "logo_height": 40
         }
       },
       "footer": {
         "type": "footer",
         "settings": {
-          "logo": "shopify://shop_images/Aa_7.png",
-          "logo_height": 44,
+          "logo": "shopify://shop_images/logo_navelie.svg",
+          "logo_height": 58,
           "join_title": "Rejoignez-nous",
           "description": "Nos conseils de saison, nos nouveautés et −15% sur votre première cure.",
           "placeholder": "E-mail",
-          "cta": "S'inscrire"
+          "cta": "S'inscrire",
+          "instagram": "",
+          "facebook": "",
+          "tiktok": "",
+          "pinterest": ""
         }
       },
       "popup-welcome": {
         "type": "popup-welcome",
         "settings": {
-          "enable": true,
+          "enable": false,
           "eyebrow": "Offre de bienvenue",
           "title": "-15% sur votre première cure",
-          "text": "Inscrivez-vous à la Newsletter Natélis et profitez de -15% sur votre première commande.",
+          "text": "Inscrivez-vous à la lettre Navélie et profitez de -15% sur votre première commande.",
           "code": "AUTOMNE",
           "cta": "J'en profite",
           "delay": 1200,

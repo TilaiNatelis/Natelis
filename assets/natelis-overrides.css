@@ -149,8 +149,16 @@
 
 /* Rail editorial (« l'experience ») : quatre cartes visibles et un debord de
    la cinquieme sur le bord droit, exactement comme la reference. */
-.nat-crail__track{gap:var(--nat-gap-card);}
+.nat-crail__track{gap:var(--nat-gap-card);align-items:stretch;}
 .nat-crail__track > .nat-ccard{flex:0 0 23.5%;width:auto;}
+
+/* Les cartes d'une meme rangee alignent leurs boutons : sans cela, un texte
+   de trois lignes decalait le bouton par rapport a celui de sa voisine. */
+.nat-univ__grid > .nat-ccard,
+.nat-crail__track > .nat-ccard{display:flex;flex-direction:column;height:100%;}
+.nat-ccard__media{flex:none;}
+.nat-ccard__text{padding-bottom:19px;}
+.nat-ccard__btn{margin-top:auto;align-self:flex-start;}
 
 /* --- 5. Nos valeurs ------------------------------------------------------- */
 .nat-valeurs{display:grid;grid-template-columns:repeat(4,1fr);gap:var(--nat-gap-tile);}
@@ -289,7 +297,12 @@
 .nat-band__img{position:absolute;inset:0;width:100%;height:100%;
   object-fit:cover;object-position:center;display:block;}
 .nat-band__veil{position:absolute;inset:0;
-  background:linear-gradient(180deg, rgba(20,26,16,.18), rgba(20,26,16,.42));}
+  /* Un voile uniforme ne suffit pas quand la photo a un sujet clair pile au
+     centre, la ou se pose le texte. On concentre donc l'assombrissement
+     derriere le texte (voile radial) et on laisse les bords de la photo
+     respirer — meme technique que la banniere de saison. */
+  background:radial-gradient(54% 74% at 50% 50%, rgba(20,26,16,.66), rgba(20,26,16,0) 74%),
+             linear-gradient(180deg, rgba(20,26,16,.26), rgba(20,26,16,.44));}
 .nat-band__body{position:relative;z-index:2;max-width:760px;padding:0 24px;
   text-align:center;color:#fff;}
 .nat-band__eyebrow{font-size:var(--fs-xs);letter-spacing:.14em;text-transform:uppercase;

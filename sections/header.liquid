@@ -10,16 +10,24 @@
       À défaut, on utilise l'image choisie dans l'éditeur (servie en 2x pour les
       écrans à haute densité), puis le mot-symbole typographique.
     {%- endcomment -%}
+    {%- comment -%}
+      La source du logo est calculee une seule fois et transmise au tiroir
+      mobile : sans cela ce dernier affichait le nom de la marque en dur.
+    {%- endcomment -%}
     {%- assign logo_svg = 'logo.svg' | asset_url -%}
+    {%- assign logo_src = blank -%}
     {%- if section.settings.use_svg and logo_svg != blank -%}
-      <img class="nat-header__logo" src="{{ logo_svg }}" alt="{{ shop.name }}" style="height:{{ lh }}px;width:auto;">
+      {%- assign logo_src = logo_svg -%}
     {%- elsif section.settings.logo != blank -%}
       {%- comment -%} servi large (≈4x) pour rester net sur écrans haute densité {%- endcomment -%}
       {%- assign lh4 = lh | times: 4 -%}
       {%- if lh4 < 400 -%}{%- assign lh4 = 400 -%}{%- endif -%}
-      <img class="nat-header__logo" src="{{ section.settings.logo | image_url: height: lh4 }}" alt="{{ shop.name }}" style="height:{{ lh }}px;width:auto;">
+      {%- assign logo_src = section.settings.logo | image_url: height: lh4 -%}
+    {%- endif -%}
+    {%- if logo_src != blank -%}
+      <img class="nat-header__logo" src="{{ logo_src }}" alt="{{ shop.name | escape }}" style="height:{{ lh }}px;width:auto;">
     {%- else -%}
-      <span class="nat-logo-text" style="font-size:{{ lh | times: 0.7 | round }}px;">Navélie</span>
+      <span class="nat-logo-text" style="font-size:{{ lh | times: 0.7 | round }}px;">{{ shop.name }}</span>
     {%- endif -%}
   </a>
 
@@ -41,7 +49,7 @@
   </div>
 </div>
 
-{% render 'main-nav' %}
+{% render 'main-nav', nav_logo: logo_src %}
 
 {% schema %}
 {

@@ -23,13 +23,27 @@
 </div>
 
 <div class="nat-cat-grid">
-  {%- comment -%} Filtres en pastilles, au-dessus de la grille {%- endcomment -%}
-  {%- if collection.all_tags.size > 0 -%}
+  {%- comment -%}
+    Filtres en pastilles, au-dessus de la grille.
+    Les produits portent une soixantaine de tags (actifs, durees de cure,
+    allergenes, formes galeniques...). Les afficher tous donnait huit rangees
+    de pastilles qui repoussaient la grille loin sous la ligne de flottaison.
+    On ne garde donc qu'une liste courte d'objectifs, dans un ordre choisi, et
+    seulement ceux reellement presents dans la collection affichee.
+  {%- endcomment -%}
+  {%- assign objectifs = 'Immunité,Énergie,Vitalité,Tonus,Sommeil,Stress,Sérénité,Digestion,Confort digestif,Beauté,Beauté de la peau,Anti-âge,Articulations,Os & Muscles,Peau & Cheveux,Cœur,Cerveau,Femmes,Bio,Vegan' | split: ',' -%}
+  {%- capture chips -%}
+    {%- for tag in objectifs -%}
+      {%- if collection.all_tags contains tag -%}
+        <a class="nat-filter{% if current_tags contains tag %} is-active{% endif %}" href="{{ collection.url }}/{{ tag | handleize }}">{{ tag }}</a>
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endcapture -%}
+  {%- assign chips = chips | strip -%}
+  {%- if chips != blank -%}
     <div class="nat-cat-filters">
       <a class="nat-filter{% unless current_tags %} is-active{% endunless %}" href="{{ collection.url }}">Tous</a>
-      {%- for tag in collection.all_tags -%}
-        <a class="nat-filter{% if current_tags contains tag %} is-active{% endif %}" href="{{ collection.url }}/{{ tag | handleize }}">{{ tag }}</a>
-      {%- endfor -%}
+      {{ chips }}
     </div>
   {%- endif -%}
 
