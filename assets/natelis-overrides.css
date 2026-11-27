@@ -22,6 +22,16 @@
      visuel social        73,3 px / 440         16,7 %   carre, AUCUN gap
      bandes pleine largeur   440 x 192          ratio 16/7
 
+   PAGES DE LISTE (capture 184x2000) : la reference n'y emploie PAS la meme
+   largeur que sur l'accueil. Le contenu y est ramene a un conteneur etroit
+   et centre.
+     contenu                x 33..149 / 184    63,6 % de la fenetre
+     colonnes               4 x 27 px          pas de 30, gouttiere 3
+     visuel produit         27 x 26            carre
+     rythme vertical        49 px par rangee   26 visuel + 18 texte + 5 gap
+     en-tete / navigation   x 7..176           92 % (plus large que le contenu)
+     bandeau d'annonce, pied de page           pleine largeur
+
      0. Grille de page
      1. Carte produit
      2. Mega-menu
@@ -33,7 +43,8 @@
      8. Echelle typographique
      9. En-tetes de section
     10. Bandes pleine largeur
-    11. Reprises responsives
+    11. Pages de liste
+    12. Reprises responsives
    ========================================================================== */
 
 /* --- 0. Grille de page ---------------------------------------------------- */
@@ -79,7 +90,7 @@
    boutons d'une carte a l'autre. La reference assume le blanc sous les noms
    courts — sur sa 3e rangee, un nom d'une ligne et un nom de deux lignes ont
    leurs notes au meme niveau. La ligne de note garde donc sa place meme vide. */
-.nat-card__media{background:#F4F3F1;aspect-ratio:14/15;}
+.nat-card__media{background:#F4F3F1;aspect-ratio:1/1;}
 .nat-card__obj{display:block;height:30px;line-height:30px;margin-top:19px;
   font-size:var(--fs-lg);font-weight:400;letter-spacing:0;text-transform:none;
   color:var(--green-deep);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
@@ -302,7 +313,32 @@
    largeur de fenetre (carte 23,5% de la piste, visuel au ratio 4/5). */
 .nat-crail__arrow{top:14.1vw;}
 
-/* --- 11. Reprises responsives -------------------------------------------- */
+/* --- 11. Pages de liste --------------------------------------------------- */
+/* A 1920 les 63,6 % relevees donnent ~1220px : d'ou les 1240px ci-dessous,
+   une valeur ronde qui tombe juste et se comporte bien sur les ecrans plus
+   petits. L'accueil, lui, garde sa pleine largeur (section 0). */
+:root{--nat-list:1240px;}
+
+.nat-cat-grid,.nat-wrap--season,.nat-cat-hero__body{
+  max-width:var(--nat-list);margin-left:auto;margin-right:auto;}
+
+/* La reference n'a pas de colonne de filtres : la grille occupe toute la
+   largeur utile et les filtres passent en pastilles au-dessus. */
+.nat-cat-grid{display:block;padding:44px var(--nat-gutter) 72px;}
+.nat-cat-filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:20px;}
+.nat-cat-filters .nat-filter{display:inline-flex;align-items:center;justify-content:center;
+  padding:8px 15px;border:1px solid var(--border);border-radius:999px;
+  font-size:var(--fs-sm);color:var(--brown-dark);
+  transition:border-color .15s,color .15s;}
+.nat-cat-filters .nat-filter:hover{border-color:var(--olive-light);color:var(--olive);}
+.nat-cat-filters .nat-filter.is-active{border-color:var(--olive);color:var(--olive);font-weight:700;}
+.nat-cat-count{font-size:var(--fs-sm);color:var(--brown);margin:0 0 20px;}
+
+/* Quatre colonnes ; gouttieres relevees : 32px horizontal, 44px vertical. */
+.nat-grid--products,.nat-grid--season{grid-template-columns:repeat(4,1fr);gap:44px 32px;}
+.nat-grid--products > *,.nat-grid--season > *{min-width:0;}
+
+/* --- 12. Reprises responsives -------------------------------------------- */
 @media (max-width:1400px){
   .nat-slider > *{flex-basis:calc((100% - 3 * var(--nat-gap-prod)) / 4);}
 }
@@ -314,6 +350,7 @@
 }
 @media (max-width:1100px){
   .nat-finder__introbox{padding:44px 40px;}
+  .nat-grid--products,.nat-grid--season{grid-template-columns:repeat(3,1fr);}
 }
 @media (max-width:1000px){
   .nat-mega__cards{max-width:none;gap:14px;}
@@ -350,6 +387,7 @@
   .nat-card__add{height:46px;}
   .nat-season-banner{min-height:150px;padding:24px 20px;}
   .nat-slider > *{flex-basis:calc((100% - var(--nat-gap-prod)) / 2);}
+  .nat-grid--products,.nat-grid--season{grid-template-columns:repeat(2,1fr);gap:30px 18px;}
   .nat-social{grid-template-columns:repeat(3,1fr);}
   .nat-offre{aspect-ratio:4/3;}
   .nat-band{aspect-ratio:4/3;}

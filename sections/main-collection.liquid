@@ -1,8 +1,18 @@
 {% render 'section-fonts', section: section %}
+{%- comment -%}
+  Page de collection, sur le modele des pages de liste de la reference :
+  conteneur etroit centre (~63,6% de la fenetre), quatre colonnes, visuels
+  carres. Pas de colonne de filtres sur le cote — les filtres passent en
+  pastilles au-dessus de la grille, ce qui libere toute la largeur pour les
+  produits, comme sur la reference.
+{%- endcomment -%}
 <div class="nat-cat-hero" style="background-image:url('{{ collection.image | image_url: width: 2000 }}');{% if collection.image == blank %}background:var(--beige-gold);{% endif %}">
   <div class="nat-cat-hero__veil"></div>
   <div class="nat-cat-hero__body">
-    <div style="font-size:12px;letter-spacing:.1em;opacity:.85;">Accueil · Produits</div>
+    <div style="font-size:12px;letter-spacing:.1em;opacity:.85;">
+      <a href="{{ routes.root_url }}" style="color:inherit;">Accueil</a> ·
+      <a href="{{ routes.all_products_collection_url }}" style="color:inherit;">Produits</a>
+    </div>
     <h1 class="nat-serif" style="font-size:48px;margin:8px 0 0;">{{ collection.title }}</h1>
     {%- if collection.description != blank -%}
       <p style="font-size:14px;opacity:.9;margin:8px 0 0;">{{ collection.description | strip_html | truncatewords: 24 }}</p>
@@ -13,46 +23,30 @@
 </div>
 
 <div class="nat-cat-grid">
-  <!-- filtres -->
-  <aside>
-    <div class="nat-filter-title">Objectif</div>
-    <div style="display:flex;flex-direction:column;margin-top:14px;">
-      <a class="nat-filter{% unless collection.current_tags %} is-active{% endunless %}" href="{{ collection.url }}">Tous <span style="color:var(--gold);">{{ collection.all_products_count }}</span></a>
+  {%- comment -%} Filtres en pastilles, au-dessus de la grille {%- endcomment -%}
+  {%- if collection.all_tags.size > 0 -%}
+    <div class="nat-cat-filters">
+      <a class="nat-filter{% unless current_tags %} is-active{% endunless %}" href="{{ collection.url }}">Tous</a>
       {%- for tag in collection.all_tags -%}
         <a class="nat-filter{% if current_tags contains tag %} is-active{% endif %}" href="{{ collection.url }}/{{ tag | handleize }}">{{ tag }}</a>
       {%- endfor -%}
     </div>
-  </aside>
+  {%- endif -%}
 
-  <!-- grille -->
-  <div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;">
-      <span style="font-size:13.5px;color:var(--brown);">{{ collection.products_count }} produits</span>
+  <div class="nat-cat-count">{{ collection.products_count }} produit{% if collection.products_count > 1 %}s{% endif %}</div>
+
+  {%- paginate collection.products by 24 -%}
+    <div class="nat-grid-4 nat-grid--products">
+      {%- for product in collection.products -%}
+        {%- render 'product-card', product: product -%}
+      {%- else -%}
+        <p>Aucun produit dans cette collection pour le moment.</p>
+      {%- endfor -%}
     </div>
-    {%- comment -%}
-      Les visuels ne sont inseres que sur la premiere page : leur rang est
-      compte depuis le debut de la collection, il n'a pas de sens page 2.
-    {%- endcomment -%}
-    {%- assign visuels = section.blocks | where: 'type', 'visuel' -%}
-    {%- paginate collection.products by 15 -%}
-      <div class="nat-grid-3 nat-grid--products" style="gap:44px 20px;">
-        {%- if paginate.current_page == 1 -%}
-          {%- render 'promo-slot', slot_blocks: visuels, slot_index: 0 -%}
-        {%- endif -%}
-        {%- for product in collection.products -%}
-          {%- render 'product-card', product: product -%}
-          {%- if paginate.current_page == 1 -%}
-            {%- render 'promo-slot', slot_blocks: visuels, slot_index: forloop.index -%}
-          {%- endif -%}
-        {%- else -%}
-          <p>Aucun produit dans cette collection pour le moment.</p>
-        {%- endfor -%}
-      </div>
-      {%- if paginate.pages > 1 -%}
-        <div style="margin-top:40px;text-align:center;">{{ paginate | default_pagination }}</div>
-      {%- endif -%}
-    {%- endpaginate -%}
-  </div>
+    {%- if paginate.pages > 1 -%}
+      <div style="margin-top:48px;text-align:center;">{{ paginate | default_pagination }}</div>
+    {%- endif -%}
+  {%- endpaginate -%}
 </div>
 
 {% schema %}
@@ -60,22 +54,5 @@
       { "type": "header", "content": "Polices (cette section)" },
       { "type": "select", "id": "heading_font_name", "label": "Police des titres", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Cormorant Garamond","label":"Cormorant Garamond"},{"value":"Playfair Display","label":"Playfair Display"},{"value":"EB Garamond","label":"EB Garamond"},{"value":"Lora","label":"Lora"},{"value":"Marcellus","label":"Marcellus"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Mulish","label":"Mulish"},{"value":"Raleway","label":"Raleway"}] },
       { "type": "select", "id": "body_font_name", "label": "Police du texte", "default": "", "options": [{"value":"","label":"Par défaut (global)"},{"value":"Mulish","label":"Mulish"},{"value":"Montserrat","label":"Montserrat"},{"value":"Poppins","label":"Poppins"},{"value":"Nunito Sans","label":"Nunito Sans"},{"value":"Work Sans","label":"Work Sans"},{"value":"Inter","label":"Inter"},{"value":"Raleway","label":"Raleway"},{"value":"Lora","label":"Lora"}] }
-  ],
-  "blocks": [
-    {
-      "type": "visuel", "name": "Visuel dans la grille",
-      "settings": [
-        { "type": "image_picker", "id": "image", "label": "Image" },
-        { "type": "range", "id": "position", "label": "Insérer après le … produit", "min": 0, "max": 15, "step": 1, "default": 2, "info": "0 place le visuel avant le premier produit. Première page uniquement." },
-        { "type": "select", "id": "span", "label": "Largeur", "default": "1", "options": [{"value":"1","label":"Une colonne"},{"value":"2","label":"Deux colonnes"}] },
-        { "type": "header", "content": "Texte (facultatif)", "info": "Laissez vide pour une image seule." },
-        { "type": "text", "id": "title", "label": "Titre" },
-        { "type": "textarea", "id": "text", "label": "Accroche" },
-        { "type": "text", "id": "cta", "label": "Libellé du bouton" },
-        { "type": "url", "id": "link", "label": "Lien" },
-        { "type": "select", "id": "align", "label": "Position du texte", "default": "center", "options": [{"value":"top","label":"En haut"},{"value":"center","label":"Au centre"},{"value":"bottom","label":"En bas"}] },
-        { "type": "select", "id": "theme", "label": "Contraste", "default": "light", "options": [{"value":"light","label":"Texte sombre (image claire)"},{"value":"dark","label":"Texte clair sur voile (image sombre)"}] }
-      ]
-    }
   ] }
 {% endschema %}
